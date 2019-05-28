@@ -5,12 +5,10 @@ using System.Web;
 
 namespace WebApp.Models.Entities
 {
-    public class Timetable
+    public class Departure
     {
         public int Id { get; set; }
-        public Day DayType { get; set; }
-        public int Line { get; set; }
-        public List<Departure> ListOfDepartures { get; set; }   
-
+        public int IdDay { get; set; }
+        public List<TimeSpan> ListofDepartures { get; set; }
     }
 }
