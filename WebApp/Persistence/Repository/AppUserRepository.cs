@@ -7,7 +7,7 @@ using WebApp.Models.Entities;
 
 namespace WebApp.Persistence.Repository
 {
-    public class AppUserRepository : Repository<AppUser, string>, IAppUserepository
+    public class AppUserRepository : Repository<AppUser, string>, IAppUserRepository
     {
         public AppUserRepository(DbContext context) : base(context)
         {

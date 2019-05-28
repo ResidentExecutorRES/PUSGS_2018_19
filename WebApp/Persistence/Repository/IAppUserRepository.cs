@@ -7,7 +7,7 @@ using WebApp.Models.Entities;
 
 namespace WebApp.Persistence.Repository
 {
-    public interface IAppUserepository : IRepository<AppUser, string>
+    public interface IAppUserRepository : IRepository<AppUser, string>
     {
     }
 }
