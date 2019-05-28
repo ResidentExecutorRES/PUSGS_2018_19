@@ -259,11 +259,16 @@
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905281410377_Migracija1.cs" />
+    <Compile Include="Migrations\201905281410377_Migracija1.Designer.cs">
+      <DependentUpon>201905281410377_Migracija1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Entities\Address.cs" />
+    <Compile Include="Models\Entities\AppUser.cs" />
     <Compile Include="Models\Entities\Day.cs" />
     <Compile Include="Models\Entities\Departure.cs" />
     <Compile Include="Models\Entities\NetworkLine.cs" />
@@ -275,7 +280,6 @@
     <Compile Include="Models\Entities\Station.cs" />
     <Compile Include="Models\Entities\TicketPrice.cs" />
     <Compile Include="Models\Entities\Timetable.cs" />
-    <Compile Include="Models\Entities\AppUser.cs" />
     <Compile Include="Models\Entities\TypeOfTicket.cs" />
     <Compile Include="Models\Entities\UserType.cs" />
     <Compile Include="Models\Entities\Vehicle.cs" />
@@ -384,6 +388,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201905222056072_InitialMigration.resx">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905281410377_Migracija1.resx">
+      <DependentUpon>201905281410377_Migracija1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -7,6 +7,7 @@ namespace WebApp.Models.Entities
 {
     public class RoleCoefficient
     {
+        public int Id { get; set; }
         public PassangerType PassangerType { get; set; }
         public Double Coefficient { get; set; }
     }

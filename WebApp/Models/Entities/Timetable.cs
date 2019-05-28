@@ -10,6 +10,7 @@ namespace WebApp.Models.Entities
         public int Id { get; set; }
         public Day DayType { get; set; }
         public int Line { get; set; }
+
         public List<Departure> ListOfDepartures { get; set; }   
 
     }

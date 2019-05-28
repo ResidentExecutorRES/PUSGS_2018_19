@@ -17,20 +17,20 @@ namespace WebApp.Models
     public class ApplicationUser : IdentityUser
     {
 
-        //[ForeignKey("AppUser")]
-        //public int AppUserId { get; set; }
-        //public AppUser AppUser { get; set; }
+        [ForeignKey("AppUser")]
+        public String AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
 
-       
-        public String Name { get; set; }
-        public String LastName { get; set; }
-        public Address Address { get; set; }
-        public bool Activated { get; set; }
-        public String Image { get; set; }
-        public PassangerType PassangerType { get; set; }
-        public UserType UserType { get; set; }
-        public DateTime Birthaday { get; set; }
-        public RoleCoefficient RoleCoefficient { get; set; }
+
+        //public String Name { get; set; }
+        //public String LastName { get; set; }
+        //public Address Address { get; set; }
+        //public bool Activated { get; set; }
+        //public String Image { get; set; }
+        //public PassangerType PassangerType { get; set; }
+        //public UserType UserType { get; set; }
+        //public DateTime? Birthaday { get; set; }
+        //public RoleCoefficient RoleCoefficient { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {

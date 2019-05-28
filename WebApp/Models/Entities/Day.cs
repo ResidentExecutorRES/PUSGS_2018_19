@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -7,8 +8,11 @@ namespace WebApp.Models.Entities
 {
     public class Day
     {
-        public string Id { get; set; }
-        public List<Departure> ListOfDepatures { get; set; }
+        public int Id { get; set; }       
+        //vrijednost iz DayType-a
+        [Required]
+        public string Name { get; set; }
+        public List<Departure> ListOfDepartures { get; set; }
     }
 
     public enum DayType
