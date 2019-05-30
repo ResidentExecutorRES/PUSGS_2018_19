@@ -1,3 +1,67 @@
-<p>
-  register works!
-</p>
+<div class="container">
+  <h1>Registration</h1>
+  <form >
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input required type="email" class="form-control" name="Email" placeholder="Email" ngModel>
+       </div>
+      <div class="form-group">
+        <label for="Name">Name</label>
+        <input required type="text" class="form-control" name="Name" placeholder="Name" ngModel>
+      </div>
+
+      <div class="form-group">
+        <label for="LastName">Last Name</label>
+        <input required type="text" class="form-control" name="LastName" placeholder="LastName" ngModel>
+      </div>
+
+      <div class="form-group">
+        <label for="City">City</label>
+        <input required type="text" class="form-control" name="City" placeholder="City" ngModel>
+      </div>
+
+      <div class="form-group">
+        <label for="Street">Street</label>
+        <input required type="text" class="form-control" name="Street" placeholder="Street" ngModel>
+      </div>
+
+      <div class="form-group">
+        <label for="Number">Number</label>
+        <input required type="text" class="form-control" name="Number" placeholder="Street" ngModel>
+      </div>
+
+       <div class="form-group">
+        <label for="PassangerType">Number</label>
+        <select>
+          <option value="Student">Student</option>
+          <option value="Pensiner">Student</option>
+          <option value="Student">None</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="Birthaday">Birthaday</label>
+        <input required type="date" class="form-control" name="Birthaday" placeholder="dd/mm/yyyy" ngModel>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input required type="password" class="form-control" name="Password" placeholder="Password" ngModel>
+      </div>
+
+      <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input required type="password" class="form-control" name="ConfirmPassword" placeholder="Password" ngModel>
+      </div>
+
+      <div>
+        <h4>Upload your drivers licence:</h4>
+        <div class="container">
+          <input type="file">  
+          <button type="button" class="btn btn-primary">Upload</button>
+        </div>
+      </div>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
+</div>
