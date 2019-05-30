@@ -1,35 +1,21 @@
+import {HttpInterceptor,HttpRequest,HttpHandler,HttpEvent} from '@angular/common/http' 
 import { Injectable } from '@angular/core';
-import {
-  HttpRequest,
-  HttpHandler,
-  HttpEvent,
-  HttpInterceptor} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from '../services/authentication-service.service';
 
 @Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-    constructor(public auth: AuthenticationService) {}
-    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    console.log("Intercepted");
-    console.log("Token : ", localStorage.jwt);
-
-    let jwt = localStorage.jwt;
-
-    if (jwt) 
-    {
-        console.log(request)
-        request = request.clone(
-            {
-                setHeaders: 
-                { 
-                    Authorization: `Bearer ${jwt}`
+export class TokenInterceptor implements HttpInterceptor{
+    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        //throw new Error("Method not implemented.");
+        let jwt = localStorage.jwt;
+        console.log(req);
+        if(jwt){
+            req = req.clone({
+                setHeaders: {
+                    "Authorization": "Bearer "+jwt
                 }
             });
-        console.log(request)
+        }
+        return next.handle(req);
     }
 
-    return next.handle(request);
-  }
-}
+} 

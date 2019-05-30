@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/services/authentication-service.s
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
+
 export class RegisterComponent implements OnInit {
 
   constructor(private authService: AuthenticationService) { 
@@ -21,16 +22,15 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(registrationData: AuthenticationModule, form: NgForm) {
-    console.log(registrationData);
+    // console.log(registrationData);
 
-    // Todo call Service and send register request
-    this.authService.register(registrationData)
-    .subscribe( data => {
-      alert("Register successful!");
-    },
-    error => {
-      alert("Error!");
-    })
+    this.authService.register(registrationData).subscribe(); 
+    //data => {
+    //   alert("Register successfull!");
+    // },
+    // error => {
+    //   alert("Error!");
+    // })
   }
 
 

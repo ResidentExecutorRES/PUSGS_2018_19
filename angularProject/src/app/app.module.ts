@@ -11,8 +11,10 @@ import { CvlComponent } from './components/cvl/cvl.component';
 import { PriceListComponent } from './components/price-list/price-list.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { RegisterComponent } from './components/register/register.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from './interceptors/interceptor';
+
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 
 
@@ -63,10 +65,13 @@ const Routes = [
     BrowserModule,
     FormsModule,
     RouterModule.forRoot(Routes),
-    HttpClientModule,
-    HttpModule
+    HttpModule,
+    HttpClientModule
+    
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }

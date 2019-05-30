@@ -9,13 +9,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  
+  base_url = "http://localhost:52295"
+
     constructor(private http: Http, private httpClient: HttpClient) { }
 
     register(user): Observable<any> {
         console.log(user);
-        return this.httpClient.post("http://localhost:52295/api/Account/Register", user);
-      }
+        return this.httpClient.post(this.base_url+"/api/Account/Register",user);
+    }
 
-  // Todo implementation
+  // Todo implementation 
 }

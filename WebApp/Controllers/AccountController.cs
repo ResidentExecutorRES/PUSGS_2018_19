@@ -333,9 +333,12 @@ namespace WebApp.Controllers
             appUser.Email = model.Email;
             appUser.Activated = false;
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, AppUser = appUser,
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email,
                 PasswordHash = ApplicationUser.HashPassword(model.Password) };
 
+            appUser.Id = user.Id;
+            user.AppUser = appUser;
+            appUser = user.AppUser;
 
             //var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
