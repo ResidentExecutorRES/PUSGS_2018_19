@@ -14,6 +14,7 @@ using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using WebApp.Models;
+using WebApp.Models.Entities;
 using WebApp.Providers;
 using WebApp.Results;
 
@@ -328,7 +329,15 @@ namespace WebApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            AppUser appUser = new AppUser();
+            appUser.Email = model.Email;
+            appUser.Activated = false;
+
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, AppUser = appUser,
+                PasswordHash = ApplicationUser.HashPassword(model.Password) };
+
+
+            //var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
