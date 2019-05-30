@@ -1,16 +1,64 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { RouterModule, Routes } from '@angular/router';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
+import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
+import { BusLinesComponent } from './components/bus-lines/bus-lines.component';
+import { CvlComponent } from './components/cvl/cvl.component';
+import { PriceListComponent } from './components/price-list/price-list.component';
+import { LogInComponent } from './components/log-in/log-in.component';
+import { RegisterComponent } from './components/register/register.component';
+
+
+const Routes = [
+  {
+    path: "",
+    component: HomeComponent
+  },
+  {
+    path: "home",
+    component: HomeComponent
+  },
+  {
+    path: "register",
+    component: RegisterComponent
+  },
+  {
+    path: "logIn",
+    component: LogInComponent
+  },
+  {
+    path: "busLines",
+    component: BusLinesComponent
+  },
+  {
+    path: "priceList",
+    component: PriceListComponent
+  },
+  {
+    path: "cvl",
+    component: CvlComponent
+  }
+
+]
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    MenuBarComponent,
+    BusLinesComponent,
+    CvlComponent,
+    PriceListComponent,
+    LogInComponent,
+    RegisterComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(Routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
