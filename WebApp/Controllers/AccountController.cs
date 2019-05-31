@@ -342,7 +342,7 @@ namespace WebApp.Controllers
             appUser.PassangerType = new PassangerType();
             appUser.PassangerType.Name = model.PassangerType;
 
-            appUser.RoleCoefficient = new RoleCoefficient();
+            appUser.RoleCoefficient = new RoleCoefficient(appUser.PassangerType);
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email,
                 PasswordHash = ApplicationUser.HashPassword(model.Password), AppUser = appUser };
