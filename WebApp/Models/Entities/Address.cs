@@ -7,6 +7,10 @@ namespace WebApp.Models.Entities
 {
     public class Address
     {
+        public Address()
+        {
+        }
+
         public int Id { get; set; }
         public String City { get; set; }
         public String Street { get; set; }

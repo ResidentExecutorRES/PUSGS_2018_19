@@ -334,6 +334,7 @@ namespace WebApp.Controllers
             appUser.Activated = false;
             appUser.Name = model.Name;
             appUser.LastName = model.LastName;
+            appUser.Address = new Address();
             appUser.Address.City = model.City;
             appUser.Address.Street = model.Street;
             appUser.Address.Number = model.Number;
@@ -345,6 +346,7 @@ namespace WebApp.Controllers
             appUser.Id = user.Id;
             user.AppUser = appUser;
             appUser = user.AppUser;
+            user.AppUserId = user.Id;
 
            
 
