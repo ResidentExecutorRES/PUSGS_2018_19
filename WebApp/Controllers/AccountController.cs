@@ -339,6 +339,10 @@ namespace WebApp.Controllers
             appUser.Address.Street = model.Street;
             appUser.Address.Number = model.Number;
             appUser.Birthaday = model.Birthaday;
+            appUser.PassangerType = new PassangerType();
+            appUser.PassangerType.Name = model.PassangerType;
+
+            appUser.RoleCoefficient = new RoleCoefficient();
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email,
                 PasswordHash = ApplicationUser.HashPassword(model.Password), AppUser = appUser };

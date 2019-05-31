@@ -55,6 +55,14 @@ namespace WebApp.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Required]
+        [Display(Name = "UserType")]
+        public string UserType { get; set; }
+
+        [Required]
+        [Display(Name = "PassangerType")]
+        public string PassangerType { get; set; }
+
         [DataType(DataType.DateTime)]
         [Display(Name = "Birthaday")]
         public DateTime Birthaday { get; set; }
