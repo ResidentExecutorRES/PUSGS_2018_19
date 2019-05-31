@@ -31,11 +31,12 @@
       </div>
 
        <div class="form-group">
-        <label for="PassangerType">Number</label>
-        <select>
+        <label for="PassangerType">Passanger Type</label>
+        <select name="PassangerType" class="form-group"  class="form-control" ngModel>
+          <option disabled>Please select...</option>
           <option value="Student">Student</option>
-          <option value="Pensiner">Student</option>
-          <option value="Student">None</option>
+          <option value="Pensioner">Pensioner</option>
+          <option value="Default">None</option>
         </select>
       </div>
 
