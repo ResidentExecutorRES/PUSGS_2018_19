@@ -332,13 +332,21 @@ namespace WebApp.Controllers
             AppUser appUser = new AppUser();
             appUser.Email = model.Email;
             appUser.Activated = false;
+            appUser.Name = model.Name;
+            appUser.LastName = model.LastName;
+            appUser.Address.City = model.City;
+            appUser.Address.Street = model.Street;
+            appUser.Address.Number = model.Number;
+            appUser.Birthaday = model.Birthaday;
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email,
-                PasswordHash = ApplicationUser.HashPassword(model.Password) };
+                PasswordHash = ApplicationUser.HashPassword(model.Password), AppUser = appUser };
 
             appUser.Id = user.Id;
             user.AppUser = appUser;
             appUser = user.AppUser;
+
+           
 
             //var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
