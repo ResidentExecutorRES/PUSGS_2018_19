@@ -36,6 +36,10 @@ const Routes = [
     component: LogInComponent
   },
   {
+    path: "logout",
+    component: HomeComponent
+  },
+  {
     path: "busLines",
     component: BusLinesComponent
   },

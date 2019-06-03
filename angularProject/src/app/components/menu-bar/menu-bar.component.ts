@@ -21,4 +21,8 @@ export class MenuBarComponent implements OnInit {
     return localStorage.jwt;
   }
 
+  logout(){
+    localStorage.clear();
+  }
+
 }
