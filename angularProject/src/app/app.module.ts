@@ -16,6 +16,7 @@ import { TokenInterceptor } from './interceptors/interceptor';
 
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 const Routes = [
@@ -34,10 +35,6 @@ const Routes = [
   {
     path: "logIn",
     component: LogInComponent
-  },
-  {
-    path: "logout",
-    component: HomeComponent
   },
   {
     path: "busLines",
@@ -63,7 +60,8 @@ const Routes = [
     CvlComponent,
     PriceListComponent,
     LogInComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

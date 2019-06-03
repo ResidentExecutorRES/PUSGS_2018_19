@@ -18,7 +18,11 @@
     </ul>
 
     <ul class="navbar-nav" *ngIf="loggedIn()">
-      <li><a class="nav-link" [routerLink]="['/logout']" (click) = "logout()">Log Out</a></li>      
+      <li><a class="nav-link" [routerLink]="['/home']" (click) = "logout()">Log Out</a></li>      
+    </ul>
+
+    <ul class="navbar-nav" *ngIf="loggedIn()">
+      <li><a class="nav-link" [routerLink]="['/profile']" (click) = "profile()">Profile</a></li>      
     </ul>
   </div>
 </nav>

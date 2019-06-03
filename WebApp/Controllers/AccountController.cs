@@ -363,6 +363,8 @@ namespace WebApp.Controllers
                 return GetErrorResult(result);
             }
 
+            UserManager.AddToRole(user.Id, "AppUser");
+
             return Ok();
         }
 
