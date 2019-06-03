@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angularProject';
+
+  public loggedIn(): string{
+    return localStorage.jwt;
+  }
+
+  logout(){
+    localStorage.clear();
+  }
+
 }

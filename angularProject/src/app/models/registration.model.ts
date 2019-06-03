@@ -1,4 +1,4 @@
-export class AuthenticationModule{
+export class RegistrationModel{
     Name: string;
     LastName: string;
     Email: string;

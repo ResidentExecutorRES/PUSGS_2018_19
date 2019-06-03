@@ -17,4 +17,8 @@ export class MenuBarComponent implements OnInit {
   ngOnInit() {
   }
 
+  loggedIn(): string{
+    return localStorage.jwt;
+  }
+
 }

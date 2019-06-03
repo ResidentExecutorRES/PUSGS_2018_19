@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
-import { AuthenticationModule } from 'src/app/models/registration.model';
+import { RegistrationModel } from 'src/app/models/registration.model';
 import { AuthenticationService } from 'src/app/services/authentication-service.service';
 
 
@@ -10,7 +10,8 @@ import { AuthenticationService } from 'src/app/services/authentication-service.s
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  providers: [AuthenticationService]
 })
 
 export class RegisterComponent implements OnInit {
@@ -21,17 +22,15 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(registrationData: AuthenticationModule, form: NgForm) {
-    // console.log(registrationData);
+  onSubmit(registrationData: RegistrationModel, form: NgForm) {
+     console.log(registrationData);
 
-    this.authService.register(registrationData).subscribe(); 
-    //data => {
-    //   alert("Register successfull!");
-    // },
-    // error => {
-    //   alert("Error!");
-    // })
+    this.authService.register(registrationData)
+    .subscribe( data => {
+      alert("Register successfull!");
+    },
+    error => {
+      alert("Register - error!");
+    })
   }
-
-
 }
