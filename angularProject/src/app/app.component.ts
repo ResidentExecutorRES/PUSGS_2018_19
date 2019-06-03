@@ -16,4 +16,11 @@ export class AppComponent {
     localStorage.clear();
   }
 
+  public showHide(type: string): boolean{
+    if(type == "AppUser")
+      return true;
+    else
+      return false;
+  }
+
 }

@@ -9,9 +9,10 @@ export class RegistrationModel{
     Birthday: Date;
     Password: string;
     ConfirmPassword: string;
+    UserType: string
 
     constructor(name:string, lastName:string, email:string, city:string, street:string, number:string, 
-        passangerType:string, birthday:Date, password:string, confirmPassword:string){
+        passangerType:string, birthday:Date, password:string, confirmPassword:string, userType:string){
         this.Name = name;
         this.LastName = lastName;
         this.Email = email;
@@ -22,5 +23,6 @@ export class RegistrationModel{
         this.Birthday = birthday;
         this.Password = password;
         this.ConfirmPassword = confirmPassword;
+        this.UserType = userType;
     }
 }

@@ -22,6 +22,25 @@ export class RegisterComponent implements OnInit {
   ngOnInit() {
   }
 
+  selected: string = '';
+
+  // showPassangerType(type: string){
+  //   if(type == "AppUser")
+  //     this.showHide = true;
+  //   else
+  //     this.showHide = false;
+  // }
+
+  showPT(event: any){
+      this.selected = event.target.value;
+  }
+
+  isSelected(): boolean{
+    if(this.selected == 'AppUser'){
+      return true;
+    }
+  }
+
   onSubmit(registrationData: RegistrationModel, form: NgForm) {
      console.log(registrationData);
 

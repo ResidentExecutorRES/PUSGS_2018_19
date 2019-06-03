@@ -341,6 +341,8 @@ namespace WebApp.Controllers
             appUser.Birthaday = model.Birthaday;
             appUser.PassangerType = new PassangerType();
             appUser.PassangerType.Name = model.PassangerType;
+            appUser.UserType = new UserType();
+            appUser.UserType.Name = model.UserType;
 
             appUser.RoleCoefficient = new RoleCoefficient(appUser.PassangerType);
 
@@ -350,9 +352,7 @@ namespace WebApp.Controllers
             appUser.Id = user.Id;
             user.AppUser = appUser;
             appUser = user.AppUser;
-            user.AppUserId = user.Id;
-
-           
+            user.AppUserId = user.Id;           
 
             //var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
