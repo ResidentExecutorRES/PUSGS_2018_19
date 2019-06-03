@@ -17,6 +17,7 @@ import { TokenInterceptor } from './interceptors/interceptor';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ProfileComponent } from './components/profile/profile.component';
+//import { UsersComponent } from './services/users/users.component';
 
 
 const Routes = [
@@ -47,7 +48,13 @@ const Routes = [
   {
     path: "cvl",
     component: CvlComponent
+  },
+  {
+    path: "profile",
+    component: ProfileComponent
   }
+
+
 
 ]
 
@@ -61,7 +68,7 @@ const Routes = [
     PriceListComponent,
     LogInComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
