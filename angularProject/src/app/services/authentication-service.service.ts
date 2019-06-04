@@ -20,6 +20,7 @@ export class AuthenticationService {
 
     register(user): Observable<any> {
         console.log(user);
+        
         return this.httpClient.post(this.base_url+"/api/Account/Register",user);
     }
 

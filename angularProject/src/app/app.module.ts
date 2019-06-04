@@ -68,7 +68,7 @@ const Routes = [
     PriceListComponent,
     LogInComponent,
     RegisterComponent,
-    ProfileComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,7 @@ namespace WebApp.Models.Entities
     {
         Student,
         Pensioner,
-        Default
+        Default,
+        None
     }
 }

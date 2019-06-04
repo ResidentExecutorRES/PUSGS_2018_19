@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from 'src/app/services/users/users.service';
+import { RegistrationModel } from 'src/app/models/registration.model';
 
 @Component({
   selector: 'app-profile',
@@ -13,6 +14,7 @@ export class ProfileComponent implements OnInit {
   user: any;
 
   constructor(private usersService: UsersService) {
+    console.log(usersService);
     this.requestUserInfo();
    }
 
@@ -22,6 +24,8 @@ export class ProfileComponent implements OnInit {
   getRole(): string {
     return localStorage.role;
   }
+
+  
 
   requestUserInfo(){
     this.usersService.getUserClaims().subscribe(claims => {

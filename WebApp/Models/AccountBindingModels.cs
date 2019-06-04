@@ -59,7 +59,6 @@ namespace WebApp.Models
         [Display(Name = "UserType")]
         public string UserType { get; set; }
 
-        [Required]
         [Display(Name = "PassangerType")]
         public string PassangerType { get; set; }
 

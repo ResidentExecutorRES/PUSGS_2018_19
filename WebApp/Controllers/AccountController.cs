@@ -339,8 +339,19 @@ namespace WebApp.Controllers
             appUser.Address.Street = model.Street;
             appUser.Address.Number = model.Number;
             appUser.Birthaday = model.Birthaday;
-            appUser.PassangerType = new PassangerType();
-            appUser.PassangerType.Name = model.PassangerType;
+
+            if (model.PassangerType == null || model.PassangerType == "")
+            {
+                appUser.PassangerType = new PassangerType();
+                appUser.PassangerType.Name = PassangerTypeEnum.None.ToString();
+            }
+            else
+            {
+                appUser.PassangerType = new PassangerType();
+                appUser.PassangerType.Name = model.PassangerType;
+            }
+
+           
             appUser.UserType = new UserType();
             appUser.UserType.Name = model.UserType;
 

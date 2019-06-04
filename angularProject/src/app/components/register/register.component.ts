@@ -24,13 +24,6 @@ export class RegisterComponent implements OnInit {
 
   selected: string = '';
 
-  // showPassangerType(type: string){
-  //   if(type == "AppUser")
-  //     this.showHide = true;
-  //   else
-  //     this.showHide = false;
-  // }
-
   showPT(event: any){
       this.selected = event.target.value;
   }
@@ -43,13 +36,13 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(registrationData: RegistrationModel, form: NgForm) {
      console.log(registrationData);
-
     this.authService.register(registrationData)
     .subscribe( data => {
-      //alert("Register successfull!");
+      alert("Register successfull!");
     },
     error => {
       alert("Register - error!");
+      console.log(registrationData);
     })
   }
 }
