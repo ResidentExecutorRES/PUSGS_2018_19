@@ -357,7 +357,7 @@ namespace WebApp.Controllers
                 }
             }
 
-            if (model.PassangerType != "None")
+            if (model.PassangerType != null)
             {
                 var getAllPassangerTypes = _unitOfWork.PassangerTypes.GetAll();
                 foreach (var item in getAllPassangerTypes)
@@ -380,25 +380,6 @@ namespace WebApp.Controllers
                 }
             }
 
-            //if (model.PassangerType == null || model.PassangerType == "")
-            //{
-            //    appUser.PassangerType = new PassangerType();
-            //    appUser.PassangerType.Name = PassangerTypeEnum.None.ToString();
-            //}
-            //else
-            //{
-            //    appUser.PassangerType = new PassangerType();
-            //    appUser.PassangerType.Name = model.PassangerType;          //}
-
-
-
-
-            //appUser.UserType = new UserType();
-            //appUser.UserType.Name = model.UserType;
-
-
-           // appUser.RoleCoefficient = new RoleCoefficient(appUser.PassangerType);
-
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email,
                 PasswordHash = ApplicationUser.HashPassword(model.Password), AppUser = appUser };
 
@@ -406,8 +387,6 @@ namespace WebApp.Controllers
             user.AppUser = appUser;
             appUser = user.AppUser;
             user.AppUserId = user.Id;           
-
-            //var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 

@@ -54,8 +54,7 @@ namespace WebApp.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
-        [Required]
+        
         [Display(Name = "UserType")]
         public string UserType { get; set; }
 

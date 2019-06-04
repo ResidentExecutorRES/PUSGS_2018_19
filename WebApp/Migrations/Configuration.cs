@@ -7,6 +7,7 @@ namespace WebApp.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using WebApp.Models;
+    using WebApp.Models.Entities;
 
     internal sealed class Configuration : DbMigrationsConfiguration<WebApp.Persistence.ApplicationDbContext>
     {
@@ -65,6 +66,104 @@ namespace WebApp.Migrations
                 userManager.Create(user);
                 userManager.AddToRole(user.Id, "AppUser");
             }
+
+
+            if (!context.PassangerTypes.Any(u => u.Name == "Student"))
+            {
+                PassangerType p = new PassangerType("Student");
+                context.PassangerTypes.Add(p);
+                context.RoleCoefficients.Add(new RoleCoefficient(0.5));
+            }
+            if (!context.PassangerTypes.Any(u => u.Name == "Pensioner"))
+            {
+
+                PassangerType p = new PassangerType("Pensioner");
+
+                context.PassangerTypes.Add(p);
+                context.RoleCoefficients.Add(new RoleCoefficient(0.6));
+
+
+            }
+            if (!context.PassangerTypes.Any(u => u.Name == "Default"))
+            {
+                PassangerType p = new PassangerType("Default");
+
+                context.PassangerTypes.Add(p);
+                context.RoleCoefficients.Add(new RoleCoefficient(1));
+
+
+            }
+            if (!context.PassangerTypes.Any(u => u.Name == "None"))
+            {
+                PassangerType p = new PassangerType("None");
+                //RoleCoefficient r = new RoleCoefficient(1, "None");
+
+                context.PassangerTypes.Add(p);
+                context.RoleCoefficients.Add(new RoleCoefficient(1));
+
+                //context.RoleCoefficients.Add(r);
+
+            }
+
+            if (!context.UserTypes.Any(u => u.Name == "Admin"))
+            {
+                UserType p = new UserType("Admin");
+                context.UserTypes.Add(p);
+            }
+
+            if (!context.UserTypes.Any(u => u.Name == "Controller"))
+            {
+                UserType p = new UserType("Controller");
+                context.UserTypes.Add(p);
+            }
+
+            if (!context.UserTypes.Any(u => u.Name == "AppUser"))
+            {
+                UserType p = new UserType("AppUser");
+                context.UserTypes.Add(p);
+            }
+
+            //if (!context.RoleCoefficients.Any(u => u.PassangerType.Name == "Student"))
+            //{
+            //    RoleCoefficient r = new RoleCoefficient(0.6, "Student");
+            //    context.RoleCoefficients.Add(r);
+            //}
+            //else if (!context.RoleCoefficients.Any(u => u.PassangerType.Name == "Pensioner"))
+            //{
+            //    RoleCoefficient r = new RoleCoefficient(0.5, "Pensioner");
+            //    context.RoleCoefficients.Add(r);
+            //}
+            //else
+            //{
+            //    RoleCoefficient r = new RoleCoefficient(1, "Default");
+            //    context.RoleCoefficients.Add(r);
+
+            //    RoleCoefficient r1 = new RoleCoefficient(1, "None");
+            //    context.RoleCoefficients.Add(r1);
+            //}
+
+
+            //var pt = context.PassangerTypes;
+
+            //foreach (var item in pt)
+            //{
+            //    if (item.Name == "Student")
+            //    {
+            //        RoleCoefficient r = new RoleCoefficient(0.5, item);
+            //        break;
+            //    }
+            //    else if (item.Name == "Pensioner")
+            //    {
+            //        RoleCoefficient r = new RoleCoefficient(0.6, item);
+            //        break;
+            //    }
+            //    else
+            //    {
+            //        RoleCoefficient r = new RoleCoefficient(1, item);
+            //        break;
+            //    }
+            //}
+
         }
     }
 }
