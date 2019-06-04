@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { HttpHeaders } from '@angular/common/http';
 import { RegistrationModel } from 'src/app/models/registration.model';
 import { AuthenticationService } from 'src/app/services/authentication-service.service';
+import { TypesService } from 'src/app/services/types.service';
 
 
 
@@ -11,12 +12,16 @@ import { AuthenticationService } from 'src/app/services/authentication-service.s
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  providers: [AuthenticationService]
+  providers: [AuthenticationService, ]
 })
 
 export class RegisterComponent implements OnInit {
 
-  constructor(private authService: AuthenticationService) { 
+  types: any =[];
+  constructor(private authService: AuthenticationService, private typesService: TypesService) { 
+    typesService.getPassangerAll().subscribe(types =>{
+      this.types = types;
+    });
   }
 
   ngOnInit() {
@@ -36,8 +41,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(registrationData: RegistrationModel, form: NgForm) {
      console.log(registrationData);
-    this.authService.register(registrationData)
-    .subscribe( data => {
+    this.authService.register(registrationData).subscribe( data => {
       alert("Register successfull!");
     },
     error => {

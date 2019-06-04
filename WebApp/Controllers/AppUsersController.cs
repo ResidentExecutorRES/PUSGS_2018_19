@@ -37,7 +37,6 @@ namespace WebApp.Controllers
             return unitOfWork.AppUsers.Find(user => user.Email == email).FirstOrDefault();
         }
 
-
         // GET: api/AppUsers/5
         [ResponseType(typeof(AppUser))]
         public IHttpActionResult GetAppUser(string id)

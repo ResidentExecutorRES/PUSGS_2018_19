@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -16,9 +17,19 @@ namespace WebApp.Models.Entities
         public Address Address { get; set; }
         public bool Activated { get; set; }
         public String Image { get; set; }
+
+        [ForeignKey("PassangerType")]
+        public int? PassangerTypeId { get; set; }
         public PassangerType PassangerType { get; set; }
+
+        [ForeignKey("UserType")]
+        public int? UserTypeId { get; set; }
         public UserType UserType { get; set; }
+
         public DateTime? Birthaday { get; set; }
+
+        [ForeignKey("RoleCoefficient")]
+        public int? RoleCoefficientId { get; set; }
         public RoleCoefficient RoleCoefficient { get; set; }
         
     }

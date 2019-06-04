@@ -17,6 +17,7 @@ using WebApp.Models;
 using WebApp.Models.Entities;
 using WebApp.Providers;
 using WebApp.Results;
+using WebApp.Persistence.UnitOfWork;
 
 namespace WebApp.Controllers
 {
@@ -26,9 +27,15 @@ namespace WebApp.Controllers
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
+        private readonly IUnitOfWork _unitOfWork; 
 
         public AccountController()
         {
+        }
+
+        public AccountController(IUnitOfWork unitOfWork )
+        {
+            _unitOfWork = unitOfWork;
         }
 
         public AccountController(ApplicationUserManager userManager,
@@ -340,22 +347,57 @@ namespace WebApp.Controllers
             appUser.Address.Number = model.Number;
             appUser.Birthaday = model.Birthaday;
 
-            if (model.PassangerType == null || model.PassangerType == "")
+            var getAllUserTypes = _unitOfWork.UserTypes.GetAll();
+            foreach (var item in getAllUserTypes)
             {
-                appUser.PassangerType = new PassangerType();
-                appUser.PassangerType.Name = PassangerTypeEnum.None.ToString();
-            }
-            else
-            {
-                appUser.PassangerType = new PassangerType();
-                appUser.PassangerType.Name = model.PassangerType;
+                if (item.Name == model.UserType)
+                {
+                    appUser.UserTypeId = item.Id;
+                    break;
+                }
             }
 
-           
-            appUser.UserType = new UserType();
-            appUser.UserType.Name = model.UserType;
+            if (model.PassangerType != "None")
+            {
+                var getAllPassangerTypes = _unitOfWork.PassangerTypes.GetAll();
+                foreach (var item in getAllPassangerTypes)
+                {
+                    if (item.Name == model.PassangerType)
+                    {
+                        appUser.PassangerTypeId = item.Id;
+                        break;
+                    }
+                }
 
-            appUser.RoleCoefficient = new RoleCoefficient(appUser.PassangerType);
+                var getAllCoefficients = _unitOfWork.RoleCoefficients.GetAll();
+                foreach (var item in getAllCoefficients)
+                {
+                    if (item.PassangerType.Name == model.PassangerType)
+                    {
+                        appUser.RoleCoefficientId = item.Id;
+                        break;
+                    }
+                }
+            }
+
+            //if (model.PassangerType == null || model.PassangerType == "")
+            //{
+            //    appUser.PassangerType = new PassangerType();
+            //    appUser.PassangerType.Name = PassangerTypeEnum.None.ToString();
+            //}
+            //else
+            //{
+            //    appUser.PassangerType = new PassangerType();
+            //    appUser.PassangerType.Name = model.PassangerType;          //}
+
+
+
+
+            //appUser.UserType = new UserType();
+            //appUser.UserType.Name = model.UserType;
+
+
+           // appUser.RoleCoefficient = new RoleCoefficient(appUser.PassangerType);
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email,
                 PasswordHash = ApplicationUser.HashPassword(model.Password), AppUser = appUser };
