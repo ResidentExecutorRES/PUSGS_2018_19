@@ -25,12 +25,12 @@ export class StationsComponent implements OnInit {
   // numberStreet: string;
   address: string;
 
-  stations: any = [];
+  public stations: any = [];
   markers: any = [];
   iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
 
   newStation: StationModel
-  nameOfStation: string
+  public nameOfStation: string = "";
   id: number
 
 
@@ -73,19 +73,31 @@ export class StationsComponent implements OnInit {
     stationData.Latitude = this.coordinates.latitude;
     stationData.Longitude = this.coordinates.longitude;
     stationData.AddressStation = this.address;
-    stationData.Name = this.nameOfStation;
+    //stationData.Name = this.nameOfStation;
     stationData.Id = this.id;
 
-    this.stationService.editStation(stationData).subscribe();
+    console.log(stationData);
+
+    this.stationService.editStation(stationData).subscribe(data => {
+      alert("Station changed successfull!");
+    },
+    error => {
+      alert("Station changed - error!");
+
+    });
       
   }
 
-  markerDragEnd($event: MouseEvent, name:string, id: number) {
+  onSubmitDelete(stationData: StationModel, form:NgForm){
+    this.stationService.deleteStation(this.id).subscribe();
+  }
+
+  markerDragEnd($event: MouseEvent, nameOfStation:string, id: number) {
     console.log($event);
      this.coordinates.latitude = $event.coords.lat;
      this.coordinates.longitude = $event.coords.lng;
      this.getAddress(this.coordinates.latitude, this.coordinates.longitude);
-     this.nameOfStation = name;
+     this.nameOfStation = nameOfStation;
      this.id = id;
      console.log(id);
   }

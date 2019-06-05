@@ -51,7 +51,7 @@ namespace WebApp.Controllers
             return Ok(station);
         }
 
-        //[Route("Edit")]
+        
         // PUT: api/Stations/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutStation(int id, Station station)
@@ -110,7 +110,7 @@ namespace WebApp.Controllers
         
         [Route("Edit")]
         // POST: api/Stations
-       // [ResponseType(typeof(Station))]
+        [ResponseType(typeof(Station))]
         public IHttpActionResult EditStation(Station station)
         {
             if (!ModelState.IsValid)
@@ -125,6 +125,7 @@ namespace WebApp.Controllers
             
         }
 
+        [Route("Delete")]
         // DELETE: api/Stations/5
         [ResponseType(typeof(Station))]
         public IHttpActionResult DeleteStation(int id)

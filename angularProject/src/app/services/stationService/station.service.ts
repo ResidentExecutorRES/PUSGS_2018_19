@@ -21,6 +21,10 @@ export class StationService {
   }
 
   editStation(station):Observable<any>{
-    return this.httpClient.put(this.baseUrl+ "/api/Stations/Edit", station);
+    return this.httpClient.post(this.baseUrl+ "/api/Stations/Edit", station);
+  }
+
+  deleteStation(idStation){
+    return this.httpClient.delete(this.baseUrl + "/api/Stations/Delete?id=" + idStation);
   }
 }

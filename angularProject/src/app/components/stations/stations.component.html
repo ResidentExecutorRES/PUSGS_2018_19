@@ -29,10 +29,11 @@
                   (markerClick) = "stationClick(station.Id)">
               
                     <!-- Svakom markeru dodajemo info-window (Nije obavezno!)-->
-                    <agm-info-window [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" >
+                    <agm-info-window [latitude]="station.Latitude" [longitude]="station.Longitude" >
                       <span style="font-family:'Times New Roman'; color:gray;"><strong>{{station.Name}}</strong></span>
+                      <span style="font-family:'Times New Roman'; color:gray;"><strong>{{station.AddressStation}}</strong></span>
                       <!-- <span style="font-family:'Times New Roman'; color:gray;">Bulevar oslobođenja 131</span> -->
-                      <a [href]="markerInfo.link">See the site.</a>
+                      <!-- <a [href]="markerInfo.link">See the site.</a> -->
                     </agm-info-window>
                 </agm-marker>
                 </agm-map>
@@ -44,7 +45,7 @@
           <form #stationForm="ngForm" (ngSubmit)="onSubmit(stationForm.value, stationForm)">
             <div class="form-group">
               <label for="Name">Name station</label>
-              <input required type="text" class="form-control" name="Name" ngModel>
+              <input required type="text" class="form-control" name="Name" value="{{nameOfStation}}" ngModel>
             </div>
             <div class="form-group">
               <label for="Longitude">Longitude</label>
@@ -99,7 +100,20 @@
   </div>
 
   <div *ngIf="isSelectedDelete()">
-      
-      <h2>DELETE STATION</h2>
+      <!-- <h2>DELETE STATION</h2> -->
+    <form #stationForm="ngForm" (ngSubmit)="onSubmitDelete(stationForm.value, stationForm)">
+        <div align="center">
+            <button type="submit" class="button" class="btn">Delete station</button>  
+          </div>
+    </form>
+
   </div>
 </div>
+
+
+
+
+
+
+
+
