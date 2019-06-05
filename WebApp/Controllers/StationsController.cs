@@ -30,9 +30,12 @@ namespace WebApp.Controllers
         }
 
         // GET: api/Stations
+        [Route("GetAll")]
         public IQueryable<Station> GetStations()
         {
-            return db.Stations;
+            var v = _unitOfWork.Stations.GetAll().AsQueryable();
+            //return db.Stations;
+            return v;
         }
 
         // GET: api/Stations/5

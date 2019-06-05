@@ -5,6 +5,7 @@ import { StationService } from 'src/app/services/stationService/station.service'
 import { MapsAPILoader } from '@agm/core';
 import { StationModel } from 'src/app/models/station.model';
 import { NgForm } from '@angular/forms';
+import { MapComponent } from '../map/map.component';
 
 @Component({
   selector: 'app-stations',
@@ -24,7 +25,18 @@ export class StationsComponent implements OnInit {
   // numberStreet: string;
   address: string;
 
-  constructor(private ngZone: NgZone, private mapsApiLoader: MapsAPILoader,private stationService: StationService) {}
+  stations: any = [];
+  markers: any = [];
+  iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
+  constructor(private ngZone: NgZone, private mapsApiLoader: MapsAPILoader,private stationService: StationService) {
+    this.stationService.getAllStations().subscribe(st =>{
+      this.stations = st;
+      // console.log(st);
+      // this.stations.forEach(element => {
+      //   this.mapService.placeMarker2(element.Longitude, element.Latitude, element.Name, element.AddressStation);
+      // });
+    });
+  }
 
   ngOnInit() {
     this.markerInfo = new MarkerInfo(new GeoLocation(45.242268, 19.842954), 

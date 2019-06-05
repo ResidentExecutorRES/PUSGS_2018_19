@@ -1,8 +1,11 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone} from '@angular/core';
 import { MarkerInfo } from './modelsForMap/marker-info.model';
 import { Polyline } from './modelsForMap/polyline';
 import { GeoLocation } from './modelsForMap/geolocation';
 
+// @Injectable({
+//   providedIn: 'root'
+// })
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -30,5 +33,12 @@ export class MapComponent implements OnInit {
     this.polyline.addLocation(new GeoLocation($event.coords.lat, $event.coords.lng))
     console.log(this.polyline)
   }
+
+  // placeMarker2(lat: number, lng: number, name:string, link: string ){
+  //   //this.polyline.addLocation(new GeoLocation(lat, lng))
+  //   this.markerInfo = new MarkerInfo(new GeoLocation(lat, lng),"assets/ftn.png",
+  //    name, "", link);
+  //   //console.log(this.polyline)
+  // }
 
 }

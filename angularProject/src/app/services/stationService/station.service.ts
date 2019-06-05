@@ -15,4 +15,8 @@ export class StationService {
   addStation(station): Observable<any>{
     return this.httpClient.post(this.baseUrl + "/api/Stations/Add", station);
   }
+
+  getAllStations(){
+    return this.httpClient.get(this.baseUrl + "/api/Stations/GetAll");
+  }
 }
