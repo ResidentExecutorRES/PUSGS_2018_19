@@ -17,7 +17,10 @@ import { TokenInterceptor } from './interceptors/interceptor';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { ProfileComponent } from './components/profile/profile.component';
-//import { UsersComponent } from './services/users/users.component';
+import {NgxPopper} from 'angular-popper';
+import { StationsComponent } from './components/stations/stations.component';
+import { MapComponent } from './components/map/map.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 const Routes = [
@@ -52,8 +55,11 @@ const Routes = [
   {
     path: "profile",
     component: ProfileComponent
+  },
+  {
+    path: "station",
+    component: StationsComponent
   }
-
 
 
 ]
@@ -68,14 +74,18 @@ const Routes = [
     PriceListComponent,
     LogInComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    StationsComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     RouterModule.forRoot(Routes),
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPopper,
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyDnihJyw_34z5S1KZXp90pfTGAqhFszNJk'})
     
   ],
   providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],

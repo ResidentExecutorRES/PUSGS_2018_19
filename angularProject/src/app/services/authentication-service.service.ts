@@ -54,8 +54,11 @@ export class AuthenticationService {
             console.log(decodedJwtData)
             console.log('Role ' + role)
 
+            let logUser = decodedJwtData.unique_name;
+
             localStorage.setItem('jwt', jwt)
             localStorage.setItem('role', role);
+            localStorage.setItem('name',logUser);
 
             window.location.href="/home";
           },

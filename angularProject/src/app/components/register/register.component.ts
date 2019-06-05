@@ -12,7 +12,7 @@ import { TypesService } from 'src/app/services/types.service';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  providers: [AuthenticationService, ]
+  providers: [AuthenticationService]
 })
 
 export class RegisterComponent implements OnInit {

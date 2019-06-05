@@ -8,7 +8,8 @@ import decode from 'jwt-decode';
 })
 export class MenuBarComponent implements OnInit {
 
-  appName: string; 
+  appName: string;
+  loggedUser: string;
 
   constructor() { 
     this.appName = "Public transport";
@@ -18,6 +19,9 @@ export class MenuBarComponent implements OnInit {
   }
 
   loggedIn(): string{
+    if(localStorage.jwt){
+      this.loggedUser = localStorage.getItem('name');
+    }
     return localStorage.jwt;
   }
 
@@ -25,4 +29,12 @@ export class MenuBarComponent implements OnInit {
     localStorage.clear();
   }
 
+  getRoleAdmin(): boolean{
+    if(localStorage.role == 'Admin'){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }

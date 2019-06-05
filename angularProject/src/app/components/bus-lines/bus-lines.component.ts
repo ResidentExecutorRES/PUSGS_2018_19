@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-bus-lines',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BusLinesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ngZone: NgZone) { }
 
   ngOnInit() {
   }
