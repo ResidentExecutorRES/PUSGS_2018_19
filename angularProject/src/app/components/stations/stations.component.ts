@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { GeoLocation } from '../map/modelsForMap/geolocation';
 import { MarkerInfo } from '../map/modelsForMap/marker-info.model';
 import { StationService } from 'src/app/services/stationService/station.service';
-import { MapsAPILoader } from '@agm/core';
+import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { StationModel } from 'src/app/models/station.model';
 import { NgForm } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
@@ -28,13 +28,16 @@ export class StationsComponent implements OnInit {
   stations: any = [];
   markers: any = [];
   iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
+
+  newStation: StationModel
+  nameOfStation: string
+  id: number
+
+
+
   constructor(private ngZone: NgZone, private mapsApiLoader: MapsAPILoader,private stationService: StationService) {
     this.stationService.getAllStations().subscribe(st =>{
       this.stations = st;
-      // console.log(st);
-      // this.stations.forEach(element => {
-      //   this.mapService.placeMarker2(element.Longitude, element.Latitude, element.Name, element.AddressStation);
-      // });
     });
   }
 
@@ -63,7 +66,32 @@ export class StationsComponent implements OnInit {
       alert("Station - error!");
 
     });
+  }
 
+  onSubmitEdit(stationData: StationModel, form: NgForm){
+
+    stationData.Latitude = this.coordinates.latitude;
+    stationData.Longitude = this.coordinates.longitude;
+    stationData.AddressStation = this.address;
+    stationData.Name = this.nameOfStation;
+    stationData.Id = this.id;
+
+    this.stationService.editStation(stationData).subscribe();
+      
+  }
+
+  markerDragEnd($event: MouseEvent, name:string, id: number) {
+    console.log($event);
+     this.coordinates.latitude = $event.coords.lat;
+     this.coordinates.longitude = $event.coords.lng;
+     this.getAddress(this.coordinates.latitude, this.coordinates.longitude);
+     this.nameOfStation = name;
+     this.id = id;
+     console.log(id);
+  }
+
+  stationClick(id: number){
+    this.id = id;
   }
 
   placeMarker1($event){
@@ -116,5 +144,4 @@ export class StationsComponent implements OnInit {
       return true;
     }
   }
-
 }

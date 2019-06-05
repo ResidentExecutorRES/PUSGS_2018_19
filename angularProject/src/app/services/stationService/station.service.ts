@@ -19,4 +19,8 @@ export class StationService {
   getAllStations(){
     return this.httpClient.get(this.baseUrl + "/api/Stations/GetAll");
   }
+
+  editStation(station):Observable<any>{
+    return this.httpClient.put(this.baseUrl+ "/api/Stations/Edit", station);
+  }
 }

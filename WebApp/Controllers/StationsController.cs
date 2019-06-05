@@ -51,6 +51,7 @@ namespace WebApp.Controllers
             return Ok(station);
         }
 
+        //[Route("Edit")]
         // PUT: api/Stations/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutStation(int id, Station station)
@@ -105,6 +106,23 @@ namespace WebApp.Controllers
             return Ok(station.Id);
 
             //return CreatedAtRoute("DefaultApi", new { id = station.Id }, station);
+        }
+        
+        [Route("Edit")]
+        // POST: api/Stations
+       // [ResponseType(typeof(Station))]
+        public IHttpActionResult EditStation(Station station)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            _unitOfWork.Stations.Update(station);
+            _unitOfWork.Complete();
+            return Ok(station.Id);
+            
+            
         }
 
         // DELETE: api/Stations/5
