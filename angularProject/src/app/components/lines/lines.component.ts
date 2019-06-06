@@ -31,6 +31,7 @@ export class LinesComponent implements OnInit {
   constructor(private ngZone: NgZone, private mapsApiLoader : MapsAPILoader , private stationService: StationService, private lineService: LineService) { 
     this.stationService.getAllStations().subscribe(data => {
       this.stations = data;
+      console.log(this.stations)
     });
   }
 

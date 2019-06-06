@@ -88,11 +88,34 @@ namespace WebApp.Controllers
             {
                 return BadRequest(ModelState);
             }
+            Line newLine = new Line();
+            newLine.ListOfStations = new List<Station>();
+            newLine.RegularNumber = line.RegularNumber;
+            newLine.Id = line.Id;
 
-            _unitOfWork.Lines.Add(line);
+            newLine.ListOfStations = new List<Station>();
+
+
+            List<Station> listModel = new List<Station>();
+            listModel = line.ListOfStations;
+
+            List<Station> list = new List<Station>();
+            list = _unitOfWork.Stations.GetAll().ToList();
+
+            foreach (var item in list)
+            {
+                if (listModel.Any(a=> a.Id == item.Id))
+                {
+                         
+                    newLine.ListOfStations.Add(item);
+                }
+            }
+            
+
+            _unitOfWork.Lines.Add(newLine);
             _unitOfWork.Complete();
 
-            return Ok(line.Id);
+            return Ok(newLine.Id);
 
             //db.Lines.Add(line);
             //db.SaveChanges();
