@@ -8,6 +8,11 @@ namespace WebApp.Models.Entities
 {
     public class Station
     {
+        public Station()
+        {
+            ListOfLines = new List<Line>();
+        }
+
         public int Id { get; set; }
         [Required]
         public String Name { get; set; }

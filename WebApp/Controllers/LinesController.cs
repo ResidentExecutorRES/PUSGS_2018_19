@@ -26,9 +26,12 @@ namespace WebApp.Controllers
         }
 
         // GET: api/Lines
-        public IQueryable<Line> GetLines()
+        [Route("GetAll")]
+        public IEnumerable<Line> GetLines()
         {
-            return db.Lines;
+            //return db.Lines;
+            var v = db.Lines.Include(p => p.ListOfStations).ToList();
+            return v;
         }
 
         // GET: api/Lines/5

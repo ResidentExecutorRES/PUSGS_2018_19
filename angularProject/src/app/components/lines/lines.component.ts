@@ -25,6 +25,7 @@ export class LinesComponent implements OnInit {
   markerInfo: MarkerInfo;
   pomStat: StationModel;
   selectedStations: StationModel[] = [];
+  lines: any = [];
 
   iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
 
@@ -32,6 +33,21 @@ export class LinesComponent implements OnInit {
     this.stationService.getAllStations().subscribe(data => {
       this.stations = data;
       console.log(this.stations)
+    });
+
+    this.lineService.getAllLines().subscribe(data2 =>{
+      this.lines = data2;
+      console.log(this.lines);   
+      this.lines.forEach(element => {
+        element.ListOfStations.forEach(element2 => {
+          this.polyline = new Polyline([], 'blue', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
+          this.polyline.addLocation(new GeoLocation(element2.Latitude, element2.Longitude));
+        });
+      });
+
+      
+      
+      
     });
   }
 

@@ -9,6 +9,13 @@ namespace WebApp.Models.Entities
 {
     public class Line
     {
+        public Line()
+        {
+            ListOfDepartures = new List<Departure>();
+            ListOfStations = new List<Station>();
+            ListOfVehicles = new List<Vehicle>();
+        }
+
         public int Id { get; set; }
         [Required]
         public int RegularNumber { get; set; }
@@ -16,7 +23,7 @@ namespace WebApp.Models.Entities
         public List<Station> ListOfStations { get; set; }
         public List<Vehicle> ListOfVehicles { get; set; }
 
-        List<Departure> ListOfDepartures { get; set; }
+        public List<Departure> ListOfDepartures { get; set; }
 
         //[ForeignKey("Departure")]
         //public int DepartureId { get; set; }

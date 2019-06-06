@@ -15,4 +15,8 @@ export class LineService {
   addLine(line): Observable<any>{
     return this.httpClient.post(this.baseUrl+"/api/Lines/Add",line);
   }
+
+  getAllLines(){
+    return this.httpClient.get(this.baseUrl + "/api/Lines/GetAll");
+  }
 }
