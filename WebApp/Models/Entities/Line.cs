@@ -16,9 +16,11 @@ namespace WebApp.Models.Entities
         public List<Station> ListOfStations { get; set; }
         public List<Vehicle> ListOfVehicles { get; set; }
 
-        [ForeignKey("Departure")]
-        public int DepartureId { get; set; }
-        public Departure Departure { get; set; }
+        List<Departure> ListOfDepartures { get; set; }
+
+        //[ForeignKey("Departure")]
+        //public int DepartureId { get; set; }
+        //public Departure Departure { get; set; }
         
     }
 }

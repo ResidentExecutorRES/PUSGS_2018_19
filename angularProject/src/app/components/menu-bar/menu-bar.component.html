@@ -11,6 +11,7 @@
         <li><a class="nav-link" [routerLink]="['/cvl']">Current vehicle location</a></li>
         <li><a class="nav-link" [routerLink]="['/priceList']">Price list</a></li>
         <li><a class="nav-link" [routerLink]="['/station']" *ngIf="loggedIn() && getRoleAdmin()">Stations</a></li>
+        <li><a class="nav-link" [routerLink]="['/line']" *ngIf="loggedIn() && getRoleAdmin()">Lines</a></li>
       </ul>
 
       <!-- <ng-container >   *ngIf="getRole()" 

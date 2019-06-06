@@ -21,6 +21,7 @@ import {NgxPopper} from 'angular-popper';
 import { StationsComponent } from './components/stations/stations.component';
 import { MapComponent } from './components/map/map.component';
 import { AgmCoreModule } from '@agm/core';
+import { LinesComponent } from './components/lines/lines.component';
 
 
 const Routes = [
@@ -59,6 +60,10 @@ const Routes = [
   {
     path: "station",
     component: StationsComponent
+  },
+  {
+    path: "line",
+    component: LinesComponent
   }
 
 
@@ -76,7 +81,8 @@ const Routes = [
     RegisterComponent,
     ProfileComponent,
     StationsComponent,
-    MapComponent
+    MapComponent,
+    LinesComponent
   ],
   imports: [
     BrowserModule,

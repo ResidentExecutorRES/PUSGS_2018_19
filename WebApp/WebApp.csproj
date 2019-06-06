@@ -252,6 +252,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppUsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LinesController.cs" />
     <Compile Include="Controllers\PassangerTypesController.cs" />
     <Compile Include="Controllers\StationsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -281,6 +282,10 @@
     <Compile Include="Migrations\201906041316525_M3.cs" />
     <Compile Include="Migrations\201906041316525_M3.Designer.cs">
       <DependentUpon>201906041316525_M3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906060733288_LineDeparture.cs" />
+    <Compile Include="Migrations\201906060733288_LineDeparture.Designer.cs">
+      <DependentUpon>201906060733288_LineDeparture.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -452,6 +457,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906041316525_M3.resx">
       <DependentUpon>201906041316525_M3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906060733288_LineDeparture.resx">
+      <DependentUpon>201906060733288_LineDeparture.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

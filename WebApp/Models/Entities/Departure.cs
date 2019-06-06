@@ -20,6 +20,11 @@ namespace WebApp.Models.Entities
         
         public String ListOfDepartures { get; set; }        //svi polasci smjesteni u jednom stringu
 
-        public List<Line> ListOfLines { get; set; }
+        [ForeignKey("Line")]
+        public int LineId { get; set; }
+        public Line Line { get; set; }
+
+
+        //public List<Line> ListOfLines { get; set; }
     }
 }
