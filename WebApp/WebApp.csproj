@@ -253,6 +253,7 @@
     <Compile Include="Controllers\AppUsersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LinesController.cs" />
+    <Compile Include="Controllers\LineStationsController.cs" />
     <Compile Include="Controllers\PassangerTypesController.cs" />
     <Compile Include="Controllers\StationsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -264,29 +265,9 @@
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201905281410377_Migracija1.cs" />
-    <Compile Include="Migrations\201905281410377_Migracija1.Designer.cs">
-      <DependentUpon>201905281410377_Migracija1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201905281422198_Email.cs" />
-    <Compile Include="Migrations\201905281422198_Email.Designer.cs">
-      <DependentUpon>201905281422198_Email.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906040918109_UpdateModel.cs" />
-    <Compile Include="Migrations\201906040918109_UpdateModel.Designer.cs">
-      <DependentUpon>201906040918109_UpdateModel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906040949255_UpdateModel2.cs" />
-    <Compile Include="Migrations\201906040949255_UpdateModel2.Designer.cs">
-      <DependentUpon>201906040949255_UpdateModel2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906041316525_M3.cs" />
-    <Compile Include="Migrations\201906041316525_M3.Designer.cs">
-      <DependentUpon>201906041316525_M3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201906060733288_LineDeparture.cs" />
-    <Compile Include="Migrations\201906060733288_LineDeparture.Designer.cs">
-      <DependentUpon>201906060733288_LineDeparture.cs</DependentUpon>
+    <Compile Include="Migrations\201906071656286_NewM.cs" />
+    <Compile Include="Migrations\201906071656286_NewM.Designer.cs">
+      <DependentUpon>201906071656286_NewM.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -296,6 +277,7 @@
     <Compile Include="Models\Entities\AppUser.cs" />
     <Compile Include="Models\Entities\Day.cs" />
     <Compile Include="Models\Entities\Departure.cs" />
+    <Compile Include="Models\Entities\LineStation.cs" />
     <Compile Include="Models\Entities\NetworkLine.cs" />
     <Compile Include="Models\Entities\PassangerType.cs" />
     <Compile Include="Models\Entities\PriceList.cs" />
@@ -318,6 +300,7 @@
     <Compile Include="Persistence\Repository\IDayRepository.cs" />
     <Compile Include="Persistence\Repository\IDepartureRepository.cs" />
     <Compile Include="Persistence\Repository\ILineRepository.cs" />
+    <Compile Include="Persistence\Repository\ILineStationRepository.cs" />
     <Compile Include="Persistence\Repository\IPassangerTypeRepository.cs" />
     <Compile Include="Persistence\Repository\IPriceListRepository.cs" />
     <Compile Include="Persistence\Repository\IRepository.cs" />
@@ -330,6 +313,7 @@
     <Compile Include="Persistence\Repository\IUserTypeRepository.cs" />
     <Compile Include="Persistence\Repository\IVehicleRepository.cs" />
     <Compile Include="Persistence\Repository\LineRepository.cs" />
+    <Compile Include="Persistence\Repository\LineStationRepository.cs" />
     <Compile Include="Persistence\Repository\PassangerTypeRepository.cs" />
     <Compile Include="Persistence\Repository\PriceListRepository.cs" />
     <Compile Include="Persistence\Repository\Repository.cs" />
@@ -444,23 +428,8 @@
     <EmbeddedResource Include="Migrations\201905222056072_InitialMigration.resx">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905281410377_Migracija1.resx">
-      <DependentUpon>201905281410377_Migracija1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201905281422198_Email.resx">
-      <DependentUpon>201905281422198_Email.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906040918109_UpdateModel.resx">
-      <DependentUpon>201906040918109_UpdateModel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906040949255_UpdateModel2.resx">
-      <DependentUpon>201906040949255_UpdateModel2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906041316525_M3.resx">
-      <DependentUpon>201906041316525_M3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906060733288_LineDeparture.resx">
-      <DependentUpon>201906060733288_LineDeparture.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906071656286_NewM.resx">
+      <DependentUpon>201906071656286_NewM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

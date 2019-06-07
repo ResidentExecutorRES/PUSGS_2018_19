@@ -21,5 +21,6 @@ namespace WebApp.Models.Entities
         public Double Latitude { get; set; }
 
         public List<Line> ListOfLines { get; set; }
+        public List<LineStation> LineStations { get; set; }
     }
 }

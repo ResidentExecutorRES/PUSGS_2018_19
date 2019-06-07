@@ -86,17 +86,25 @@
                 <label>Longitude: {{station.Longitude}}</label>
                 <label>Latitude: {{station.Latitude}}</label>
                 <label>Address: {{station.AddressStation}}</label>
-              </td>
-            <td>
-              <button type="submit">Remove</button>
-            </td>
-            </tr>
-            
-              </div>
+              </td>           
+            </tr>           
+            </div>
             </table>
-              <div align="center">
-                  <button type="submit" class="button" class="btn">Edit line</button>  
-              </div>
+            
+            <div  *ngFor="let station of selectedLineForEdit?.ListOfStations; let i = index;">
+              <input type="checkbox" name="station{{station.Name}}" checked>
+              <label for="station{{station.Name}}">{{station.Name}}</label>
+            </div>
+
+            <div  *ngFor="let station2 of otherStations; let i = index;">
+                <input type="checkbox" name="station2{{station2.Name}}" >
+                <label for="station2{{station2.Name}}">{{station2.Name}}</label>
+            </div>
+
+
+            <div align="center">
+                <button type="submit" class="button" class="btn">Edit line</button>  
+            </div>
           </div>
       </form> 
     

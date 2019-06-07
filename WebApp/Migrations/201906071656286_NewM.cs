@@ -3,7 +3,7 @@ namespace WebApp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Migracija1 : DbMigration
+    public partial class NewM : DbMigration
     {
         public override void Up()
         {
@@ -25,23 +25,24 @@ namespace WebApp.Migrations
                         Id = c.String(nullable: false, maxLength: 128),
                         Name = c.String(),
                         LastName = c.String(),
+                        Email = c.String(),
                         Activated = c.Boolean(nullable: false),
                         Image = c.String(),
+                        PassangerTypeId = c.Int(),
+                        UserTypeId = c.Int(),
                         Birthaday = c.DateTime(),
+                        RoleCoefficientId = c.Int(),
                         Address_Id = c.Int(),
-                        PassangerType_Id = c.Int(),
-                        RoleCoefficient_Id = c.Int(),
-                        UserType_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Addresses", t => t.Address_Id)
-                .ForeignKey("dbo.PassangerTypes", t => t.PassangerType_Id)
-                .ForeignKey("dbo.RoleCoefficients", t => t.RoleCoefficient_Id)
-                .ForeignKey("dbo.UserTypes", t => t.UserType_Id)
-                .Index(t => t.Address_Id)
-                .Index(t => t.PassangerType_Id)
-                .Index(t => t.RoleCoefficient_Id)
-                .Index(t => t.UserType_Id);
+                .ForeignKey("dbo.PassangerTypes", t => t.PassangerTypeId)
+                .ForeignKey("dbo.RoleCoefficients", t => t.RoleCoefficientId)
+                .ForeignKey("dbo.UserTypes", t => t.UserTypeId)
+                .Index(t => t.PassangerTypeId)
+                .Index(t => t.UserTypeId)
+                .Index(t => t.RoleCoefficientId)
+                .Index(t => t.Address_Id);
             
             CreateTable(
                 "dbo.PassangerTypes",
@@ -57,12 +58,12 @@ namespace WebApp.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        PassangerTypeId = c.Int(),
                         Coefficient = c.Double(nullable: false),
-                        PassangerType_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.PassangerTypes", t => t.PassangerType_Id)
-                .Index(t => t.PassangerType_Id);
+                .ForeignKey("dbo.PassangerTypes", t => t.PassangerTypeId)
+                .Index(t => t.PassangerTypeId);
             
             CreateTable(
                 "dbo.UserTypes",
@@ -90,12 +91,15 @@ namespace WebApp.Migrations
                         DayId = c.Int(nullable: false),
                         TimetableId = c.Int(nullable: false),
                         ListOfDepartures = c.String(),
+                        LineId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Days", t => t.DayId, cascadeDelete: true)
+                .ForeignKey("dbo.Lines", t => t.LineId, cascadeDelete: true)
                 .ForeignKey("dbo.Timetables", t => t.TimetableId, cascadeDelete: true)
                 .Index(t => t.DayId)
-                .Index(t => t.TimetableId);
+                .Index(t => t.TimetableId)
+                .Index(t => t.LineId);
             
             CreateTable(
                 "dbo.Lines",
@@ -103,11 +107,23 @@ namespace WebApp.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         RegularNumber = c.Int(nullable: false),
-                        DepartureId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.LineStations",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        OrdinalNumber = c.Int(nullable: false),
+                        StationId = c.Int(nullable: false),
+                        LineId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Departures", t => t.DepartureId, cascadeDelete: true)
-                .Index(t => t.DepartureId);
+                .ForeignKey("dbo.Lines", t => t.LineId, cascadeDelete: true)
+                .ForeignKey("dbo.Stations", t => t.StationId, cascadeDelete: true)
+                .Index(t => t.StationId)
+                .Index(t => t.LineId);
             
             CreateTable(
                 "dbo.Stations",
@@ -225,15 +241,17 @@ namespace WebApp.Migrations
             DropForeignKey("dbo.TicketPrices", "PriceListId", "dbo.PriceLists");
             DropForeignKey("dbo.Departures", "TimetableId", "dbo.Timetables");
             DropForeignKey("dbo.Timetables", "DayType_Id", "dbo.Days");
+            DropForeignKey("dbo.Departures", "LineId", "dbo.Lines");
             DropForeignKey("dbo.Vehicles", "LineId", "dbo.Lines");
+            DropForeignKey("dbo.LineStations", "StationId", "dbo.Stations");
             DropForeignKey("dbo.StationLines", "Line_Id", "dbo.Lines");
             DropForeignKey("dbo.StationLines", "Station_Id", "dbo.Stations");
-            DropForeignKey("dbo.Lines", "DepartureId", "dbo.Departures");
+            DropForeignKey("dbo.LineStations", "LineId", "dbo.Lines");
             DropForeignKey("dbo.Departures", "DayId", "dbo.Days");
-            DropForeignKey("dbo.AppUsers", "UserType_Id", "dbo.UserTypes");
-            DropForeignKey("dbo.AppUsers", "RoleCoefficient_Id", "dbo.RoleCoefficients");
-            DropForeignKey("dbo.RoleCoefficients", "PassangerType_Id", "dbo.PassangerTypes");
-            DropForeignKey("dbo.AppUsers", "PassangerType_Id", "dbo.PassangerTypes");
+            DropForeignKey("dbo.AppUsers", "UserTypeId", "dbo.UserTypes");
+            DropForeignKey("dbo.AppUsers", "RoleCoefficientId", "dbo.RoleCoefficients");
+            DropForeignKey("dbo.RoleCoefficients", "PassangerTypeId", "dbo.PassangerTypes");
+            DropForeignKey("dbo.AppUsers", "PassangerTypeId", "dbo.PassangerTypes");
             DropForeignKey("dbo.AppUsers", "Address_Id", "dbo.Addresses");
             DropIndex("dbo.StationLines", new[] { "Line_Id" });
             DropIndex("dbo.StationLines", new[] { "Station_Id" });
@@ -244,14 +262,16 @@ namespace WebApp.Migrations
             DropIndex("dbo.TicketPrices", new[] { "PriceListId" });
             DropIndex("dbo.Timetables", new[] { "DayType_Id" });
             DropIndex("dbo.Vehicles", new[] { "LineId" });
-            DropIndex("dbo.Lines", new[] { "DepartureId" });
+            DropIndex("dbo.LineStations", new[] { "LineId" });
+            DropIndex("dbo.LineStations", new[] { "StationId" });
+            DropIndex("dbo.Departures", new[] { "LineId" });
             DropIndex("dbo.Departures", new[] { "TimetableId" });
             DropIndex("dbo.Departures", new[] { "DayId" });
-            DropIndex("dbo.RoleCoefficients", new[] { "PassangerType_Id" });
-            DropIndex("dbo.AppUsers", new[] { "UserType_Id" });
-            DropIndex("dbo.AppUsers", new[] { "RoleCoefficient_Id" });
-            DropIndex("dbo.AppUsers", new[] { "PassangerType_Id" });
+            DropIndex("dbo.RoleCoefficients", new[] { "PassangerTypeId" });
             DropIndex("dbo.AppUsers", new[] { "Address_Id" });
+            DropIndex("dbo.AppUsers", new[] { "RoleCoefficientId" });
+            DropIndex("dbo.AppUsers", new[] { "UserTypeId" });
+            DropIndex("dbo.AppUsers", new[] { "PassangerTypeId" });
             DropColumn("dbo.AspNetUsers", "AppUserId");
             DropTable("dbo.StationLines");
             DropTable("dbo.TypeOfTickets");
@@ -261,6 +281,7 @@ namespace WebApp.Migrations
             DropTable("dbo.Timetables");
             DropTable("dbo.Vehicles");
             DropTable("dbo.Stations");
+            DropTable("dbo.LineStations");
             DropTable("dbo.Lines");
             DropTable("dbo.Departures");
             DropTable("dbo.Days");

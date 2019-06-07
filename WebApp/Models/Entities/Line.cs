@@ -24,10 +24,11 @@ namespace WebApp.Models.Entities
         public List<Vehicle> ListOfVehicles { get; set; }
 
         public List<Departure> ListOfDepartures { get; set; }
+        public List<LineStation> LineStations { get; set; }
 
         //[ForeignKey("Departure")]
         //public int DepartureId { get; set; }
         //public Departure Departure { get; set; }
-        
+
     }
 }

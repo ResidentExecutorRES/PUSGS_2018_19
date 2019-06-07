@@ -85,6 +85,7 @@ namespace WebApp.App_Start
             container.RegisterType<ITypeOfTicketRepository, TypeOfTicketRepository>();
             container.RegisterType<IUserTypeRepository, UserTypeRepository>();
             container.RegisterType<IVehicleRepository, VehicleRepository>();
+            container.RegisterType<ILineStationRepository, LineStationRepository>();
            
 
             container.RegisterType<IUnitOfWork, DemoUnitOfWork>();

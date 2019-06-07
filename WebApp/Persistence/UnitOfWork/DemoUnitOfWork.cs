@@ -47,6 +47,7 @@ namespace WebApp.Persistence.UnitOfWork
         public IUserTypeRepository UserTypes { get; set; }
         [Dependency]
         public IVehicleRepository Vehicles { get; set; }
+        public ILineStationRepository LineStations { get; set; }
 
         public int Complete()
         {

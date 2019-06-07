@@ -24,7 +24,7 @@ namespace WebApp.Persistence.UnitOfWork
         ITypeOfTicketRepository TypeOfTickets { get; set; }
         IUserTypeRepository UserTypes { get; set; }
         IVehicleRepository Vehicles { get; set; }
-        
+        ILineStationRepository LineStations { get; set; }
         int Complete();
     }
 }

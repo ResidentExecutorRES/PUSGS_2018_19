@@ -9,6 +9,8 @@ import { LineService } from 'src/app/services/lineService/line.service';
 import { LineModel } from 'src/app/models/line.model';
 import { NgForm } from '@angular/forms';
 import { IconSequence } from '@agm/core/services/google-maps-types';
+import { LineStationModel } from 'src/app/models/lineStation.model';
+import { LineStationService } from 'src/app/services/lineStationService/line-station.service';
 
 @Component({
   selector: 'app-lines',
@@ -36,12 +38,21 @@ export class LinesComponent implements OnInit {
   selectedForEdit: string = ''
 
   selectedLineForEdit: LineModel
+  otherStations: any = [];
+
+  lineStations: LineStationModel[] = []
+  lineStation: LineStationModel
+
+  counterForStation: number = 0
 
   
 
   iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
 
-  constructor(private ngZone: NgZone, private mapsApiLoader : MapsAPILoader , private stationService: StationService, private lineService: LineService) { 
+  constructor(private ngZone: NgZone, private mapsApiLoader : MapsAPILoader , 
+    private stationService: StationService, 
+    private lineService: LineService, 
+    private lineStationService: LineStationService) { 
     this.stationService.getAllStations().subscribe(data => {
       this.stations = data;
       console.log(this.stations)
@@ -52,7 +63,7 @@ export class LinesComponent implements OnInit {
       console.log("Linije: ", this.lines);   
       });
 
-      
+      // this.lineStation = new LineStationModel(-1,-1,-1)
       
   }
 
@@ -71,12 +82,27 @@ export class LinesComponent implements OnInit {
     });
     console.log(this.pomStat);
     this.selectedStations.push(this.pomStat);
+  
+    
     this.polyline.addLocation(new GeoLocation(this.pomStat.Latitude, this.pomStat.Longitude));
     this.id = id;
+
+    
+
   }
 
   onSubmit(lineData: LineModel, form: NgForm){
     lineData.ListOfStations = this.selectedStations;
+
+    // this.selectedStations.forEach(e => {
+    //   this.counterForStation++;
+    //   this.lineStation.OrdinalNumber = this.counterForStation;
+    //   this.lineStation.StationId = e.Id;
+      
+
+    //   this.lineStations.push(this.lineStation);
+    // })
+
     console.log(lineData);
     this.lineService.addLine(lineData).subscribe(data => {
       alert("Add line successfull!");
@@ -85,6 +111,26 @@ export class LinesComponent implements OnInit {
       alert("Add line - error - already exist!");
       console.log(lineData);
     })
+
+    this.selectedStations.forEach(e1=>{
+      this.lineStation.LineId = lineData.Id;
+      this.counterForStation++;
+      this.lineStation.OrdinalNumber = this.counterForStation;
+      this.lineStation.StationId = e1.Id;
+
+      this.lineStations.push(this.lineStation);
+      
+    })
+
+    this.lineStationService.addLine(this.lineStations).subscribe(data => {
+      alert("Add lineStation successfull!");
+      console.log(data);
+    },
+    error => {
+      alert("Add lineStation - error - already exist!");
+      
+    });
+
   }
 
   onSubmitDelete(lineData: LineModel, form:NgForm){
@@ -115,10 +161,21 @@ export class LinesComponent implements OnInit {
     this.lines.forEach(element => {
       if(element.RegularNumber == this.selectedForEdit){
         this.selectedLineForEdit = element;
+        this.selectedLineForEdit.ListOfStations.forEach(element2 =>{
+          element2.Checked = true;
+        })
       }
     });
+
+    console.log("Selected line for edit", this.selectedLineForEdit)
     
+    console.log(this.selectedLineForEdit);   
+    this.otherStations = this.stations.filter(o=> !this.selectedLineForEdit.ListOfStations.find(o2=> o.Id === o2.Id));
+
+    console.log("Other stations: ", this.otherStations);
   }
+
+  
 
   showAdd(){
     this.selected = "Add";
@@ -150,5 +207,19 @@ export class LinesComponent implements OnInit {
       return true;
     }
   }
+
+  isTrue(name:string):boolean{
+    if(this.selectedLineForEdit != null){
+      this.selectedLineForEdit.ListOfStations.forEach(element => {
+        if(element.Name == name){
+          element.Checked = true;
+          return true;
+        }
+      });
+    }
+    return false;
+  }
+
+
 
 }
