@@ -102,6 +102,32 @@ namespace WebApp.Controllers
             List<Station> listModel = new List<Station>();
             listModel = line.ListOfStations;
 
+            List<Line> linesFromDb = new List<Line>();
+            linesFromDb = _unitOfWork.Lines.GetAll().ToList();
+
+
+            var v = db.Lines.Include(p => p.ListOfStations).ToList();
+
+            bool pom = true;
+
+            foreach (var item in v)
+            {
+                if(item.ListOfStations.Count == listModel.Count)
+                {
+                    if (CanAddLine(item.ListOfStations, listModel))
+                    {
+                        pom = false;    //ne smije je dodati
+                        break;
+                    }
+                }
+                
+            }
+
+            if(!pom)
+            {
+                return BadRequest(ModelState);
+            }
+
             List<Station> list = new List<Station>();
             list = _unitOfWork.Stations.GetAll().ToList();
 
@@ -126,6 +152,21 @@ namespace WebApp.Controllers
             //return CreatedAtRoute("DefaultApi", new { id = line.Id }, line);
         }
 
+        public bool CanAddLine(List<Station> l1, List<Station> l2)
+        {
+            foreach (var item in l2)
+            {
+                if(!l1.Any(p=> p.Name == item.Name))
+                {
+                    return false;
+                }
+            }
+            return true;
+
+            //return l1.All(l2.Contains);
+        }
+
+        [Route("Delete")]
         // DELETE: api/Lines/5
         [ResponseType(typeof(Line))]
         public IHttpActionResult DeleteLine(int id)

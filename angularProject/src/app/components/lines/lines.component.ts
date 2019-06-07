@@ -8,6 +8,7 @@ import { GeoLocation } from '../map/modelsForMap/geolocation';
 import { LineService } from 'src/app/services/lineService/line.service';
 import { LineModel } from 'src/app/models/line.model';
 import { NgForm } from '@angular/forms';
+import { IconSequence } from '@agm/core/services/google-maps-types';
 
 @Component({
   selector: 'app-lines',
@@ -17,6 +18,7 @@ import { NgForm } from '@angular/forms';
 })
 export class LinesComponent implements OnInit {
 
+  selectedForComboBox: string = '';
   selected: string = "";
   public polyline: Polyline;
   id: number;
@@ -26,6 +28,16 @@ export class LinesComponent implements OnInit {
   pomStat: StationModel;
   selectedStations: StationModel[] = [];
   lines: any = [];
+
+  linesForEdit: any = []
+
+  selectedLine: LineModel
+
+  selectedForEdit: string = ''
+
+  selectedLineForEdit: LineModel
+
+  
 
   iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
 
@@ -37,18 +49,11 @@ export class LinesComponent implements OnInit {
 
     this.lineService.getAllLines().subscribe(data2 =>{
       this.lines = data2;
-      console.log(this.lines);   
-      this.lines.forEach(element => {
-        element.ListOfStations.forEach(element2 => {
-          this.polyline = new Polyline([], 'blue', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
-          this.polyline.addLocation(new GeoLocation(element2.Latitude, element2.Longitude));
-        });
+      console.log("Linije: ", this.lines);   
       });
 
       
       
-      
-    });
   }
 
   ngOnInit() {
@@ -73,11 +78,47 @@ export class LinesComponent implements OnInit {
   onSubmit(lineData: LineModel, form: NgForm){
     lineData.ListOfStations = this.selectedStations;
     console.log(lineData);
-    this.lineService.addLine(lineData).subscribe(data=>{
-      //alert("Add line to db - Successful")
+    this.lineService.addLine(lineData).subscribe(data => {
+      alert("Add line successfull!");
+    },
+    error => {
+      alert("Add line - error - already exist!");
+      console.log(lineData);
+    })
+  }
+
+  onSubmitDelete(lineData: LineModel, form:NgForm){
+    this.lineService.deleteLine(this.selectedLine.Id).subscribe(data => {
+      alert("Delete line successfull!");
+    },
+    error => {
+      alert("Delete line - error!");
+      console.log(lineData);
+    })
+  }
+
+
+  showLines(event: any){
+    this.selectedForComboBox = event.target.value;
+    this.lines.forEach(element => {
+      if(element.RegularNumber == this.selectedForComboBox){
+        this.selectedLine = element;
+        // this.linesForEdit.a
+        // this.polyline.addLocation(new GeoLocation(element.ListOfStations.Latitude, element.ListOfStations.Longitude));
+        
+      }
     });
   }
 
+  showLinesFromComboBox(event: any){
+    this.selectedForEdit = event.target.value;
+    this.lines.forEach(element => {
+      if(element.RegularNumber == this.selectedForEdit){
+        this.selectedLineForEdit = element;
+      }
+    });
+    
+  }
 
   showAdd(){
     this.selected = "Add";
@@ -99,6 +140,7 @@ export class LinesComponent implements OnInit {
 
   isSelectedEdit(): boolean{
     if(this.selected == 'Edit'){
+      
       return true;
     }
   }

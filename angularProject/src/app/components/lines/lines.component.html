@@ -25,6 +25,21 @@
           </agm-polyline-point>
       </agm-polyline>
 
+      <!-- crta sve stanice i linije -->
+      <div *ngIf="!isSelectedDelete()">
+        <agm-polyline *ngFor="let line of lines" [strokeColor]="strokeColor">
+          <agm-polyline-point *ngFor="let station of line.ListOfStations" [latitude]="station.Latitude" [longitude]="station.Longitude">
+          </agm-polyline-point>
+        </agm-polyline> 
+      </div>
+
+      <div>  <!--ovdje iscrtati  selektovanu liniji -->
+        <agm-polyline  [strokeColor]="strokeColor">
+          <agm-polyline-point *ngFor="let station of selectedLine?.ListOfStations" [latitude]="station.Latitude" [longitude]="station.Longitude">
+          </agm-polyline-point>
+        </agm-polyline> 
+      </div>
+
       </agm-map>
   </div>
 
@@ -40,30 +55,6 @@
           </div>
         </div>
       </form>
-  </div>
-
-  <div *ngIf="isSelectedEdit()">
-      <!-- <h3>Edit line</h3> -->
-      <form #lineForm="ngForm" (ngSubmit)="onSubmitEdit(lineForm.value, lineForm)">
-          <div class="form-group">
-            <label for="RegularNumber">Regular Number</label>
-            <input required type="number" class="form-control" name="RegularNumber" value="{{regularNumber}}" ngModel>
-            <div align="center">
-              <button type="submit" class="button" class="btn">Save changes</button>  
-            </div>
-        </div>
-      </form>
-  </div>
-
-  <div *ngIf="isSelectedDelete()">
-      <!-- <h3>Delete line</h3> -->
-      <form #lineForm="ngForm" (ngSubmit)="onSubmitEdit(lineForm.value, lineForm)">
-          <div class="form-group">
-              <div align="center">
-                  <button type="submit" class="button" class="btn">Delete line</button>  
-              </div>
-          </div>
-      </form>
 
       <div>
           <label for="Stations">Selected stations:</label>
@@ -71,8 +62,66 @@
               <label><b>{{station.Name}}</b></label><br/>
               <label>{{station.AddressStation}}</label><br/><br/>
           </div>
-        </div> 
+      </div> 
+  </div>
 
+  <div *ngIf="isSelectedEdit()">
+    
+      <form #lineForm="ngForm" (ngSubmit)="onSubmitEdit(lineForm.value, lineForm)">
+          <div class="form-group">
+
+              <label for="RegularNumber">Select line: </label>
+              <select name="RegularNumber" (click)='showLinesFromComboBox($event)' class="form-control" ngModel>
+                <option disabled>Please select...</option>
+                <option *ngFor="let line of lines" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
+              </select>
+              
+              <label>ListOfStations</label>
+              <table border="1">
+              <div *ngFor="let station of selectedLineForEdit?.ListOfStations">
+                <tr>
+                  <td>
+                <label>Id: {{station.Id}}</label><br/>
+                <label>Name: {{station.Name}}</label>
+                <label>Longitude: {{station.Longitude}}</label>
+                <label>Latitude: {{station.Latitude}}</label>
+                <label>Address: {{station.AddressStation}}</label>
+              </td>
+            <td>
+              <button type="submit">Remove</button>
+            </td>
+            </tr>
+            
+              </div>
+            </table>
+              <div align="center">
+                  <button type="submit" class="button" class="btn">Edit line</button>  
+              </div>
+          </div>
+      </form> 
+    
+
+      <!-- <h3>Edit line</h3> -->     
+  </div>
+
+  <div *ngIf="isSelectedDelete()">
+      <!-- <h3>Delete line</h3> -->
+      <form #lineForm="ngForm" (ngSubmit)="onSubmitDelete(lineForm.value, lineForm)">
+          <div class="form-group">
+
+              <label for="RegularNumber">Select line: </label>
+              <select name="RegularNumber" (click)='showLines($event)' class="form-control" ngModel>
+                <option disabled>Please select...</option>
+                <option *ngFor="let line of lines" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
+                <!-- <option value="Controller" >Controller</option>
+                <option value="AppUser" >Passanger</option> -->
+              </select>
+            
+              <div align="center">
+                  <button type="submit" class="button" class="btn">Delete line</button>  
+              </div>
+          </div>
+      </form>  
   </div>
 
 

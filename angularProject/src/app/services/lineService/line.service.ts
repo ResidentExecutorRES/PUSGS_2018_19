@@ -19,4 +19,9 @@ export class LineService {
   getAllLines(){
     return this.httpClient.get(this.baseUrl + "/api/Lines/GetAll");
   }
+
+  deleteLine(idLine){
+    return this.httpClient.delete(this.baseUrl + "/api/Lines/Delete?id=" + idLine);
+  }
+
 }
