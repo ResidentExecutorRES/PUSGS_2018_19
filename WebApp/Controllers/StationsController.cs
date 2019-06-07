@@ -17,7 +17,7 @@ namespace WebApp.Controllers
     [RoutePrefix("api/Stations")]
     public class StationsController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
         private readonly IUnitOfWork _unitOfWork;
 
         public StationsController()
@@ -39,53 +39,53 @@ namespace WebApp.Controllers
         }
 
         // GET: api/Stations/5
-        [ResponseType(typeof(Station))]
-        public IHttpActionResult GetStation(int id)
-        {
-            Station station = db.Stations.Find(id);
-            if (station == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(Station))]
+        //public IHttpActionResult GetStation(int id)
+        //{
+        //    Station station = db.Stations.Find(id);
+        //    if (station == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(station);
-        }
+        //    return Ok(station);
+        //}
 
         
         // PUT: api/Stations/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutStation(int id, Station station)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult PutStation(int id, Station station)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != station.Id)
-            {
-                return BadRequest();
-            }
+        //    if (id != station.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            db.Entry(station).State = EntityState.Modified;
+        //    db.Entry(station).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!StationExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
 
         [Route("Add")]
         // POST: api/Stations
@@ -130,14 +130,14 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Station))]
         public IHttpActionResult DeleteStation(int id)
         {
-            Station station = db.Stations.Find(id);
+            Station station = _unitOfWork.Stations.Get(id);
             if (station == null)
             {
                 return NotFound();
             }
 
-            db.Stations.Remove(station);
-            db.SaveChanges();
+            _unitOfWork.Stations.Remove(station);
+            _unitOfWork.Complete();
 
             return Ok(station);
         }
@@ -146,14 +146,14 @@ namespace WebApp.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool StationExists(int id)
-        {
-            return db.Stations.Count(e => e.Id == id) > 0;
-        }
+        //private bool StationExists(int id)
+        //{
+        //    return db.Stations.Count(e => e.Id == id) > 0;
+        //}
     }
 }

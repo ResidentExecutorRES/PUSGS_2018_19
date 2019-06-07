@@ -9,5 +9,6 @@ namespace WebApp.Persistence.Repository
 {
     public interface IVehicleRepository : IRepository<Vehicle, int>
     {
+        IEnumerable<Line> GetLineFromDb();
     }
 }

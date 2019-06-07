@@ -1,0 +1,46 @@
+<div>
+    <div align="center">
+        <button type="submit" class="button" class="btn" (click)='showAdd()' >Add vehicle</button>  
+        <button type="submit" class="button" class="btn" (click)='showEdit()' >Edit vehicle</button>  
+        <button type="submit" class="button" class="btn" (click)='showDelete()'>Delete vehicle</button>  
+    </div>
+
+    <div *ngIf="isSelectedAdd()">
+        <!-- <h3>Add line</h3> -->
+        <form #vehicleForm="ngForm" (ngSubmit)="onSubmit(vehicleForm.value, vehicleForm)">
+            <div class="form-group">
+              <label for="RegistrationNumber">Registration  Number</label>
+              <input required type="text" class="form-control" name="RegistrationNumber" ngModel>
+
+              <label for="Longitude">Longitude</label>
+              <input required type="text" class="form-control" name="Longitude"  ngModel>
+
+              <label for="Latitude">Latitude</label>
+              <input required type="text" class="form-control" name="Latitude"  ngModel>
+              
+              <label for="LineId">Select line: </label>
+              <select name="LineId"  class="form-control" ngModel>
+                <option disabled>Please select...</option>
+                <option *ngFor="let line of lines" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
+                <!-- <option value="Controller" >Controller</option>
+                <option value="AppUser" >Passanger</option> -->
+              </select>
+
+
+            
+            <div align="center">
+                <button type="submit" class="button" class="btn">Add vehicle</button>  
+            </div>
+          </div>
+        </form>
+  
+        <div>
+            <label for="Stations">Selected stations:</label>
+            <div *ngFor="let station of selectedStations">
+                <label><b>{{station.Name}}</b></label><br/>
+                <label>{{station.AddressStation}}</label><br/><br/>
+            </div>
+        </div> 
+    </div>
+
+</div>

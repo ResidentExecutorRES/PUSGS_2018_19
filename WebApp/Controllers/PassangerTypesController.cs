@@ -17,7 +17,7 @@ namespace WebApp.Controllers
     [RoutePrefix("api/PassangerType")]
     public class PassangerTypesController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
         private readonly IUnitOfWork unitOfWork;
 
         public PassangerTypesController(IUnitOfWork unitOfWork)
@@ -29,100 +29,100 @@ namespace WebApp.Controllers
         [Route("GetAllPassangerTypes")]
         public IQueryable<PassangerType> GetPassangerTypes()
         {
-            return db.PassangerTypes;
+            return unitOfWork.PassangerTypes.GetAll().AsQueryable();
         }
 
         // GET: api/PassangerTypes/5
-        [ResponseType(typeof(PassangerType))]
-        public IHttpActionResult GetPassangerType(int id)
-        {
-            PassangerType passangerType = db.PassangerTypes.Find(id);
-            if (passangerType == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(PassangerType))]
+        //public IHttpActionResult GetPassangerType(int id)
+        //{
+            //PassangerType passangerType = unitOfWork.PassangerTypes.Find(id);
+            //if (passangerType == null)
+            //{
+            //    return NotFound();
+            //}
 
-            return Ok(passangerType);
-        }
+            //return Ok(passangerType);
+        //}
 
         // PUT: api/PassangerTypes/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutPassangerType(int id, PassangerType passangerType)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult PutPassangerType(int id, PassangerType passangerType)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != passangerType.Id)
-            {
-                return BadRequest();
-            }
+        //    if (id != passangerType.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            db.Entry(passangerType).State = EntityState.Modified;
+        //    db.Entry(passangerType).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PassangerTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!PassangerTypeExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
 
         // POST: api/PassangerTypes
-        [ResponseType(typeof(PassangerType))]
-        public IHttpActionResult PostPassangerType(PassangerType passangerType)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(PassangerType))]
+        //public IHttpActionResult PostPassangerType(PassangerType passangerType)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            db.PassangerTypes.Add(passangerType);
-            db.SaveChanges();
+        //    db.PassangerTypes.Add(passangerType);
+        //    db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = passangerType.Id }, passangerType);
-        }
+        //    return CreatedAtRoute("DefaultApi", new { id = passangerType.Id }, passangerType);
+        //}
 
         // DELETE: api/PassangerTypes/5
-        [ResponseType(typeof(PassangerType))]
-        public IHttpActionResult DeletePassangerType(int id)
-        {
-            PassangerType passangerType = db.PassangerTypes.Find(id);
-            if (passangerType == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(PassangerType))]
+        //public IHttpActionResult DeletePassangerType(int id)
+        //{
+        //    PassangerType passangerType = db.PassangerTypes.Find(id);
+        //    if (passangerType == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            db.PassangerTypes.Remove(passangerType);
-            db.SaveChanges();
+        //    db.PassangerTypes.Remove(passangerType);
+        //    db.SaveChanges();
 
-            return Ok(passangerType);
-        }
+        //    return Ok(passangerType);
+        //}
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool PassangerTypeExists(int id)
-        {
-            return db.PassangerTypes.Count(e => e.Id == id) > 0;
-        }
+        //private bool PassangerTypeExists(int id)
+        //{
+        //    return unitOfWork.PassangerTypes.Count(e => e.Id == id) > 0;
+        //}
     }
 }

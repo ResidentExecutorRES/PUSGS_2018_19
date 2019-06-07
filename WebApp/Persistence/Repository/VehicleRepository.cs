@@ -9,8 +9,18 @@ namespace WebApp.Persistence.Repository
 {
     public class VehicleRepository : Repository<Vehicle, int>, IVehicleRepository
     {
+        protected ApplicationDbContext applicationDb { get { return context as ApplicationDbContext; } }
+
         public VehicleRepository(DbContext context) : base(context)
         {
+        }
+
+        public IEnumerable<Line> GetLineFromDb()
+        {
+            return null;
+
+
+            //throw new NotImplementedException();
         }
     }
 }

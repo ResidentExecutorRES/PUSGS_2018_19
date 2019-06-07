@@ -17,7 +17,7 @@ namespace WebApp.Controllers
     [RoutePrefix("api/Lines")]
     public class LinesController : ApiController
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
         private readonly IUnitOfWork _unitOfWork;
 
         public LinesController(IUnitOfWork unitOfWork)
@@ -30,57 +30,58 @@ namespace WebApp.Controllers
         public IEnumerable<Line> GetLines()
         {
             //return db.Lines;
-            var v = db.Lines.Include(p => p.ListOfStations).ToList();
+            var v = _unitOfWork.Lines.CompleteLine();
+            //var v = _unitOfWork.Lines.
             return v;
         }
 
         // GET: api/Lines/5
-        [ResponseType(typeof(Line))]
-        public IHttpActionResult GetLine(int id)
-        {
-            Line line = db.Lines.Find(id);
-            if (line == null)
-            {
-                return NotFound();
-            }
+        //[ResponseType(typeof(Line))]
+        //public IHttpActionResult GetLine(int id)
+        //{
+        //    Line line = db.Lines.Find(id);
+        //    if (line == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok(line);
-        }
+        //    return Ok(line);
+        //}
 
         // PUT: api/Lines/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutLine(int id, Line line)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult PutLine(int id, Line line)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            if (id != line.Id)
-            {
-                return BadRequest();
-            }
+        //    if (id != line.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            db.Entry(line).State = EntityState.Modified;
+        //    db.Entry(line).State = EntityState.Modified;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LineExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!LineExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return StatusCode(HttpStatusCode.NoContent);
-        }
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
 
         [Route("Add")]
         // POST: api/Lines
@@ -106,7 +107,7 @@ namespace WebApp.Controllers
             linesFromDb = _unitOfWork.Lines.GetAll().ToList();
 
 
-            var v = db.Lines.Include(p => p.ListOfStations).ToList();
+            var v = _unitOfWork.Lines.CompleteLine();
 
             bool pom = true;
 
@@ -171,14 +172,17 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Line))]
         public IHttpActionResult DeleteLine(int id)
         {
-            Line line = db.Lines.Find(id);
+            // = db.Lines.Find(id);
+
+            Line line = _unitOfWork.Lines.Get(id);
+
             if (line == null)
             {
                 return NotFound();
             }
 
-            db.Lines.Remove(line);
-            db.SaveChanges();
+            _unitOfWork.Lines.Remove(line);
+            _unitOfWork.Complete();
 
             return Ok(line);
         }
@@ -187,14 +191,14 @@ namespace WebApp.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool LineExists(int id)
-        {
-            return db.Lines.Count(e => e.Id == id) > 0;
-        }
+        //private bool LineExists(int id)
+        //{
+        //    return db.Lines.Count(e => e.Id == id) > 0;
+        //}
     }
 }

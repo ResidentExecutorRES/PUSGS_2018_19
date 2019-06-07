@@ -8,9 +8,11 @@ namespace WebApp.Migrations
     using System.Linq;
     using WebApp.Models;
     using WebApp.Models.Entities;
+    using WebApp.Persistence.UnitOfWork;
 
     internal sealed class Configuration : DbMigrationsConfiguration<WebApp.Persistence.ApplicationDbContext>
     {
+        
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
@@ -72,6 +74,7 @@ namespace WebApp.Migrations
             {
                 PassangerType p = new PassangerType("Student");
                 context.PassangerTypes.Add(p);
+                
                 context.RoleCoefficients.Add(new RoleCoefficient(0.5));
             }
             if (!context.PassangerTypes.Any(u => u.Name == "Pensioner"))
