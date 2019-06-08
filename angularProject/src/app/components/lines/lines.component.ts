@@ -57,6 +57,21 @@ export class LinesComponent implements OnInit {
 
   linesForComboBox: any = []
 
+  lineForEditString: string = ''
+  sLineForEdit: LineModel
+  allLinesForEditFromDb: any = []
+  orderedStationEdit: any = []
+
+  newLineEdit: any;
+
+  allStationFromDb: any = []
+
+  restStation: any = []
+
+  showComboBoxForAddSt: boolean = false;
+
+  arrayIntForAddStation: any = []
+
   
 
   iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
@@ -67,6 +82,7 @@ export class LinesComponent implements OnInit {
     private lineStationService: LineStationService) { 
     this.stationService.getAllStations().subscribe(data => {
       this.stations = data;
+      this.allStationFromDb = data
       console.log(this.stations)
     });
 
@@ -115,6 +131,7 @@ export class LinesComponent implements OnInit {
 
       this.lineService.getAllLines().subscribe(s => {
         this.linesForComboBox = s;
+        this.allLinesForEditFromDb = s;
         console.log("Linije iz baze: ", this.linesForComboBox)
       })
       
@@ -176,6 +193,10 @@ export class LinesComponent implements OnInit {
     })
   }
 
+  onSubmitEdit(lineData: LineModel, form:NgForm){
+
+  }
+
 
   showLines(event: any){
     this.selectedForComboBox = event.target.value;
@@ -201,25 +222,71 @@ export class LinesComponent implements OnInit {
       }
   }
 
-  showLinesFromComboBox(event: any){
-    this.selectedForEdit = event.target.value;
-    this.lines.forEach(element => {
-      if(element.RegularNumber == this.selectedForEdit){
-        this.selectedLineForEdit = element;
-        this.selectedLineForEdit.ListOfStations.forEach(element2 =>{
-          element2.Checked = true;
-        })
+  showLinesForChange(event: any){
+    this.showComboBoxForAddSt = true;
+    this.lineForEditString = event.target.value;
+    this.allLinesForEditFromDb.forEach(element => {
+      if(element.RegularNumber == this.lineForEditString){
+        this.sLineForEdit = element;
+
       }
     });
 
-    console.log("Selected line for edit", this.selectedLineForEdit)
-    
-    console.log(this.selectedLineForEdit);   
-    this.otherStations = this.stations.filter(o=> !this.selectedLineForEdit.ListOfStations.find(o2=> o.Id === o2.Id));
+    if(this.sLineForEdit != null){
+      this.stationService.getOrderedStations(this.sLineForEdit.Id).subscribe(d =>{
+        this.orderedStationEdit = d;
+        console.log("Allll line for change");
+        this.newLineEdit = this.sLineForEdit;
+      this.newLineEdit.ListOfStations = this.orderedStationEdit;
+      console.log("New line",this.newLineEdit);
 
-    console.log("Other stations: ", this.otherStations);
+      this.restStation = this.allStationFromDb.filter(o=> !this.newLineEdit.ListOfStations.find(o2=> o.Id === o2.Id));
+      console.log("Rest: ", this.restStation);
+
+      console.log("D", d);
+
+      let countOfArray1 = this.newLineEdit.ListOfStations.length
+
+      console.log("Broj elemenata: ", countOfArray1);
+
+      for (let i = 0; i < countOfArray1; i++) {
+        this.arrayIntForAddStation.push(i+1);
+      }
+
+
+      });
+      
+      
+
+      
+      
+      
+     }
+
+     
+
+    // console.log("Selected line for edit", this.selectedLineForEdit)
+    
+    // console.log(this.selectedLineForEdit);   
+    // this.otherStations = this.stations.filter(o=> !this.selectedLineForEdit.ListOfStations.find(o2=> o.Id === o2.Id));
+
+    // console.log("Other stations: ", this.otherStations);
   }
 
+
+  removeStationFromLine(id: number){
+    var counter = 0;
+    this.newLineEdit.ListOfStations.forEach(element => {      
+      if(element.Id == id){
+        this.newLineEdit.ListOfStations.splice(counter, 1);
+        console.log("Izbrisana: ", this.newLineEdit);
+
+      }
+      counter++;
+    });
+  }
+
+  
   
 
   showAdd(){
@@ -246,6 +313,7 @@ export class LinesComponent implements OnInit {
       return true;
     }
   }
+
 
   isSelectedDelete(): boolean{
     if(this.selected == 'Delete'){
