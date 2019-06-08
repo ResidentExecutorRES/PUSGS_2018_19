@@ -27,4 +27,8 @@ export class StationService {
   deleteStation(idStation){
     return this.httpClient.delete(this.baseUrl + "/api/Stations/Delete?id=" + idStation);
   }
+
+  getOrderedStations(id: number){
+    return this.httpClient.get(this.baseUrl + "/api/Stations/GetOrderedAll?id=" + id);
+  }
 }

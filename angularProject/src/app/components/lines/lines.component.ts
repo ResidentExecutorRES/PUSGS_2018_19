@@ -44,6 +44,7 @@ export class LinesComponent implements OnInit {
   lineStation: LineStationModel
 
   counterForStation: number = 0
+  orderedStation: any = [];
 
   
 
@@ -62,7 +63,7 @@ export class LinesComponent implements OnInit {
       this.lines = data2;
       console.log("Linije: ", this.lines);   
       });
-
+      
       // this.lineStation = new LineStationModel(-1,-1,-1)
       
   }
@@ -124,12 +125,21 @@ export class LinesComponent implements OnInit {
     this.selectedForComboBox = event.target.value;
     this.lines.forEach(element => {
       if(element.RegularNumber == this.selectedForComboBox){
-        this.selectedLine = element;
+        this.selectedLine = element;     
+
         // this.linesForEdit.a
         // this.polyline.addLocation(new GeoLocation(element.ListOfStations.Latitude, element.ListOfStations.Longitude));
         
       }
     });
+
+    if(this.selectedLine != null){
+      this.stationService.getOrderedStations(this.selectedLine.Id).subscribe(d =>{
+        this.orderedStation = d;
+        console.log("oS");
+        console.log(d);
+      });
+    }
   }
 
   showLinesFromComboBox(event: any){

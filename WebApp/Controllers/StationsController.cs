@@ -38,6 +38,14 @@ namespace WebApp.Controllers
             return v;
         }
 
+
+        [Route("GetOrderedAll")]
+        [ResponseType(typeof(Station))]
+        public IQueryable<Station> GetOrderedStations(int id)
+        {
+            return _unitOfWork.Stations.AllOrderedStations(id).AsQueryable();
+        }
+
         // GET: api/Stations/5
         //[ResponseType(typeof(Station))]
         //public IHttpActionResult GetStation(int id)
@@ -51,7 +59,7 @@ namespace WebApp.Controllers
         //    return Ok(station);
         //}
 
-        
+
         // PUT: api/Stations/5
         //[ResponseType(typeof(void))]
         //public IHttpActionResult PutStation(int id, Station station)

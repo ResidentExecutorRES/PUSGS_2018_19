@@ -35,7 +35,7 @@
 
       <div>  <!--ovdje iscrtati  selektovanu liniji -->
         <agm-polyline  [strokeColor]="strokeColor">
-          <agm-polyline-point *ngFor="let station of selectedLine?.ListOfStations" [latitude]="station.Latitude" [longitude]="station.Longitude">
+          <agm-polyline-point *ngFor="let station of orderedStation" [latitude]="station.Latitude" [longitude]="station.Longitude">
           </agm-polyline-point>
         </agm-polyline> 
       </div>
