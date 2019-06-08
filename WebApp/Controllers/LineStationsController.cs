@@ -86,19 +86,27 @@ namespace WebApp.Controllers
         [Route("AddLineStations")]
         // POST: api/LineStations
         //[ResponseType(typeof(LineStation))]
-        public IHttpActionResult PostLineStation(List<LineStation> lineStations)
+        public IHttpActionResult PostLineStation(Line lineStations)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            foreach (var item in lineStations)
+            List<LineStation> lineStation = new List<LineStation>();
+            for (int i = 0; i < lineStations.ListOfStations.Count; i++)
+            {
+                LineStation l = new LineStation();
+                l.OrdinalNumber = i;
+                l.StationId = lineStations.ListOfStations[i].Id;
+                l.LineId = lineStations.Id;
+            }
+
+            foreach (var item in lineStation)
             {
                 _unitOfWork.LineStations.Add(item);
                 _unitOfWork.Complete();
             }
-
             // db.LineStations.Add(lineStation);
             //db.SaveChanges();
 

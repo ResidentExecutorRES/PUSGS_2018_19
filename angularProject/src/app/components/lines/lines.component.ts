@@ -87,21 +87,10 @@ export class LinesComponent implements OnInit {
     this.polyline.addLocation(new GeoLocation(this.pomStat.Latitude, this.pomStat.Longitude));
     this.id = id;
 
-    
-
   }
 
   onSubmit(lineData: LineModel, form: NgForm){
     lineData.ListOfStations = this.selectedStations;
-
-    // this.selectedStations.forEach(e => {
-    //   this.counterForStation++;
-    //   this.lineStation.OrdinalNumber = this.counterForStation;
-    //   this.lineStation.StationId = e.Id;
-      
-
-    //   this.lineStations.push(this.lineStation);
-    // })
 
     console.log(lineData);
     this.lineService.addLine(lineData).subscribe(data => {
@@ -112,25 +101,12 @@ export class LinesComponent implements OnInit {
       console.log(lineData);
     })
 
-    this.selectedStations.forEach(e1=>{
-      this.lineStation.LineId = lineData.Id;
-      this.counterForStation++;
-      this.lineStation.OrdinalNumber = this.counterForStation;
-      this.lineStation.StationId = e1.Id;
-
-      this.lineStations.push(this.lineStation);
-      
-    })
-
-    this.lineStationService.addLine(this.lineStations).subscribe(data => {
-      alert("Add lineStation successfull!");
-      console.log(data);
-    },
-    error => {
-      alert("Add lineStation - error - already exist!");
-      
-    });
-
+    // this.lineStationService.addLine(lineData).subscribe(data => {
+    //   alert("Add lineStation successfull!");
+    // },
+    // error => {
+    //   alert("Add line - error - already exist!");
+    // })
   }
 
   onSubmitDelete(lineData: LineModel, form:NgForm){

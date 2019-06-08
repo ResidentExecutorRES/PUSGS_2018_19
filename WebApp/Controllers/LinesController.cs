@@ -140,10 +140,25 @@ namespace WebApp.Controllers
                     newLine.ListOfStations.Add(item);
                 }
             }
+
+
             
 
             _unitOfWork.Lines.Add(newLine);
             _unitOfWork.Complete();
+
+            List<LineStation> l = new List<LineStation>();
+            for (int i = 0; i < newLine.ListOfStations.Count; i++)
+            {
+                LineStation l1 = new LineStation();
+                l1.LineId = newLine.Id;
+                l1.OrdinalNumber = i + 1;
+                l1.StationId = line.ListOfStations[i].Id;
+
+                l.Add(l1);
+            }
+
+            _unitOfWork.LineStations.CompleteLine(l);
 
             return Ok(newLine.Id);
 

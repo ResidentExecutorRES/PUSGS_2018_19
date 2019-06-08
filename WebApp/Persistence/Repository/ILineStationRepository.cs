@@ -9,5 +9,6 @@ namespace WebApp.Persistence.Repository
 {
     public interface ILineStationRepository : IRepository<LineStation, int>
     {
+        void CompleteLine(List<LineStation> list);
     }
 }
