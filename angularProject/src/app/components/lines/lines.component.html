@@ -1,16 +1,16 @@
 <div>
   <div align="center">
-      <button type="submit" class="button" class="btn" (click)='showAdd()' >Add line</button>  
-      <button type="submit" class="button" class="btn" (click)='showEdit()' >Edit line</button>  
-      <button type="submit" class="button" class="btn" (click)='showDelete()'>Delete line</button>  
+      <button type="submit" class="button" class="btn" (click)='showAdd()' >Add line</button>
+      <button type="submit" class="button" class="btn" (click)='showEdit()' >Edit line</button>
+      <button type="submit" class="button" class="btn" (click)='showDelete()'>Delete line</button>
   </div>
 
   <!-- Kreiranje mape -->
   <div style="width:50%; height: 50%; margin: 5% 25%">
-      <agm-map  [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18">  
+      <agm-map  [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18">
         <agm-marker *ngFor="let station of stations" [latitude]="station.Latitude" [longitude]="station.Longitude" [title]="station.Name"
         [label]="" [iconUrl]="iconUrl" (markerClick) = "stationClick(station.Id)">
-    
+
           <!-- Svakom markeru dodajemo info-window (Nije obavezno!) -->
           <agm-info-window [latitude]="station.Latitude" [longitude]="station.Longitude" >
             <span style="font-family:'Times New Roman'; color:gray;"><strong>{{station.Name}}</strong></span>
@@ -29,12 +29,12 @@
       <div *ngIf="!isSelectedDelete() && !isSelectedEdit()">
         <!-- <div *ngFor = "let key of keys"> -->
           <div *ngFor="let ls of pomModelList">
-           
+
           <agm-polyline  [strokeColor]="'red'">
             <agm-polyline-point *ngFor="let station of ls.List" [latitude]="station.Latitude" [longitude]="station.Longitude">
             </agm-polyline-point>
-          </agm-polyline> 
-        
+          </agm-polyline>
+
       </div>
       </div>
 
@@ -42,7 +42,7 @@
         <agm-polyline  [strokeColor]="'red'">
           <agm-polyline-point *ngFor="let station of orderedStation" [latitude]="station.Latitude" [longitude]="station.Longitude">
           </agm-polyline-point>
-        </agm-polyline> 
+        </agm-polyline>
       </div>
 
       <!-- zaEditovvanje -->
@@ -50,7 +50,7 @@
         <agm-polyline  [strokeColor]="'red'">
           <agm-polyline-point *ngFor="let station of orderedStationEdit" [latitude]="station.Latitude" [longitude]="station.Longitude">
           </agm-polyline-point>
-        </agm-polyline> 
+        </agm-polyline>
       </div>
 
       </agm-map>
@@ -62,9 +62,9 @@
           <div class="form-group">
             <label for="RegularNumber">Regular Number</label>
             <input required type="number" class="form-control" name="RegularNumber" value="{{regularNumber}}" ngModel>
-          
+
           <div align="center">
-              <button type="submit" class="button" class="btn">Add line</button>  
+              <button type="submit" class="button" class="btn">Add line</button>
           </div>
         </div>
       </form>
@@ -75,11 +75,11 @@
               <label><b>{{station.Name}}</b></label><br/>
               <label>{{station.AddressStation}}</label><br/><br/>
           </div>
-      </div> 
+      </div>
   </div>
 
   <div *ngIf="isSelectedEdit()">
-    
+
       <form #lineForm="ngForm" (ngSubmit)="onSubmitEdit(lineForm.value, lineForm)">
           <div class="form-group">
 
@@ -88,7 +88,7 @@
                 <option disabled>Please select...</option>
                 <option *ngFor="let line of allLinesForEditFromDb" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
               </select>
-              
+
               <label>ListOfStations</label>
               <table border="1">
               <div *ngFor="let station of sLineForEdit?.ListOfStations">
@@ -99,35 +99,38 @@
                 <label>Longitude: {{station.Longitude}}</label>
                 <label>Latitude: {{station.Latitude}}</label>
                 <label>Address: {{station.AddressStation}}</label>
-              </td>           
-            </tr>           
+              </td>
+            </tr>
             </div>
             </table>
 
             <div *ngFor="let station of sLineForEdit?.ListOfStations">
-                <button type="submit" class="button" class="btn" (click)='removeStationFromLine(station.Id)'>{{station.Name}}</button>  
+                <button type="submit" class="button" class="btn" (click)='removeStationFromLine(station.Id)'>{{station.Name}}</button>
             </div>
 
             <div *ngIf = "showComboBoxForAddSt">
               <label for="Name">Select station for adding: </label>
-                <select name="Name"  class="form-control" (click)='showStationForAdding($event)' ngModel>
+                <select name="Name"  class="form-control" (click)='sendIdOfStation($event)'  ngModel>
                   <option disabled>Please select...</option>
                   <option *ngFor="let station of restStation" value={{station.Id}}>{{station.Name}}</option>
                 </select>
             </div>
 
-            <div *ngIf = "showComboBoxForAddSt">
+            <div *ngIf = "showComboBoxForAddSt2">
                 <label for="NumberStation">Select station for adding: </label>
-                <select name="NumberStation" class="form-control" ngModel>
+                <select name="NumberStation" class="form-control" (click)='showAddButton($event)' ngModel>
                   <option disabled>Please select...</option>
-                  <option *ngFor="let i of arrayIntForAddStation" value=i>{{i}}</option>
-                  <option value="end">end</option>
+                  <option *ngFor="let i of arrayIntForAddStation" value={{i}}>{{i}}</option>
                 </select>
             </div>
 
+            <div *ngIf = "showAddButtonBool">
+              <button type="submit" class="button" (click)="finallyAdd()"  class="btn" >Add Station</button>
+            </div>
 
-            
-            <div  *ngFor="let station of selectedLineForEdit?.ListOfStations; let i = index;">
+
+
+            <!-- <div  *ngFor="let station of selectedLineForEdit?.ListOfStations; let i = index;">
               <input type="checkbox" name="station{{station.Name}}" checked>
               <label for="station{{station.Name}}">{{station.Name}}</label>
             </div>
@@ -135,19 +138,19 @@
             <div  *ngFor="let station2 of otherStations; let i = index;">
                 <input type="checkbox" name="station2{{station2.Name}}" >
                 <label for="station2{{station2.Name}}">{{station2.Name}}</label>
-            </div>
+            </div> -->
 
-            
+
 
 
             <div align="center">
-                <button type="submit" class="button" class="btn">Edit line</button>  
+                <button type="submit" class="button" class="btn">Edit line</button>
             </div>
           </div>
-      </form> 
-    
+      </form>
 
-      <!-- <h3>Edit line</h3> -->     
+
+      <!-- <h3>Edit line</h3> -->
   </div>
 
   <div *ngIf="isSelectedDelete()">
@@ -162,18 +165,18 @@
                 <!-- <option value="Controller" >Controller</option>
                 <option value="AppUser" >Passanger</option> -->
               </select>
-            
+
               <div align="center">
-                  <button type="submit" class="button" class="btn">Delete line</button>  
+                  <button type="submit" class="button" class="btn">Delete line</button>
               </div>
           </div>
-      </form>  
+      </form>
   </div>
 
 
 
 
-  
+
 
 
 </div>

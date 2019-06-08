@@ -69,9 +69,14 @@ export class LinesComponent implements OnInit {
   restStation: any = []
 
   showComboBoxForAddSt: boolean = false;
+  showComboBoxForAddSt2: boolean = false;
+
 
   arrayIntForAddStation: any = []
-
+  showAddButtonBool: boolean = false;
+  addStation: StationModel;
+  addStationPosition: number;
+  idAdded: number;
   
 
   iconUrl: any = {url: "assets/busicon.png", scaledSize: {width: 50, height:50}}
@@ -249,7 +254,7 @@ export class LinesComponent implements OnInit {
 
       console.log("Broj elemenata: ", countOfArray1);
 
-      for (let i = 0; i < countOfArray1; i++) {
+      for (let i = 0; i < countOfArray1 + 1; i++) {
         this.arrayIntForAddStation.push(i+1);
       }
 
@@ -280,13 +285,53 @@ export class LinesComponent implements OnInit {
       if(element.Id == id){
         this.newLineEdit.ListOfStations.splice(counter, 1);
         console.log("Izbrisana: ", this.newLineEdit);
-
+        this.restStation.push(element);
+        console.log("Probaj rest: ", this.restStation);
+        this.arrayIntForAddStation.pop();
       }
       counter++;
     });
   }
 
-  
+  sendIdOfStation(event){
+    console.log("Target vale", event.target.value);
+    if(event.target.value != ""){
+      this.showComboBoxForAddSt2 = true;
+      
+      this.idAdded = parseInt(event.target.value, 10)
+      this.restStation.forEach(element => {
+        if(element.Id == this.idAdded){
+          this.restStation.splice(this.idAdded, 1);
+          
+        }
+      });
+      
+      
+    }
+  }
+
+  finallyAdd(){
+    console.log("Prije dodaavanja", this.newLineEdit);
+      this.restStation.forEach(ee => {
+        if(ee.Id == this.idAdded){
+          this.newLineEdit.ListOfStations.splice(this.addStationPosition-1, 0, ee);
+          console.log("New line added =>:", this.newLineEdit);
+        }
+      });
+      this.showAddButtonBool = false;
+      this.showComboBoxForAddSt =  false;
+      this.showComboBoxForAddSt2 = false;
+  }
+
+  showAddButton(event){
+    if(event.target.value != ""){
+      this.showAddButtonBool = true;
+      this.addStationPosition = parseInt(event.target.value, 10)
+      
+      this.arrayIntForAddStation.push(this.arrayIntForAddStation.length+1);
+      
+    }
+  }
   
 
   showAdd(){
