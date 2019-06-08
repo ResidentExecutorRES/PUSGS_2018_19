@@ -290,6 +290,7 @@
     <Compile Include="Models\Entities\TypeOfTicket.cs" />
     <Compile Include="Models\Entities\UserType.cs" />
     <Compile Include="Models\Entities\Vehicle.cs" />
+    <Compile Include="Models\PomModels\PomModelForLine.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Persistence\Repository\AddressRepository.cs" />
     <Compile Include="Persistence\Repository\AppUserRepository.cs" />

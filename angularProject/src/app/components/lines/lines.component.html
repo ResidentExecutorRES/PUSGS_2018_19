@@ -27,10 +27,15 @@
 
       <!-- crta sve stanice i linije -->
       <div *ngIf="!isSelectedDelete()">
-        <agm-polyline *ngFor="let line of lines" [strokeColor]="strokeColor">
-          <agm-polyline-point *ngFor="let station of line.ListOfStations" [latitude]="station.Latitude" [longitude]="station.Longitude">
-          </agm-polyline-point>
-        </agm-polyline> 
+        <!-- <div *ngFor = "let key of keys"> -->
+          <div *ngFor="let ls of pomModelList">
+           
+          <agm-polyline  [strokeColor]="'red'">
+            <agm-polyline-point *ngFor="let station of ls.List" [latitude]="station.Latitude" [longitude]="station.Longitude">
+            </agm-polyline-point>
+          </agm-polyline> 
+        
+      </div>
       </div>
 
       <div>  <!--ovdje iscrtati  selektovanu liniji -->
@@ -120,7 +125,7 @@
               <label for="RegularNumber">Select line: </label>
               <select name="RegularNumber" (click)='showLines($event)' class="form-control" ngModel>
                 <option disabled>Please select...</option>
-                <option *ngFor="let line of lines" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
+                <option *ngFor="let line of linesForComboBox" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
                 <!-- <option value="Controller" >Controller</option>
                 <option value="AppUser" >Passanger</option> -->
               </select>

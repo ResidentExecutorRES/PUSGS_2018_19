@@ -31,4 +31,13 @@ export class StationService {
   getOrderedStations(id: number){
     return this.httpClient.get(this.baseUrl + "/api/Stations/GetOrderedAll?id=" + id);
   }
+
+  getAll(){
+    return this.httpClient.get(this.baseUrl + "/api/Stations/GetOrderedAllLines");
+  }
+
+  getIdes(){
+    return this.httpClient.get(this.baseUrl + "/api/Stations/GetIdes");
+
+  }
 }

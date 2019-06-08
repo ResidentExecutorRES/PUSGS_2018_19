@@ -11,6 +11,8 @@ import { NgForm } from '@angular/forms';
 import { IconSequence } from '@agm/core/services/google-maps-types';
 import { LineStationModel } from 'src/app/models/lineStation.model';
 import { LineStationService } from 'src/app/services/lineStationService/line-station.service';
+import { typeWithParameters } from '@angular/compiler/src/render3/util';
+import { PomLineModel } from 'src/app/models/pomLineModel.model';
 
 @Component({
   selector: 'app-lines',
@@ -45,6 +47,15 @@ export class LinesComponent implements OnInit {
 
   counterForStation: number = 0
   orderedStation: any = [];
+  linesWithOrderedStations: any = [];
+  
+  pomLine: any;
+
+  keys: any = [];
+  pomModelList: any = [];
+  pomOdPom: PomLineModel;
+
+  linesForComboBox: any = []
 
   
 
@@ -59,12 +70,53 @@ export class LinesComponent implements OnInit {
       console.log(this.stations)
     });
 
-    this.lineService.getAllLines().subscribe(data2 =>{
-      this.lines = data2;
-      console.log("Linije: ", this.lines);   
-      });
+    this.stationService.getAll().subscribe(k=>{
+      //this.lines = k;
+      //console.log("Lineeeee: ", this.lines);    
+      this.pomModelList = k;  
+      console.log("LineeeeepomModelList: ", this.pomModelList);    
+
+    });
+
+    //if(this.lines.length != 0){
+      
+   // }
+
+    this.stationService.getIdes().subscribe(ides => {
+      this.keys = ides;
+      console.log("Keysssss: ", this.keys);
+    });
+
+    // this.keys.forEach(element => {
+    //   console.log("cc", this.lines[element]);
+
+    //   var p = new PomLineModel(element,this.lines[element]);
+    //   this.pomModelList.push(p);
+    // });    
+
+    
+    
+   
+    //console.log("linesss[key]", this.lines[])
+
+    
+
+    
+
+    // this.lines.forEach(element => {
+    //   this.stationService.getOrderedStations(element.Id).subscribe(p =>{
+    //     this.pomLine.ListOfStations = p;
+    //     this.pomLine.Id = element.Id;
+    //     this.linesWithOrderedStations.push(this.pomLine);
+    //   });
+    // });
       
       // this.lineStation = new LineStationModel(-1,-1,-1)
+
+      this.lineService.getAllLines().subscribe(s => {
+        this.linesForComboBox = s;
+        console.log("Linije iz baze: ", this.linesForComboBox)
+      })
       
   }
 
@@ -73,6 +125,10 @@ export class LinesComponent implements OnInit {
     "assets/ftn.png",
     "Jugodrvo" , "" , "http://ftn.uns.ac.rs/691618389/fakultet-tehnickih-nauka");
     this.polyline = new Polyline([], 'blue', { url:"assets/busicon.png", scaledSize: {width: 50, height: 50}});
+    // this.keys = Object.keys(this.lines);
+    // console.log("keys", this.keys);
+
+
   }
 
   stationClick(id: number){
@@ -123,7 +179,10 @@ export class LinesComponent implements OnInit {
 
   showLines(event: any){
     this.selectedForComboBox = event.target.value;
-    this.lines.forEach(element => {
+
+    
+
+    this.linesForComboBox.forEach(element => {
       if(element.RegularNumber == this.selectedForComboBox){
         this.selectedLine = element;     
 
@@ -133,13 +192,13 @@ export class LinesComponent implements OnInit {
       }
     });
 
-    if(this.selectedLine != null){
-      this.stationService.getOrderedStations(this.selectedLine.Id).subscribe(d =>{
-        this.orderedStation = d;
-        console.log("oS");
-        console.log(d);
-      });
-    }
+     if(this.selectedLine != null){
+       this.stationService.getOrderedStations(this.selectedLine.Id).subscribe(d =>{
+         this.orderedStation = d;
+         console.log("oS");
+         console.log(d);
+       });
+      }
   }
 
   showLinesFromComboBox(event: any){
@@ -205,7 +264,4 @@ export class LinesComponent implements OnInit {
     }
     return false;
   }
-
-
-
 }

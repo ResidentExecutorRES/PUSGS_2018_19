@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WebApp.Models.Entities;
+using WebApp.Models.PomModels;
 using WebApp.Persistence;
 using WebApp.Persistence.UnitOfWork;
 
@@ -44,6 +45,29 @@ namespace WebApp.Controllers
         public IQueryable<Station> GetOrderedStations(int id)
         {
             return _unitOfWork.Stations.AllOrderedStations(id).AsQueryable();
+        }
+
+        [Route("GetOrderedAllLines")]
+        [ResponseType(typeof(Station))]
+        public List<PomModelForLine> GetOrderedStationsLines()
+        {
+            List<PomModelForLine> keyValuePairs = new List<PomModelForLine>();
+            keyValuePairs = _unitOfWork.Stations.All();
+            return keyValuePairs;
+        }
+
+        [Route("GetIdes")]
+        public List<int> GetIdes()
+        {
+            List<PomModelForLine> keyValuePairs = new List<PomModelForLine>();
+            keyValuePairs = _unitOfWork.Stations.All();
+            List<int> retVal = new List<int>();
+            foreach (var item in keyValuePairs)
+            {
+                retVal.Add(item.Id);
+            }
+
+            return retVal;
         }
 
         // GET: api/Stations/5

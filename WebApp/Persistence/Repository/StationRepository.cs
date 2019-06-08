@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using WebApp.Models.Entities;
+using WebApp.Models.PomModels;
 
 namespace WebApp.Persistence.Repository
 {
@@ -49,6 +50,19 @@ namespace WebApp.Persistence.Repository
                 }
             }
 
+            return retVal;
+        }
+
+        public List<PomModelForLine> All()
+        {
+            List<PomModelForLine> retVal = new List<PomModelForLine>();
+            foreach (var item in applicationDb.Lines.ToList())
+            {
+                PomModelForLine pp = new PomModelForLine();
+                pp.Id = item.Id;
+                pp.List = AllOrderedStations(item.Id);
+                retVal.Add(pp);
+            }
             return retVal;
         }
     }
