@@ -28,9 +28,9 @@ namespace WebApp.Models.Entities
 
         public DateTime? Birthaday { get; set; }
 
-        [ForeignKey("RoleCoefficient")]
-        public int? RoleCoefficientId { get; set; }
-        public RoleCoefficient RoleCoefficient { get; set; }
+        //[ForeignKey("RoleCoefficient")]
+        //public int? RoleCoefficientId { get; set; }
+        //public RoleCoefficient RoleCoefficient { get; set; }
         
     }
 }

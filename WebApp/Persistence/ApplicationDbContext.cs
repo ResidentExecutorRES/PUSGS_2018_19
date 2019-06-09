@@ -15,11 +15,11 @@ namespace WebApp.Persistence
         public virtual DbSet<AppUser> AppUser { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Day> Days { get; set; }
-        public DbSet<Departure> Departures { get; set; }
+        //public DbSet<Departure> Departures { get; set; }
         public DbSet<Line> Lines { get; set; }
         public DbSet<PassangerType> PassangerTypes { get; set; }
         public DbSet<PriceList> PriceLists { get; set; }
-        public DbSet<RoleCoefficient> RoleCoefficients { get; set; }
+        //public DbSet<RoleCoefficient> RoleCoefficients { get; set; }
         public DbSet<Station> Stations { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketPrice> TicketPrices { get; set; }

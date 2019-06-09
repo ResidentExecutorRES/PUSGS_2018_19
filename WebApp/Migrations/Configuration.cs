@@ -73,36 +73,39 @@ namespace WebApp.Migrations
             if (!context.PassangerTypes.Any(u => u.Name == "Student"))
             {
                 PassangerType p = new PassangerType("Student");
+                p.RoleCoefficient = 0.6;
                 context.PassangerTypes.Add(p);
                 
-                context.RoleCoefficients.Add(new RoleCoefficient(0.5));
+                //context.RoleCoefficients.Add(new RoleCoefficient(0.5));
             }
             if (!context.PassangerTypes.Any(u => u.Name == "Pensioner"))
             {
 
                 PassangerType p = new PassangerType("Pensioner");
+                p.RoleCoefficient = 0.5;
 
                 context.PassangerTypes.Add(p);
-                context.RoleCoefficients.Add(new RoleCoefficient(0.6));
+                //context.RoleCoefficients.Add(new RoleCoefficient(0.6));
 
 
             }
             if (!context.PassangerTypes.Any(u => u.Name == "Default"))
             {
                 PassangerType p = new PassangerType("Default");
+                p.RoleCoefficient = 1;
 
                 context.PassangerTypes.Add(p);
-                context.RoleCoefficients.Add(new RoleCoefficient(1));
+                //context.RoleCoefficients.Add(new RoleCoefficient(1));
 
 
             }
             if (!context.PassangerTypes.Any(u => u.Name == "None"))
             {
                 PassangerType p = new PassangerType("None");
-                //RoleCoefficient r = new RoleCoefficient(1, "None");
-
+                p.RoleCoefficient = 1;
+                
                 context.PassangerTypes.Add(p);
-                context.RoleCoefficients.Add(new RoleCoefficient(1));
+                //context.RoleCoefficients.Add(new RoleCoefficient(1));
 
                 //context.RoleCoefficients.Add(r);
 
@@ -126,46 +129,28 @@ namespace WebApp.Migrations
                 context.UserTypes.Add(p);
             }
 
-            //if (!context.RoleCoefficients.Any(u => u.PassangerType.Name == "Student"))
-            //{
-            //    RoleCoefficient r = new RoleCoefficient(0.6, "Student");
-            //    context.RoleCoefficients.Add(r);
-            //}
-            //else if (!context.RoleCoefficients.Any(u => u.PassangerType.Name == "Pensioner"))
-            //{
-            //    RoleCoefficient r = new RoleCoefficient(0.5, "Pensioner");
-            //    context.RoleCoefficients.Add(r);
-            //}
-            //else
-            //{
-            //    RoleCoefficient r = new RoleCoefficient(1, "Default");
-            //    context.RoleCoefficients.Add(r);
-
-            //    RoleCoefficient r1 = new RoleCoefficient(1, "None");
-            //    context.RoleCoefficients.Add(r1);
-            //}
+        
+           if (!context.Days.Any(u=> u.Name == "Workday"))
+            {
+                Day d = new Day("Workday");
+                context.Days.Add(d);
+            }
+            if (!context.Days.Any(u => u.Name == "Saturday"))
+            {
+                Day d = new Day("Saturday");
+                context.Days.Add(d);
+            }
+            if (!context.Days.Any(u => u.Name == "Sunday"))
+            {
+                Day d = new Day("Sunday");
+                context.Days.Add(d);
+            }
 
 
-            //var pt = context.PassangerTypes;
 
-            //foreach (var item in pt)
-            //{
-            //    if (item.Name == "Student")
-            //    {
-            //        RoleCoefficient r = new RoleCoefficient(0.5, item);
-            //        break;
-            //    }
-            //    else if (item.Name == "Pensioner")
-            //    {
-            //        RoleCoefficient r = new RoleCoefficient(0.6, item);
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        RoleCoefficient r = new RoleCoefficient(1, item);
-            //        break;
-            //    }
-            //}
+
+
+
 
         }
     }

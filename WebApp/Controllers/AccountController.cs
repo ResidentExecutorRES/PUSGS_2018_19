@@ -369,15 +369,15 @@ namespace WebApp.Controllers
                     }
                 }
 
-                var getAllCoefficients = _unitOfWork.RoleCoefficients.GetAll();
-                foreach (var item in getAllCoefficients)
-                {
-                    if (item.PassangerType.Name == model.PassangerType)
-                    {
-                        appUser.RoleCoefficientId = item.Id;
-                        break;
-                    }
-                }
+                //var getAllCoefficients = _unitOfWork.RoleCoefficients.GetAll();
+                //foreach (var item in getAllCoefficients)
+                //{
+                //    if (item.PassangerType.Name == model.PassangerType)
+                //    {
+                //        appUser.RoleCoefficientId = item.Id;
+                //        break;
+                //    }
+                //}
             }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email,

@@ -1,0 +1,39 @@
+<div>
+  <div align="center">
+    <button type="submit" class="button" class="btn" (click)='showAdd()' >Add station</button>  
+    <button type="submit" class="button" class="btn" (click)='showEdit()' >Edit station</button>  
+    <button type="submit" class="button" class="btn" (click)='showDelete()'>Delete station</button>  
+  </div>
+
+  <div *ngIf="isSelectedAdd()">  
+    <form #timetableForm="ngForm" (ngSubmit)="onSubmit(timetableForm.value, timetableForm)">
+      <div class="form-group" >
+        <label for="DayId">Day type</label>
+        <select name="DayId" class="form-group"  class="form-control" ngModel>
+          <option disabled>Please select...</option>
+          <option value="Workday">Workday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+      </div>
+
+      <label for="LineId">Select line: </label>
+      <select name="LineId"  class="form-control" ngModel>
+      <option disabled>Please select...</option>
+      <option *ngFor="let line of allLinesFromDb" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
+      </select>
+
+      
+      <br><label for="Departures" >Select time</label>
+      <input type="time" name="Departures" class="form-control" ngModel><br>
+
+        
+
+
+      <button type="submit" class="nav-link" class="btn">Add timetable</button>
+
+    </form>
+  </div>
+  
+
+</div>

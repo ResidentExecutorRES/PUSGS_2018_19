@@ -23,16 +23,16 @@ namespace WebApp.Persistence.UnitOfWork
         public IAppUserRepository AppUsers { get; set; }
         [Dependency]
         public IDayRepository Days { get; set; }
-        [Dependency]
-        public IDepartureRepository Departures { get; set; }
+        //[Dependency]
+        //public IDepartureRepository Departures { get; set; }
         [Dependency]
         public ILineRepository Lines { get; set; }
         [Dependency]
         public IPassangerTypeRepository PassangerTypes { get; set; }
         [Dependency]
         public IPriceListRepository PriceLists { get; set; }
-        [Dependency]
-        public IRoleCoefficientRepository RoleCoefficients { get; set; }
+        //[Dependency]
+        //public IRoleCoefficientRepository RoleCoefficients { get; set; }
         [Dependency]
         public IStationRepository Stations { get; set; }
         [Dependency]

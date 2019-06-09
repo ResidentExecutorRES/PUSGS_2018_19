@@ -256,6 +256,7 @@
     <Compile Include="Controllers\LineStationsController.cs" />
     <Compile Include="Controllers\PassangerTypesController.cs" />
     <Compile Include="Controllers\StationsController.cs" />
+    <Compile Include="Controllers\TimetablesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -265,9 +266,9 @@
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201906071656286_NewM.cs" />
-    <Compile Include="Migrations\201906071656286_NewM.Designer.cs">
-      <DependentUpon>201906071656286_NewM.cs</DependentUpon>
+    <Compile Include="Migrations\201906091519363_MMM.cs" />
+    <Compile Include="Migrations\201906091519363_MMM.Designer.cs">
+      <DependentUpon>201906091519363_MMM.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -276,12 +277,10 @@
     <Compile Include="Models\Entities\Address.cs" />
     <Compile Include="Models\Entities\AppUser.cs" />
     <Compile Include="Models\Entities\Day.cs" />
-    <Compile Include="Models\Entities\Departure.cs" />
     <Compile Include="Models\Entities\LineStation.cs" />
     <Compile Include="Models\Entities\NetworkLine.cs" />
     <Compile Include="Models\Entities\PassangerType.cs" />
     <Compile Include="Models\Entities\PriceList.cs" />
-    <Compile Include="Models\Entities\RoleCoefficient.cs" />
     <Compile Include="Models\Entities\Ticket.cs" />
     <Compile Include="Models\Entities\Line.cs" />
     <Compile Include="Models\Entities\Station.cs" />
@@ -291,21 +290,19 @@
     <Compile Include="Models\Entities\UserType.cs" />
     <Compile Include="Models\Entities\Vehicle.cs" />
     <Compile Include="Models\PomModels\PomModelForLine.cs" />
+    <Compile Include="Models\PomModels\TimetablePomModel.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Persistence\Repository\AddressRepository.cs" />
     <Compile Include="Persistence\Repository\AppUserRepository.cs" />
     <Compile Include="Persistence\Repository\DayRepository.cs" />
-    <Compile Include="Persistence\Repository\DepartureRepository.cs" />
     <Compile Include="Persistence\Repository\IAddressRepository.cs" />
     <Compile Include="Persistence\Repository\IAppUserRepository.cs" />
     <Compile Include="Persistence\Repository\IDayRepository.cs" />
-    <Compile Include="Persistence\Repository\IDepartureRepository.cs" />
     <Compile Include="Persistence\Repository\ILineRepository.cs" />
     <Compile Include="Persistence\Repository\ILineStationRepository.cs" />
     <Compile Include="Persistence\Repository\IPassangerTypeRepository.cs" />
     <Compile Include="Persistence\Repository\IPriceListRepository.cs" />
     <Compile Include="Persistence\Repository\IRepository.cs" />
-    <Compile Include="Persistence\Repository\IRoleCoefficientRepository.cs" />
     <Compile Include="Persistence\Repository\IStationRepository.cs" />
     <Compile Include="Persistence\Repository\ITicketPriceRepository.cs" />
     <Compile Include="Persistence\Repository\ITicketRepository.cs" />
@@ -318,7 +315,6 @@
     <Compile Include="Persistence\Repository\PassangerTypeRepository.cs" />
     <Compile Include="Persistence\Repository\PriceListRepository.cs" />
     <Compile Include="Persistence\Repository\Repository.cs" />
-    <Compile Include="Persistence\Repository\RoleCoefficientRepository.cs" />
     <Compile Include="Persistence\Repository\StationRepository.cs" />
     <Compile Include="Persistence\Repository\TicketPriceRepository.cs" />
     <Compile Include="Persistence\Repository\TicketRepository.cs" />
@@ -429,8 +425,8 @@
     <EmbeddedResource Include="Migrations\201905222056072_InitialMigration.resx">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201906071656286_NewM.resx">
-      <DependentUpon>201906071656286_NewM.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201906091519363_MMM.resx">
+      <DependentUpon>201906091519363_MMM.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

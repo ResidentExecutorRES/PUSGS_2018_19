@@ -73,11 +73,11 @@ namespace WebApp.App_Start
             container.RegisterType<IAddressRepository, AddressRepository>();
             container.RegisterType<IAppUserRepository, AppUserRepository>();
             container.RegisterType<IDayRepository, DayRepository>();
-            container.RegisterType<IDepartureRepository, DepartureRepository>();
+            //container.RegisterType<IDepartureRepository, DepartureRepository>();
             container.RegisterType<ILineRepository, LineRepository>();
             container.RegisterType<IPassangerTypeRepository, PassangerTypeRepository>();
             container.RegisterType<IPriceListRepository, PriceListRepository>();
-            container.RegisterType<IRoleCoefficientRepository, RoleCoefficientRepository>();
+            //container.RegisterType<IRoleCoefficientRepository, RoleCoefficientRepository>();
             container.RegisterType<IStationRepository, StationRepository>();
             container.RegisterType<ITicketPriceRepository, TicketPriceRepository>();
             container.RegisterType<ITicketRepository, TicketRepository>();

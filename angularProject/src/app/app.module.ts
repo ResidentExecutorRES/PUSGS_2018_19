@@ -23,6 +23,7 @@ import { MapComponent } from './components/map/map.component';
 import { AgmCoreModule } from '@agm/core';
 import { LinesComponent } from './components/lines/lines.component';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
+import { TimeTableComponent } from './components/time-table/time-table.component';
 
 
 const Routes = [
@@ -69,6 +70,10 @@ const Routes = [
   {
     path: "vehicle",
     component: VehicleComponent
+  },
+  {
+    path: "timeTable",
+    component: TimeTableComponent
   }
 
 
@@ -88,7 +93,8 @@ const Routes = [
     StationsComponent,
     MapComponent,
     LinesComponent,
-    VehicleComponent
+    VehicleComponent,
+    TimeTableComponent
   ],
   imports: [
     BrowserModule,
