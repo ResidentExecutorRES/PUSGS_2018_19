@@ -72,7 +72,7 @@ const Routes = [
     component: VehicleComponent
   },
   {
-    path: "timeTable",
+    path: "Timetable",
     component: TimeTableComponent
   }
 

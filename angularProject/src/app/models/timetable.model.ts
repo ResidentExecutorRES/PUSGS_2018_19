@@ -12,8 +12,6 @@ export class TimetableModel{
         this.Departures = departures;
     }
 }
-
-
 export class TimetableModel2{
     LineId: number;
     DayId: string;
@@ -23,5 +21,15 @@ export class TimetableModel2{
         this.LineId = lineId;
         this.DayId = dayId;
         this.Departures = departures;
+    }
+}
+
+export class TimetableModel3{
+    LineId: number;
+    DayId: string;
+
+    constructor(lineId: number, dayId: string){
+        this.LineId = lineId;
+        this.DayId = dayId;
     }
 }

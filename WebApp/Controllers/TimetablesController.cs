@@ -27,9 +27,16 @@ namespace WebApp.Controllers
         }
 
         // GET: api/Timetables
-        public IQueryable<Timetable> GetTimetables()
+        [Route("GetAll")]
+        [ResponseType(typeof(Timetable))]
+        public List<Timetable> GetTimetables()
         {
-            return _unitOfWork.Timetables.GetAll().AsQueryable();
+            //var v = db.Timetables.ToList();
+
+            //var v = _unitOfWork.Timetables.GetAll().ToList();
+
+            List<Timetable> v = _unitOfWork.Timetables.GetAllTimetable();
+            return v;
         }
 
         // GET: api/Timetables/5
@@ -196,6 +203,7 @@ namespace WebApp.Controllers
         }
 
         // DELETE: api/Timetables/5
+        [Route("Delete")]
         [ResponseType(typeof(Timetable))]
         public IHttpActionResult DeleteTimetable(int id)
         {
