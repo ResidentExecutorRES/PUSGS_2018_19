@@ -1,6 +1,33 @@
+<div>
+    <div style="width:50%; height: 50%; margin: 5% 25%">
+      <agm-map  [latitude]="markerInfo.location.latitude" [longitude]="markerInfo.location.longitude" [zoom]="18">
+          <agm-marker *ngFor="let station of stations" [latitude]="station.Latitude" [longitude]="station.Longitude" [title]="station.Name"
+          [label]="" [iconUrl]="iconUrl" (markerClick) = "stationClick(station.Id)">
+  
+            <!-- Svakom markeru dodajemo info-window (Nije obavezno!) -->
+            <agm-info-window [latitude]="station.Latitude" [longitude]="station.Longitude" >
+              <span style="font-family:'Times New Roman'; color:gray;"><strong>{{station.Name}}</strong></span>
+              <span style="font-family:'Times New Roman'; color:gray;"><strong>{{station.AddressStation}}</strong></span>
+              <!-- <span style="font-family:'Times New Roman'; color:gray;">Bulevar oslobođenja 131</span> -->
+              <!-- <a [href]="markerInfo.link">See the site.</a> -->
+            </agm-info-window>
+        </agm-marker>
 
-<h1>
-  bus-lines works!
-</h1>
+            <!-- <div *ngFor = "let key of keys"> -->
+              <div *ngFor="let ls of listOfCheckedLines, let i = index">
+              <agm-polyline  [strokeColor]="listOfColors[i]">
+                <agm-polyline-point *ngFor="let station of ls.List" [latitude]="station.Latitude" [longitude]="station.Longitude">
+                </agm-polyline-point>
+              </agm-polyline>
+          </div>
+          
+      </agm-map>
+      </div>      
+<div>
+ <div *ngFor="let line of lines">
+  <label for="line{{line.RegularNumber}}">Linija: {{line.RegularNumber}}</label>
+  <input type="checkbox" value = "{{line.Id}}" (click)="ShowCheckedLine($event)"/>
+ </div>
+</div>
 
-<app-map></app-map>
+</div>
