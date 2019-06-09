@@ -24,4 +24,12 @@ export class LineService {
     return this.httpClient.delete(this.baseUrl + "/api/Lines/Delete?id=" + idLine);
   }
 
+  // editStation(station):Observable<any>{
+  //   return this.httpClient.post(this.baseUrl+ "/api/Stations/Edit", station);
+  // }
+
+  editLine(id, line):Observable<any>{
+    return this.httpClient.put(this.baseUrl + "/api/Lines/EditLine?id=" + id, line);
+  }
+
 }

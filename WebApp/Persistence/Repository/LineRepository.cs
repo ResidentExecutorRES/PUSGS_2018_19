@@ -22,5 +22,26 @@ namespace WebApp.Persistence.Repository
             //var v = db.Lines.Include(p => p.ListOfStations).ToList();
             return v;
         }
+
+        public void Delete(int id)
+        {
+            //throw new NotImplementedException();
+            var line = applicationDb.Lines.Where(q => q.Id == id).Include(p => p.LineStations);
+            applicationDb.Lines.RemoveRange(line);
+        }
+
+        public void AddStationsInList(int lineId, List<Station> stations)
+        {
+            var line = applicationDb.Lines.Include(l => l.ListOfStations).Where(l => l.Id == lineId).FirstOrDefault();
+            line.ListOfStations.Clear();
+
+
+            foreach (Station s in stations)
+            {
+                line.ListOfStations.Add(applicationDb.Stations.Find(s.Id));
+            }
+
+            //throw new NotImplementedException();
+        }
     }
 }

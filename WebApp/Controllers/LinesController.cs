@@ -48,40 +48,66 @@ namespace WebApp.Controllers
         //    return Ok(line);
         //}
 
-        // PUT: api/Lines/5
-        //[ResponseType(typeof(void))]
-        //public IHttpActionResult PutLine(int id, Line line)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [Route("EditLine")]
+        //PUT: api/Lines/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutLine(int id, Line line)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //    if (id != line.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+            
+            if (id != line.Id)
+            {
+                return BadRequest();
+            }
 
-        //    db.Entry(line).State = EntityState.Modified;
+            try
+            {
+                Line l = new Line();
 
-        //    try
-        //    {
-        //        db.SaveChanges();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!LineExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+                _unitOfWork.Lines.AddStationsInList(line.Id, line.ListOfStations);
 
-        //    return StatusCode(HttpStatusCode.NoContent);
-        //}
+                List<Line> linesFromDbWithStations = _unitOfWork.Lines.CompleteLine().ToList();
+
+                List<LineStation> lineStations = _unitOfWork.LineStations.GetAll().Where(data => data.LineId == line.Id).ToList();
+
+                _unitOfWork.LineStations.RemoveRange(lineStations);
+                int i = 0;
+                foreach (Station s in line.ListOfStations)
+                {
+                    i++;
+                    LineStation o = new LineStation();
+                    o.LineId = line.Id;
+                    o.StationId = s.Id;
+                    o.OrdinalNumber = i;
+                    _unitOfWork.LineStations.Add(o);
+
+                }
+
+                //_unitOfWork.Lines.Update(line);
+
+                _unitOfWork.Complete();
+
+
+                return Ok(line.Id);
+
+                //db.Entry(line).State = EntityState.Modified;
+
+
+                //db.SaveChanges();
+
+            }
+
+            catch (DbUpdateConcurrencyException)
+            {
+                
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
 
         [Route("Add")]
         // POST: api/Lines

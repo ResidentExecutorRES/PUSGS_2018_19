@@ -10,5 +10,10 @@ namespace WebApp.Persistence.Repository
     public interface ILineRepository : IRepository<Line, int>
     {
         IEnumerable<Line> CompleteLine();
+
+        void Delete(int id);
+
+        void AddStationsInList(int lineId, List<Station> stations);
     }
+
 }

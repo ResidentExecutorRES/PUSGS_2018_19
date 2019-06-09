@@ -80,8 +80,7 @@
 
   <div *ngIf="isSelectedEdit()">
 
-      <form #lineForm="ngForm" (ngSubmit)="onSubmitEdit(lineForm.value, lineForm)">
-          <div class="form-group">
+      
 
               <label for="RegularNumber">Select line: </label>
               <select name="RegularNumber" (click)='showLinesForChange($event)' class="form-control" ngModel>
@@ -106,6 +105,10 @@
 
             <div *ngFor="let station of sLineForEdit?.ListOfStations">
                 <button type="submit" class="button" class="btn" (click)='removeStationFromLine(station.Id)'>{{station.Name}}</button>
+            </div>
+
+            <div align="center">
+              <button type="submit" class="button" class="btn" (click)="showComboBox()">Show comboBox for adding stations</button>
             </div>
 
             <div *ngIf = "showComboBoxForAddSt">
@@ -138,16 +141,19 @@
             <div  *ngFor="let station2 of otherStations; let i = index;">
                 <input type="checkbox" name="station2{{station2.Name}}" >
                 <label for="station2{{station2.Name}}">{{station2.Name}}</label>
-            </div> -->
+                         </div> -->
+
+                         <!-- <form #lineForm="ngForm" (ngSubmit)="onSubmitEdit(lineForm.value, lineForm)">
+                          <div class="form-group"> -->
 
 
-
-
-            <div align="center">
+            <!-- <div align="center">
                 <button type="submit" class="button" class="btn">Edit line</button>
             </div>
           </div>
-      </form>
+      </form> -->
+
+      <button type="submit" class="button" class="btn" (click) = "onSubmitEdit()">Edit line</button>
 
 
       <!-- <h3>Edit line</h3> -->

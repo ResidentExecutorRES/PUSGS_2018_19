@@ -114,23 +114,6 @@ export class LinesComponent implements OnInit {
     //   var p = new PomLineModel(element,this.lines[element]);
     //   this.pomModelList.push(p);
     // });    
-
-    
-    
-   
-    //console.log("linesss[key]", this.lines[])
-
-    
-
-    
-
-    // this.lines.forEach(element => {
-    //   this.stationService.getOrderedStations(element.Id).subscribe(p =>{
-    //     this.pomLine.ListOfStations = p;
-    //     this.pomLine.Id = element.Id;
-    //     this.linesWithOrderedStations.push(this.pomLine);
-    //   });
-    // });
       
       // this.lineStation = new LineStationModel(-1,-1,-1)
 
@@ -139,6 +122,8 @@ export class LinesComponent implements OnInit {
         this.allLinesForEditFromDb = s;
         console.log("Linije iz baze: ", this.linesForComboBox)
       })
+
+      this.arrayIntForAddStation = []
       
   }
 
@@ -198,15 +183,30 @@ export class LinesComponent implements OnInit {
     })
   }
 
-  onSubmitEdit(lineData: LineModel, form:NgForm){
+  // onSubmitEdit(lineData: LineModel, form:NgForm){
+  //     console.log("Nove linije za edit:", this.newLineEdit);
+  //     console.log("pozicja: ", this.addStationPosition);
+
+  //     this.lineService.editLine(this.newLineEdit.Id, this.newLineEdit).subscribe(d=>{
+  //       alert("Usp")
+  //     })
+
+  //   }
+
+  onSubmitEdit(){
+    console.log("Nove linije za edit:", this.newLineEdit);
+    console.log("pozicja: ", this.addStationPosition);
+
+    this.lineService.editLine(this.newLineEdit.Id, this.newLineEdit).subscribe(d=>{
+      alert("Usp")
+    })
 
   }
 
 
+  // poziva se u delete-u  
   showLines(event: any){
     this.selectedForComboBox = event.target.value;
-
-    
 
     this.linesForComboBox.forEach(element => {
       if(element.RegularNumber == this.selectedForComboBox){
@@ -228,7 +228,7 @@ export class LinesComponent implements OnInit {
   }
 
   showLinesForChange(event: any){
-    this.showComboBoxForAddSt = true;
+    //this.showComboBoxForAddSt = true;
     this.lineForEditString = event.target.value;
     this.allLinesForEditFromDb.forEach(element => {
       if(element.RegularNumber == this.lineForEditString){
@@ -240,13 +240,13 @@ export class LinesComponent implements OnInit {
     if(this.sLineForEdit != null){
       this.stationService.getOrderedStations(this.sLineForEdit.Id).subscribe(d =>{
         this.orderedStationEdit = d;
-        console.log("Allll line for change");
+        //console.log("Allll line for change");
         this.newLineEdit = this.sLineForEdit;
-      this.newLineEdit.ListOfStations = this.orderedStationEdit;
-      console.log("New line",this.newLineEdit);
+        this.newLineEdit.ListOfStations = this.orderedStationEdit;
+        console.log("New line",this.newLineEdit);
 
-      this.restStation = this.allStationFromDb.filter(o=> !this.newLineEdit.ListOfStations.find(o2=> o.Id === o2.Id));
-      console.log("Rest: ", this.restStation);
+        this.restStation = this.allStationFromDb.filter(o=> !this.newLineEdit.ListOfStations.find(o2=> o.Id === o2.Id));
+        console.log("Rest: ", this.restStation);
 
       console.log("D", d);
 
@@ -254,17 +254,12 @@ export class LinesComponent implements OnInit {
 
       console.log("Broj elemenata: ", countOfArray1);
 
-      for (let i = 0; i < countOfArray1 + 1; i++) {
-        this.arrayIntForAddStation.push(i+1);
+      if(this.arrayIntForAddStation.length <= countOfArray1){
+        for (let i = 0; i < countOfArray1 + 1; i++) {
+          this.arrayIntForAddStation.push(i+1);
+        }
       }
-
-
-      });
-      
-      
-
-      
-      
+    });
       
      }
 
@@ -285,9 +280,16 @@ export class LinesComponent implements OnInit {
       if(element.Id == id){
         this.newLineEdit.ListOfStations.splice(counter, 1);
         console.log("Izbrisana: ", this.newLineEdit);
-        this.restStation.push(element);
+
+        //moze da doda element samo ako vec ne postoji u rest-u
+        if(this.alreadyExists(this.restStation, element.Id)){    
+          this.restStation.push(element);
+        }
+
         console.log("Probaj rest: ", this.restStation);
-        this.arrayIntForAddStation.pop();
+        if(this.arrayIntForAddStation.length > 0){       
+          this.arrayIntForAddStation.pop();
+        }
       }
       counter++;
     });
@@ -301,7 +303,7 @@ export class LinesComponent implements OnInit {
       this.idAdded = parseInt(event.target.value, 10)
       this.restStation.forEach(element => {
         if(element.Id == this.idAdded){
-          this.restStation.splice(this.idAdded, 1);
+          //this.restStation.splice(this.idAdded, 1);
           
         }
       });
@@ -310,27 +312,75 @@ export class LinesComponent implements OnInit {
     }
   }
 
+  // finallyAdd(){
+  //   console.log("Prije dodaavanja", this.newLineEdit);
+  //     this.restStation.forEach(ee => {
+  //       if(ee.Id == this.idAdded ){
+  //         this.newLineEdit.ListOfStations.splice(this.addStationPosition-1, 0, ee);
+  //         console.log("New line added =>:", this.newLineEdit);
+  //       }
+  //     });
+  //     this.arrayIntForAddStation.push(this.arrayIntForAddStation.length+1);
+      
+  //     this.showAddButtonBool = false;
+  //     this.showComboBoxForAddSt =  false;
+  //     this.showComboBoxForAddSt2 = false;
+
+  // }
+
   finallyAdd(){
     console.log("Prije dodaavanja", this.newLineEdit);
       this.restStation.forEach(ee => {
-        if(ee.Id == this.idAdded){
-          this.newLineEdit.ListOfStations.splice(this.addStationPosition-1, 0, ee);
-          console.log("New line added =>:", this.newLineEdit);
+        if(ee.Id == this.idAdded ){
+          if(this.alreadyExists(this.newLineEdit.ListOfStations, this.idAdded)){
+            this.newLineEdit.ListOfStations.splice(this.addStationPosition-1, 0, ee);
+            console.log("New line added =>:", this.newLineEdit);         
+          }
+          
         }
       });
+
+      let counterForDel = 0;
+
+      this.restStation.forEach(e1 => {
+        if(e1.Id == this.idAdded){
+          this.restStation.splice(counterForDel, 1);
+        }
+        counterForDel = counterForDel + 1;
+      });
+
+      //this.restStation.splice(this.idAdded, 1);
+
+      if(this.idAdded != 0){
+        this.arrayIntForAddStation.push(this.arrayIntForAddStation.length+1);
+      
+      }
+
+      
       this.showAddButtonBool = false;
       this.showComboBoxForAddSt =  false;
       this.showComboBoxForAddSt2 = false;
+
+  }
+
+  alreadyExists(list: StationModel[], id: number): boolean{
+    list.forEach(d=>{
+      if(d.Id == id){
+        return false;
+      }
+    })
+    return true;
   }
 
   showAddButton(event){
-    if(event.target.value != ""){
+    if(event.target.value != "" && parseInt(event.target.value, 10) > 0){
       this.showAddButtonBool = true;
-      this.addStationPosition = parseInt(event.target.value, 10)
-      
-      this.arrayIntForAddStation.push(this.arrayIntForAddStation.length+1);
-      
+      this.addStationPosition = parseInt(event.target.value, 10)      
     }
+  }
+
+  showComboBox(){
+    this.showComboBoxForAddSt = true;
   }
   
 
