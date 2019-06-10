@@ -11,12 +11,17 @@ namespace WebApp.Models.Entities
     {
         public int Id { get; set; }
         public TypeOfTicket TypeOfTicket { get; set; }
-        public DateTime? PurchaseDate { get; set; }
-        public DateTime? ExpirationDate { get; set; }
+        //public DateTime? PurchaseDate { get; set; }
+        //public DateTime? ExpirationDate { get; set; }
         public bool Valid { get; set; }
 
         [ForeignKey("AppUser")]
         public String AppUserId { get; set; }
         public AppUser AppUser { get; set; }
+
+        [ForeignKey("TicketPrice")]
+        public int TicketPriceId { get; set; }
+        public TicketPrice TicketPrice { get; set; }
+
     }
 }

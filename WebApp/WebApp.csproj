@@ -256,7 +256,9 @@
     <Compile Include="Controllers\LinesController.cs" />
     <Compile Include="Controllers\LineStationsController.cs" />
     <Compile Include="Controllers\PassangerTypesController.cs" />
+    <Compile Include="Controllers\PriceListsController.cs" />
     <Compile Include="Controllers\StationsController.cs" />
+    <Compile Include="Controllers\TicketPricesController.cs" />
     <Compile Include="Controllers\TimetablesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
@@ -270,6 +272,10 @@
     <Compile Include="Migrations\201906091626590_newMigration.cs" />
     <Compile Include="Migrations\201906091626590_newMigration.Designer.cs">
       <DependentUpon>201906091626590_newMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906101128352_migrationNew.cs" />
+    <Compile Include="Migrations\201906101128352_migrationNew.Designer.cs">
+      <DependentUpon>201906101128352_migrationNew.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -291,6 +297,7 @@
     <Compile Include="Models\Entities\UserType.cs" />
     <Compile Include="Models\Entities\Vehicle.cs" />
     <Compile Include="Models\PomModels\PomModelForLine.cs" />
+    <Compile Include="Models\PomModels\PomModelTicketPrices.cs" />
     <Compile Include="Models\PomModels\PomModelTimetableForEdit.cs" />
     <Compile Include="Models\PomModels\TimetablePomModel.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
@@ -429,6 +436,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906091626590_newMigration.resx">
       <DependentUpon>201906091626590_newMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906101128352_migrationNew.resx">
+      <DependentUpon>201906101128352_migrationNew.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -27,6 +27,10 @@ namespace WebApp.Persistence.UnitOfWork
         //public IDepartureRepository Departures { get; set; }
         [Dependency]
         public ILineRepository Lines { get; set; }
+
+        [Dependency]
+        public ILineStationRepository LineStations { get; set; }
+
         [Dependency]
         public IPassangerTypeRepository PassangerTypes { get; set; }
         [Dependency]
@@ -48,8 +52,7 @@ namespace WebApp.Persistence.UnitOfWork
         [Dependency]
         public IVehicleRepository Vehicles { get; set; }
 
-        [Dependency]
-        public ILineStationRepository LineStations { get; set; }
+
 
         public int Complete()
         {

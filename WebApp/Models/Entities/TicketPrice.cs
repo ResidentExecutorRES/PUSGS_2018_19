@@ -16,8 +16,8 @@ namespace WebApp.Models.Entities
         public int PriceListId { get; set; }
         public PriceList PriceList { get; set; }
 
-        [ForeignKey("Ticket")]
-        public int TicketId { get; set; }
-        public Ticket Ticket { get; set; }
+        [ForeignKey("TypeOfTicket")]
+        public int TypeOfTicketId { get; set; }
+        public TypeOfTicket TypeOfTicket { get; set; }
     }
 }

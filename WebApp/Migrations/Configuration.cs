@@ -92,7 +92,7 @@ namespace WebApp.Migrations
             if (!context.PassangerTypes.Any(u => u.Name == "Default"))
             {
                 PassangerType p = new PassangerType("Default");
-                p.RoleCoefficient = 1;
+                p.RoleCoefficient = 0;
 
                 context.PassangerTypes.Add(p);
                 //context.RoleCoefficients.Add(new RoleCoefficient(1));
@@ -102,7 +102,7 @@ namespace WebApp.Migrations
             if (!context.PassangerTypes.Any(u => u.Name == "None"))
             {
                 PassangerType p = new PassangerType("None");
-                p.RoleCoefficient = 1;
+                p.RoleCoefficient = 0;
                 
                 context.PassangerTypes.Add(p);
                 //context.RoleCoefficients.Add(new RoleCoefficient(1));
@@ -144,6 +144,33 @@ namespace WebApp.Migrations
             {
                 Day d = new Day("Sunday");
                 context.Days.Add(d);
+            }
+            /*
+             TimeLimited,
+                Daily,
+                Monthly,
+                Annual
+                     */
+
+            if (!context.TypeOfTickets.Any(u=> u.Name == "TimeLimited"))
+            {
+                TypeOfTicket tt = new TypeOfTicket("TimeLimited");
+                context.TypeOfTickets.Add(tt);
+            }
+            if (!context.TypeOfTickets.Any(u => u.Name == "Daily"))
+            {
+                TypeOfTicket tt = new TypeOfTicket("Daily");
+                context.TypeOfTickets.Add(tt);
+            }
+            if (!context.TypeOfTickets.Any(u => u.Name == "Monthly"))
+            {
+                TypeOfTicket tt = new TypeOfTicket("Monthly");
+                context.TypeOfTickets.Add(tt);
+            }
+            if (!context.TypeOfTickets.Any(u => u.Name == "Annual"))
+            {
+                TypeOfTicket tt = new TypeOfTicket("Annual");
+                context.TypeOfTickets.Add(tt);
             }
 
 
