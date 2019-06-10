@@ -14,6 +14,7 @@
         <li><a class="nav-link" [routerLink]="['/station']" *ngIf="loggedIn() && getRoleAdmin()">Stations</a></li>
         <li><a class="nav-link" [routerLink]="['/line']" *ngIf="loggedIn() && getRoleAdmin()">Lines</a></li>
         <li><a class="nav-link" [routerLink]="['/vehicle']" *ngIf="loggedIn() && getRoleAdmin()">Vehicle</a></li>
+        <li><a class="nav-link" [routerLink]="['/buyTicket']">Buy ticket</a></li>
       </ul>
 
       <!-- <ng-container >   *ngIf="getRole()" 

@@ -24,6 +24,7 @@ import { AgmCoreModule } from '@agm/core';
 import { LinesComponent } from './components/lines/lines.component';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { TimeTableComponent } from './components/time-table/time-table.component';
+import { BuyTicketComponent } from './components/buy-ticket/buy-ticket.component';
 
 
 const Routes = [
@@ -74,6 +75,10 @@ const Routes = [
   {
     path: "Timetable",
     component: TimeTableComponent
+  },
+  {
+    path: "buyTicket",
+    component: BuyTicketComponent
   }
 
 
@@ -94,7 +99,8 @@ const Routes = [
     MapComponent,
     LinesComponent,
     VehicleComponent,
-    TimeTableComponent
+    TimeTableComponent,
+    BuyTicketComponent
   ],
   imports: [
     BrowserModule,

@@ -22,6 +22,7 @@ namespace WebApp.Models.Entities
         [ForeignKey("TicketPrice")]
         public int TicketPriceId { get; set; }
         public TicketPrice TicketPrice { get; set; }
+        public double PriceOfTicket { get; set; }
 
     }
 }

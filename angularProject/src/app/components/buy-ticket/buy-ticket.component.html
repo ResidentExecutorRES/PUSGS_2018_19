@@ -1,0 +1,17 @@
+<div>
+    <form #buyTicketForm="ngForm" (ngSubmit)="onSubmit(buyTicketForm.value, buyTicketForm)">
+      <div class="form-group">
+          <label for="TypeOfTicket">Select type of ticket</label>
+          <select name="TypeOfTicket"  class="form-group"  class="form-control" ngModel>
+            <option disabled>Please select...</option>
+            <option value="TimeLimited">TimeLimited</option>
+            <option value="Daily">Daily</option>
+            <option value="Monthly">Monthly</option>
+            <option value="Annual">Annual</option>
+          </select>
+      </div>
+
+      <button type="submit" class="nav-link" class="btn">Buy ticket</button>
+
+  </form>
+</div>

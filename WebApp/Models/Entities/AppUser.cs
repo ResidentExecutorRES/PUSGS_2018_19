@@ -14,7 +14,6 @@ namespace WebApp.Models.Entities
         public String Name { get; set; }
         public String LastName { get; set; }
         public String Email { get; set; }
-        public Address Address { get; set; }
         public bool Activated { get; set; }
         public String Image { get; set; }
 
@@ -25,6 +24,11 @@ namespace WebApp.Models.Entities
         [ForeignKey("UserType")]
         public int? UserTypeId { get; set; }
         public UserType UserType { get; set; }
+
+        [ForeignKey("Address")]
+        public int? AddressId { get; set; }
+        public Address Address { get; set; }
+
 
         public DateTime? Birthaday { get; set; }
 
