@@ -20,5 +20,19 @@ namespace WebApp.Persistence.Repository
             return applicationDb.Timetables.ToList();
             //throw new NotImplementedException();
         }
+
+        public List<Timetable> LineInTimetables()
+        {
+
+            List<Timetable> tt = applicationDb.Timetables.Include(p => p.LineId).ToList();
+
+            return tt;
+            //throw new NotImplementedException();
+        }
+
+        public Timetable GetTimetable(int idTimetable)
+        {
+            return applicationDb.Timetables.Find(idTimetable);
+        }
     }
 }

@@ -10,5 +10,9 @@ namespace WebApp.Persistence.Repository
     public interface ITimetableRepository : IRepository<Timetable, int>
     {
         List<Timetable> GetAllTimetable();
+
+        List<Timetable> LineInTimetables();
+
+        Timetable GetTimetable(int idTimetable);
     }
 }

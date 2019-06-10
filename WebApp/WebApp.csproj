@@ -291,6 +291,7 @@
     <Compile Include="Models\Entities\UserType.cs" />
     <Compile Include="Models\Entities\Vehicle.cs" />
     <Compile Include="Models\PomModels\PomModelForLine.cs" />
+    <Compile Include="Models\PomModels\PomModelTimetableForEdit.cs" />
     <Compile Include="Models\PomModels\TimetablePomModel.cs" />
     <Compile Include="Persistence\ApplicationDbContext.cs" />
     <Compile Include="Persistence\Repository\AddressRepository.cs" />

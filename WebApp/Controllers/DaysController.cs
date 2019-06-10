@@ -29,22 +29,13 @@ namespace WebApp.Controllers
         // GET: api/Days
         public IQueryable<Day> GetDays()
         {
-            return _unitOfWork.Days.GetAll().AsQueryable();
+            var v = _unitOfWork.Days.GetAll().AsQueryable();
+            return v;
             //return db.Days;
         }
 
-        // GET: api/Days/5
-        [ResponseType(typeof(Day))]
-        public IHttpActionResult GetDay(int id)
-        {
-            Day day = db.Days.Find(id);
-            if (day == null)
-            {
-                return NotFound();
-            }
+        
 
-            return Ok(day);
-        }
 
         // PUT: api/Days/5
         [ResponseType(typeof(void))]

@@ -24,4 +24,17 @@ export class TimetableService {
   getAll(){
     return this.httpClient.get(this.baseUrl + "/api/Timetable/GetAll");
   }
+
+    // uradjen Include
+  // getLT(){
+  //     return this.httpClient.get(this.baseUrl + "/api/Timetable/LineInTT");
+  // }
+
+  editTimetable(id, timetable):Observable<any>{
+    return this.httpClient.put(this.baseUrl + "/api/Timetable/Edit?id=" + id, timetable);
+  }
+
+
+
+
 }

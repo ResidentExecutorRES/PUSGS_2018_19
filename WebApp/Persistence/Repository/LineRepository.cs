@@ -43,5 +43,13 @@ namespace WebApp.Persistence.Repository
 
             //throw new NotImplementedException();
         }
+
+        
+
+        public Line GetIdLine(int regNumber)
+        {
+            List<Line> l = applicationDb.Lines.Where(p => p.RegularNumber == regNumber).ToList();
+            return l[0];
+        }
     }
 }

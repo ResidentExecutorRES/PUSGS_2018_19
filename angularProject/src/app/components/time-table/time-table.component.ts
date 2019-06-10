@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LineService } from 'src/app/services/lineService/line.service';
-import { TimetableModel, TimetableModel2, TimetableModel3 } from 'src/app/models/timetable.model';
+import { TimetableModel, TimetableModel2, TimetableModel3, TimetableModel4 } from 'src/app/models/timetable.model';
 import { NgForm } from '@angular/forms';
 import { TimetableService } from 'src/app/services/timetableService/timetable.service';
 import { parse } from 'querystring';
@@ -24,6 +24,36 @@ export class TimeTableComponent implements OnInit {
   lineId: number = 0;
   timetableId: number = 0;
 
+  allLinesFromTimetable: any = [];
+
+  allLT: any = [];
+  comboBoxLineForEdit: any = []
+  comboBoxDayForEdit: any = []
+
+  selectedDayForEdit: any;
+
+  allLineForSelDay: any = []
+
+  allLineForSelectedDays: any = []
+
+  idLinesArray: any[] = []
+  showLineComboBox: boolean = false;
+  showDepartureComboBox: boolean = false;
+
+  allDeparturesForSelect: string[] = []
+
+  departuresForEditInput: string = ""
+  showInputTime: boolean = false;
+
+  timetableIdForSend: number = 0
+
+  clickedDeleteTime: boolean = false;
+  boolForButton: boolean = false;
+  editSubmitBool: boolean = false;
+
+  hiddenDeleteButton: boolean = false;
+  hiddenEditButton: boolean = false;
+
 
   constructor(private lineService: LineService, 
               private timetableService: TimetableService, private daysService: DayService) { 
@@ -41,6 +71,13 @@ export class TimeTableComponent implements OnInit {
         console.log(d1);
     })
 
+
+
+    // this.lineService.getLT().subscribe(s=>{
+    //   this.allLT = s;
+    //   console.log("ALL LT LT:", this.allLT)
+    // })
+    
     
   }
 
@@ -86,9 +123,107 @@ export class TimeTableComponent implements OnInit {
         }
     });
 
-    this.timetableService.deleteTimetable(this.timetableId).subscribe();
+    this.timetableService.deleteTimetable(this.timetableId).subscribe(data => {
+      alert("Timetable delete successfull!");
+    },
+    error => {
+      alert("Timetable delete - error Don't exist!");
+    });
 
   }
+
+  onSubmitEdit(timetableData: TimetableModel4, form:NgForm){
+    if(this.clickedDeleteTime){
+      timetableData.NewDepartures = timetableData.Departures;
+    }
+   
+    let ttt = new TimetableModel4(this.lineId, this.dayId, this.departuresForEditInput, timetableData.NewDepartures);
+
+    console.log("TTTTT", ttt);
+
+    this.timetableService.editTimetable(this.timetableIdForSend, ttt).subscribe();
+  }
+
+ 
+
+
+  getLineForEdit(event){
+    if(event.target.value != "" || event.target.value != null){
+      this.showLineComboBox = true;
+      this.allLineForSelDay = []
+      this.idLinesArray = []
+  
+      this.selectedDayForEdit = event.target.value;
+      console.log("Selected day: ", this.selectedDayForEdit)
+  
+      this.allDaysFromDb.forEach(element => {
+        if(element.Name == this.selectedDayForEdit){
+          this.dayId = element.Id;
+        }
+      });
+  
+      this.allTimetablesFromDb.forEach(element => {
+        if(element.DayId == this.dayId){ 
+          this.idLinesArray.push(element.LineId);
+        }
+      });
+  
+      this.idLinesArray.forEach(d=>{
+        this.allLinesFromDb.forEach(e => {
+          if(d == e.Id){
+            if(!this.allLineForSelDay.includes(e.RegularNumber)){
+              this.allLineForSelDay.push(e.RegularNumber);
+            } 
+          }
+        });
+      })
+    }
+    
+
+  }
+
+  getDeparturesForEditt(event){
+    this.allDeparturesForSelect = []
+    console.log("Targetttt", event.target.value);
+    if(event.target.value != "" || event.target.value != null){
+      this.showDepartureComboBox = true;
+
+     this.allLinesFromDb.forEach(element => {
+       if(element.RegularNumber == event.target.value){
+         this.lineId = element.Id;
+       }
+     });
+
+     this.allTimetablesFromDb.forEach(e1 => {
+       if(e1.DayId == this.dayId && e1.LineId == this.lineId){
+         this.allDeparturesForSelect = e1.Departures.split("|");
+         this.timetableIdForSend = e1.Id;
+       }
+     });
+     this.allDeparturesForSelect.pop();
+     console.log("Departures: ", this.allDeparturesForSelect)
+    }
+  }
+
+  setNewDepartures(event){
+    //this.showInputTime = true;
+    this.boolForButton = true;
+    this.departuresForEditInput = event.target.value;
+    this.hiddenDeleteButton =true;
+    this.hiddenEditButton = true;
+  }
+
+  editTime(){
+    this.showInputTime = true;
+    this.editSubmitBool = true;
+    this.hiddenEditButton = false;
+  }
+
+  deleteTime(){
+    this.clickedDeleteTime = true;
+    this.hiddenDeleteButton = false;
+  }
+  
 
   showAdd(){
     this.selected = "Add";

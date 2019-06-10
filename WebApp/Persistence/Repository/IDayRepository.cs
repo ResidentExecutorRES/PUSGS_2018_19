@@ -9,5 +9,6 @@ namespace WebApp.Persistence.Repository
 {
     public interface IDayRepository : IRepository<Day, int>
     {
+        
     }
 }

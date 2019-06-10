@@ -52,39 +52,54 @@ namespace WebApp.Controllers
             return Ok(timetable);
         }
 
+        [Route("Edit")]
         // PUT: api/Timetables/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutTimetable(int id, Timetable timetable)
+        public IHttpActionResult PutTimetable(int id, PomModelTimetableForEdit timetable)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != timetable.Id)
+            Timetable newTimetable = _unitOfWork.Timetables.Get(id);
+
+            int n = newTimetable.Departures.IndexOf(timetable.Departures);
+            string ss = newTimetable.Departures;
+
+            if (timetable.Departures == timetable.NewDepartures)
             {
-                return BadRequest();
+                ss = ss.Remove(n, 9);
+            }
+            else
+            {
+                ss = ss.Remove(n, 8).Insert(n, timetable.NewDepartures + ":00");
+            }
+            
+            List<TimeSpan> listTimeSpan = new List<TimeSpan>();
+
+            string[] nizVremena = ss.Split('|');
+            for (int i = 0; i < nizVremena.Length - 1; i++)
+            {
+                listTimeSpan.Add(TimeSpan.Parse(nizVremena[i]));
             }
 
-            db.Entry(timetable).State = EntityState.Modified;
+            List<TimeSpan> sortiranaVremena = listTimeSpan.OrderBy(dd => dd.Hours).ThenBy(dddd => dddd.Minutes).ToList();
 
-            try
+            string noviString = "";
+            foreach (var item in sortiranaVremena)
             {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TimetableExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                noviString += item.ToString() + "|";
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            newTimetable.Departures = noviString;
+
+            _unitOfWork.Timetables.Update(newTimetable);
+            _unitOfWork.Complete();
+
+            return Ok(newTimetable.Id);
+
+            //return StatusCode(HttpStatusCode.NoContent);
         }
 
         [Route("Add")]
@@ -101,7 +116,9 @@ namespace WebApp.Controllers
 
             Timetable newTimetable = new Timetable();
 
+
             int dayIdd = 0;
+            //_unitOfWork.Days.GetIdDay(timetablePom.DayId).Id;
             List<Day> d = _unitOfWork.Days.GetAll().ToList();
             foreach (var item in d)
             {
@@ -112,17 +129,17 @@ namespace WebApp.Controllers
                 }
             }
 
-            int lineIdd = 0;
-            List<Line> l = _unitOfWork.Lines.GetAll().ToList();
+            int lineIdd = _unitOfWork.Lines.GetIdLine(timetablePom.LineId).Id;
+            //List<Line> l = _unitOfWork.Lines.GetAll().ToList();
 
-            foreach (var item in l)
-            {
-                if (item.RegularNumber == timetablePom.LineId)
-                {
-                    lineIdd = item.Id;
-                    break;
-                }
-            }
+            //foreach (var item in l)
+            //{
+            //    if (item.RegularNumber == timetablePom.LineId)
+            //    {
+            //        lineIdd = item.Id;
+            //        break;
+            //    }
+            //}
 
             bool existsTimetable = false;
 
@@ -207,17 +224,41 @@ namespace WebApp.Controllers
         [ResponseType(typeof(Timetable))]
         public IHttpActionResult DeleteTimetable(int id)
         {
-            Timetable timetable = db.Timetables.Find(id);
+            //Timetable timetable = _unitOfWork.Timetables.Get(id);
+            Timetable timetable = _unitOfWork.Timetables.GetTimetable(id);
             if (timetable == null)
             {
                 return NotFound();
             }
 
-            db.Timetables.Remove(timetable);
-            db.SaveChanges();
+            _unitOfWork.Timetables.Remove(timetable);
+            _unitOfWork.Complete();
 
             return Ok(timetable);
         }
+
+        [Route("LineInTT")]
+        [ResponseType(typeof(Timetable))]
+        public List<Timetable> LineInTimetables()
+        {
+            var tt = _unitOfWork.Timetables.LineInTimetables();
+            return tt;
+        }
+
+
+        //// GET: api/Timetables
+        //[Route("GetAll")]
+        //[ResponseType(typeof(Timetable))]
+        //public List<Timetable> GetTimetables()
+        //{
+        //    //var v = db.Timetables.ToList();
+
+        //    //var v = _unitOfWork.Timetables.GetAll().ToList();
+
+        //    List<Timetable> v = _unitOfWork.Timetables.GetAllTimetable();
+        //    return v;
+        //}
+
 
         protected override void Dispose(bool disposing)
         {

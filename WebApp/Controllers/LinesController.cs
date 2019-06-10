@@ -35,18 +35,19 @@ namespace WebApp.Controllers
             return v;
         }
 
-        // GET: api/Lines/5
-        //[ResponseType(typeof(Line))]
-        //public IHttpActionResult GetLine(int id)
-        //{
-        //    Line line = db.Lines.Find(id);
-        //    if (line == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [Route("GetLine")]
+        //GET: api/Lines/5
+        [ResponseType(typeof(Line))]
+        public IHttpActionResult GetLine(int id)
+        {
+            Line line = _unitOfWork.Lines.Get(id);
+            if (line == null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(line);
-        //}
+            return Ok(line);
+        }
 
         [Route("EditLine")]
         //PUT: api/Lines/5
@@ -227,6 +228,8 @@ namespace WebApp.Controllers
 
             return Ok(line);
         }
+
+        
 
         protected override void Dispose(bool disposing)
         {

@@ -32,4 +32,8 @@ export class LineService {
     return this.httpClient.put(this.baseUrl + "/api/Lines/EditLine?id=" + id, line);
   }
 
+  getLine(id: number){
+    return this.httpClient.get(this.baseUrl + "/api/Lines/GetLine?id=" + id);
+  }
+
 }

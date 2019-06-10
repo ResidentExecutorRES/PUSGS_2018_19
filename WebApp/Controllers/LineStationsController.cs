@@ -35,11 +35,12 @@ namespace WebApp.Controllers
             return db.LineStations;
         }
 
+        [Route("GetLine")]
         // GET: api/LineStations/5
         [ResponseType(typeof(LineStation))]
         public IHttpActionResult GetLineStation(int id)
         {
-            LineStation lineStation = db.LineStations.Find(id);
+            LineStation lineStation = _unitOfWork.LineStations.Get(id);
             if (lineStation == null)
             {
                 return NotFound();
@@ -130,6 +131,9 @@ namespace WebApp.Controllers
 
             return Ok(lineStation);
         }
+
+        
+
 
         protected override void Dispose(bool disposing)
         {
