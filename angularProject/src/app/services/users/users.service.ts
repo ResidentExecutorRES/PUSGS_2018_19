@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Http } from '@angular/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
   })
 
 export class UsersService{
+    baseUrl = "http://localhost:52295"
     constructor(private http: Http, private httpClient: HttpClient) { }
     
     getUserClaims() {
@@ -17,4 +19,15 @@ export class UsersService{
     return this.httpClient.get('http://localhost:52295/api/AppUser/GetUser?email='+email)
     }
 
+    getAdressInfo(id:number){
+      return this.httpClient.get('http://localhost:52295/api/AppUser/GetAddressInfo?id=' + id)
+    }
+
+    editAppUser(pomAppUser):Observable<any>{
+      return this.httpClient.post(this.baseUrl + "/api/AppUser/Edit", pomAppUser)
+    }
+
+    editPassword(editPassword):Observable<any>{
+      return this.httpClient.post(this.baseUrl + "/api/Account/ChangePassword", editPassword);
+    }
 }

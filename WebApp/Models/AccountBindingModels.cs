@@ -109,4 +109,48 @@ namespace WebApp.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+
+    public class PomAppUser
+    {
+        public PomAppUser()
+        {
+        }
+
+        [Required]
+        [Display(Name = "Id")]
+        public String Id { get; set; }
+
+        [Required]
+        [Display(Name = "Name")]
+        public String Name { get; set; }
+
+        [Required]
+        [Display(Name = "LastName")]
+        public String LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Email")]
+        public String Email { get; set; }
+
+        [Required]
+        [Display(Name = "Street")]
+        public String Street { get; set; }
+
+        [Required]
+        [Display(Name = "Number")]
+        public String Number { get; set; }
+
+        [Required]
+        [Display(Name = "City")]
+        public String City { get; set; }
+
+        [Required]
+        [Display(Name = "Birthaday")]
+        public DateTime? Birthaday { get; set; }
+
+        [Required]
+        [Display(Name = "AddressId")]
+        public int AddressId { get; set; }
+
+    }
 }

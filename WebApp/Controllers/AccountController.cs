@@ -142,6 +142,22 @@ namespace WebApp.Controllers
             return Ok();
         }
 
+        //[Route("EditProfile")]
+        //public async Task<IHttpActionResult> EditProfile(PomAppUser station)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    //unitOfWork.Stations.Update(station);
+        //    _unitOfWork.Complete();
+        //    //return Ok(station.Id);
+        //    return Ok();
+
+        //}
+
+
         // POST api/Account/SetPassword
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)

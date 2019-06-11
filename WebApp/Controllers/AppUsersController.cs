@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -6,9 +9,12 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using WebApp.Models;
 using WebApp.Models.Entities;
+using WebApp.Models.PomModels;
 using WebApp.Persistence;
 using WebApp.Persistence.UnitOfWork;
 
@@ -17,13 +23,46 @@ namespace WebApp.Controllers
     [RoutePrefix("api/AppUser")]
     public class AppUsersController : ApiController
     {
-        //private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
         private readonly IUnitOfWork unitOfWork;
+
+        private const string LocalLoginProvider = "Local";
+        private ApplicationUserManager _userManager;
+        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+
+
+        public AppUsersController()
+        {
+        }
 
         public AppUsersController(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
+
+        public AppUsersController(ApplicationUserManager userManager,
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        {
+            UserManager = userManager;
+            AccessTokenFormat = accessTokenFormat;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        //public AppUsersController(IUnitOfWork unitOfWork)
+        //{
+        //    this.unitOfWork = unitOfWork;
+        //}
 
         // GET: api/AppUsers
         //public IQueryable<AppUser> GetAppUser()
@@ -35,6 +74,14 @@ namespace WebApp.Controllers
         public AppUser GetUser(string email)
         {
             return unitOfWork.AppUsers.Find(user => user.Email == email).FirstOrDefault();
+        }
+
+
+        [Route("GetAddressInfo")]
+        public Address GetAddressInfo(int id)
+        {
+            Address adresa = unitOfWork.Addresses.Get(id);
+            return adresa;
         }
 
         // GET: api/AppUsers/5
@@ -51,7 +98,6 @@ namespace WebApp.Controllers
         //}
 
         // PUT: api/AppUsers/5
-        [ResponseType(typeof(void))]
         //public IHttpActionResult PutAppUser(string id, AppUser appUser)
         //{
         //    if (!ModelState.IsValid)
@@ -131,6 +177,53 @@ namespace WebApp.Controllers
         //    return Ok(appUser);
         //}
 
+          
+        [Route("Edit")]        
+        // POST: api/Stations
+        //[ResponseType(typeof(void))]
+        public IHttpActionResult EditAppUser(PomAppUser model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            AppUser appUser = unitOfWork.AppUsers.Find(x => x.Id == model.Id).FirstOrDefault();
+            appUser.LastName = model.LastName;
+            appUser.Name = model.Name;
+            appUser.Email = model.Email;
+            appUser.Birthaday = model.Birthaday;
+
+            Address address = unitOfWork.Addresses.Find(x => x.Id == model.AddressId).FirstOrDefault();
+            address.Number = model.Number;
+            address.City = model.City;
+            address.Street = model.Street;
+
+            unitOfWork.Addresses.Update(address);
+            unitOfWork.AppUsers.Update(appUser);
+            unitOfWork.Complete();
+
+            return Ok();
+        }
+
+        [Route("EditPassword")]
+        // POST: api/Stations
+        //[ResponseType(typeof(void))]
+        public IHttpActionResult EditPassword(string id, ChangePasswordBindingModel station)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //unitOfWork.Stations.Update(station);
+            unitOfWork.Complete();
+            //return Ok(station.Id);
+            return Ok();
+
+        }
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -144,5 +237,38 @@ namespace WebApp.Controllers
         //{
         //    return db.AppUser.Count(e => e.Id == id) > 0;
         //}
+
+
+
+
+        private IHttpActionResult GetErrorResult(IdentityResult result)
+        {
+            if (result == null)
+            {
+                return InternalServerError();
+            }
+
+            if (!result.Succeeded)
+            {
+                if (result.Errors != null)
+                {
+                    foreach (string error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // No ModelState errors are available to send, so just return an empty BadRequest.
+                    return BadRequest();
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return null;
+        }
+
     }
 }

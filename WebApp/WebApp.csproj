@@ -293,6 +293,7 @@
     <Compile Include="Models\Entities\TypeOfTicket.cs" />
     <Compile Include="Models\Entities\UserType.cs" />
     <Compile Include="Models\Entities\Vehicle.cs" />
+    <Compile Include="Models\PomModels\PomAppUser.cs" />
     <Compile Include="Models\PomModels\PomModelForBuyTicket.cs" />
     <Compile Include="Models\PomModels\PomModelForLine.cs" />
     <Compile Include="Models\PomModels\PomModelTicketPrices.cs" />
