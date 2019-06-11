@@ -23,21 +23,54 @@ export class ProfileComponent implements OnInit {
   idAdressFromDb: number;
   dateForEdit: any = []
 
-  modell: PomAppUserModel;
+  modell: any;
+
+  showImageBool: boolean = false;
+  selectedImage: any;
+
+  showApplyButton: boolean = false;
 
   constructor(private usersService: UsersService) {
     this.usersService.getUserData(localStorage.getItem('name')).subscribe(data=>{
       this.user = data;
-      this.dateForEdit = this.user.Birthaday
-      this.idAdressFromDb = this.user.AddressId;
+      //this.modell = data;
+      console.log("Korisnik", data);
+   
+      //this.dateForEdit = this.user.Birthaday
+      //this.idAdressFromDb = this.user.AddressId;
 
-      console.log("Korisnik: ", this.user);
-      console.log("Dataaaa: ", this.dateForEdit)
-      console.log("Id adresss: ", this.idAdressFromDb)
+      //console.log("Imageeee", this.user.Image);
+
+      if(this.user.Image == null){
+        this.showImageBool = true;
+      }else{
+        this.showImageBool = false;
+      }
+
     })
+      // this.modell.Name = this.user.Name;
+      // this.modell.LastName = this.user.LastName;
+      // //let newDate = new Date(dateString);
+      // this.modell.Birthaday = this.user.Birthaday.split('T')[0];
+  
+      // //this.userForEdit.Image = this.user.Image;
+      // this.modell.AddressId = this.user.AddressId;
+      // this.modell.Email = this.user.Email;
+      // //password se ne podesava
+  
+      // this.usersService.getAdressInfo(this.user.AddressId).subscribe(s=>{
+      // this.addressFromDb = s;
+      // this.modell.City = this.addressFromDb.City;
+      // this.modell.Number = this.addressFromDb.Number;
+      // this.modell.Street = this.addressFromDb.Street;
+
+      // console.log("Korisnik: ", this.user);
+      // console.log("Dataaaa: ", this.dateForEdit)
+      // console.log("Id adresss: ", this.idAdressFromDb)
+    //})
+  
     this.userForEdit = new PomAppUserModel("", "", "", "", "", "", "", "", -1);
-    
-   }
+  }
 
   ngOnInit() {
   }
@@ -46,53 +79,11 @@ export class ProfileComponent implements OnInit {
     return localStorage.role;
   }
 
-  
-
-  // requestUserInfo(){
-  //   this.usersService.getUserClaims().subscribe(claims => {
-  //     this.usersService.getUserData(claims['Email']).subscribe(data => {
-  //       this.user = data;
-  //       console.log("User::" + this.user);
-      
-  //     })
-  //   })
-
-  //   this.usersService.getUserData(localStorage.getItem('name')).subscribe(d=>{
-  //     this.user = d;
-  //     console.log("U", this.user);
-  //   })
-
-  // }
-
-  // editUserInfo($event){
-  //   this.ClickedButtonEdit = true;
-
-  //   this.userForEdit.Id = this.user.Id;
-  //   this.userForEdit.Name = this.user.Name;
-  //   this.userForEdit.LastName = this.user.LastName;
-  //   //let newDate = new Date(dateString);
-  //   this.userForEdit.Birthaday = this.user.Birthaday.split('T')[0];
-
-  //   //this.userForEdit.Image = this.user.Image;
-  //   this.userForEdit.AddressId = this.user.AddressId;
-  //   this.userForEdit.Email = this.user.Email;
-  //   //password se ne podesava
-
-  //   this.usersService.getAdressInfo(this.user.AddressId).subscribe(s=>{
-  //   this.addressFromDb = s;
-  //   this.userForEdit.City = this.addressFromDb.City;
-  //   this.userForEdit.Number = this.addressFromDb.Number;
-  //   this.userForEdit.Street = this.addressFromDb.Street;
-
-  //   console.log("Adresaaaa: ", this.addressFromDb);
-  //   });   
-  // }
-
+ 
   onSubmit(userForEdit: PomAppUserModel, form: NgForm){
     console.log("Korisnik za izmjenu: ", this.userForEdit);
 
     console.log("Atresaaa: ", this.addressFromDb)
-    this.modell = userForEdit
     userForEdit.AddressId = this.idAdressFromDb
     userForEdit.Id = this.user.Id
     this.usersService.editAppUser(userForEdit).subscribe();
@@ -145,4 +136,46 @@ export class ProfileComponent implements OnInit {
     this.selected = "Password";
   }
 
+  showImage(event){
+    this.selectedImage = event.target.files;
+    
+      this.showApplyButton = true;
+    
+  }
+
+  ApplyImage(){
+        this.userForEdit.Id = this.user.Id;
+        this.userForEdit.Name = this.user.Name;
+        this.userForEdit.LastName = this.user.LastName;
+        //let newDate = new Date(dateString);
+        this.userForEdit.Birthaday = this.user.Birthaday.split('T')[0];
+    
+        //this.userForEdit.Image = this.user.Image;
+        this.userForEdit.AddressId = this.user.AddressId;
+        this.userForEdit.Email = this.user.Email;
+        //password se ne podesava
+    
+        this.usersService.getAdressInfo(this.user.AddressId).subscribe(s=>{
+        this.addressFromDb = s;
+        this.userForEdit.City = this.addressFromDb.City;
+        this.userForEdit.Number = this.addressFromDb.Number;
+        this.userForEdit.Street = this.addressFromDb.Street;
+    
+        console.log("Adresaaaa: ", this.addressFromDb);
+        if(this.selectedImage == undefined)
+      alert("No image selected! ");
+    else{
+      this.usersService.uploadFile(this.selectedImage).subscribe(d=>{
+        alert("Image upload successful! ");
+        this.usersService.editAppUser(this.userForEdit).subscribe(dd=>{
+          //alert("Image upload successful! ");        
+          console.log("DDDDDDDDD", d)
+
+        })
+      });
+    }
+        }); 
+
+    
+  }
 }

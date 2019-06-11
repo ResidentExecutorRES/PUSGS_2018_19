@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { RegistrationModel } from 'src/app/models/registration.model';
 import { AuthenticationService } from 'src/app/services/authentication-service.service';
 import { TypesService } from 'src/app/services/types.service';
+import { UsersService } from 'src/app/services/users/users.service';
 
 
 
@@ -18,7 +19,14 @@ import { TypesService } from 'src/app/services/types.service';
 export class RegisterComponent implements OnInit {
 
   types: any =[];
-  constructor(private authService: AuthenticationService, private typesService: TypesService) { 
+
+  selectedImage: any;
+  // selIm: string  = "C:/Users/suzana/Pictures/SavedPictures.png";
+  userBytesImage: any;
+
+  constructor(private authService: AuthenticationService, 
+    private typesService: TypesService,
+    private userService: UsersService) { 
     typesService.getPassangerAll().subscribe(types =>{
       this.types = types;
     });
@@ -41,12 +49,23 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(registrationData: RegistrationModel, form: NgForm) {
      console.log(registrationData);
-    this.authService.register(registrationData).subscribe( data => {
-      alert("Register successfull!");
-    },
-    error => {
-      alert("Register - error!");
-      console.log(registrationData);
-    })
+    if (this.selectedImage == undefined){
+      alert("No image selected!");
+     return; 
+   }
+   this.userService.uploadFile(this.selectedImage).subscribe(data1 => {      
+      
+      this.authService.register(registrationData).subscribe( data => {
+        alert("Register successfull!");
+      },
+      error => {
+        alert("Register - error!");
+        console.log(registrationData);
+      })
+   })
+  }
+
+  onFileSelected(event){
+    this.selectedImage = event.target.files;
   }
 }

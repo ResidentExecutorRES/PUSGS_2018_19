@@ -11,6 +11,10 @@
 <div align="center">
         <button type="submit" class="button" class="btn" (click)='showPassword()'>Change Password</button>
         <button type="submit" class="button" class="btn" (click)='showEdit()'>Changde Profile</button>
+        <input *ngIf="showImageBool" type="file" class="button" class="btn" (click)='showImage($event)' value="Choose image">
+
+        <button *ngIf="showApplyButton" type="submit" class="button" class="btn" (click)='ApplyImage()'>Apply image</button>
+
 </div>
 
 <!-- 

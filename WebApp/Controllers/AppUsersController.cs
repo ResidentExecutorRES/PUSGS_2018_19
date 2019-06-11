@@ -192,11 +192,13 @@ namespace WebApp.Controllers
             appUser.Name = model.Name;
             appUser.Email = model.Email;
             appUser.Birthaday = model.Birthaday;
+            appUser.Image = AccountController.path ;
 
             Address address = unitOfWork.Addresses.Find(x => x.Id == model.AddressId).FirstOrDefault();
             address.Number = model.Number;
             address.City = model.City;
             address.Street = model.Street;
+
 
             unitOfWork.Addresses.Update(address);
             unitOfWork.AppUsers.Update(appUser);

@@ -7,7 +7,7 @@ export class PomAppUserModel{
     Number: string;
     City: string;
     Birthaday: string;
-    //Image: string;
+    Image: string;
     AddressId: number;
     //Password: string
    

@@ -24,10 +24,20 @@ export class UsersService{
     }
 
     editAppUser(pomAppUser):Observable<any>{
-      return this.httpClient.post(this.baseUrl + "/api/AppUser/Edit", pomAppUser)
+      return this.httpClient.post(this.baseUrl + "/api/Account/Edit", pomAppUser)
     }
 
     editPassword(editPassword):Observable<any>{
       return this.httpClient.post(this.baseUrl + "/api/Account/ChangePassword", editPassword);
     }
+
+    uploadFile(selectedFiles: File[]){
+      const fd = new FormData();
+      for (let selectedFile of selectedFiles){
+        fd.append(selectedFile.name, selectedFile)
+      }    
+      return this.httpClient.post(this.baseUrl + "/api/Account/PostImage", fd);
+    }  
+
+   
 }
