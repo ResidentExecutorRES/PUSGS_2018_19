@@ -333,16 +333,16 @@ namespace WebApp.Controllers
             
 
             
-            var user = new ApplicationUser()
-            {
-                Id = model.Id,
-                UserName = model.Email,
-                Email = model.Email,
-                //PasswordHash = ApplicationUser.HashPassword(model.Password),
-                AppUser = appUser
-            };
+            //var user = new ApplicationUser()
+            //{
+            //    Id = model.Id,
+            //    UserName = model.Email,
+            //    Email = model.Email,
+            //    //PasswordHash = ApplicationUser.HashPassword(model.Password),
+            //    AppUser = appUser
+            //};
 
-            IdentityResult result = await UserManager.UpdateAsync(user);
+            //IdentityResult result = await UserManager.UpdateAsync(user);
 
 
             _unitOfWork.Addresses.Update(address);

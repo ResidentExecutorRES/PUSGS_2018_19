@@ -166,10 +166,11 @@ export class ProfileComponent implements OnInit {
       alert("No image selected! ");
     else{
       this.usersService.uploadFile(this.selectedImage).subscribe(d=>{
-        alert("Image upload successful! ");
+        alert("Image upload successful!");
+        console.log("d", d)
         this.usersService.editAppUser(this.userForEdit).subscribe(dd=>{
           //alert("Image upload successful! ");        
-          console.log("DDDDDDDDD", d)
+          // console.log("DDDDDDDDD", d)
 
         })
       });
@@ -177,5 +178,13 @@ export class ProfileComponent implements OnInit {
         }); 
 
     
+  }
+
+  onFileSelected(event){
+    this.selectedImage = event.target.files;
+    
+      this.showApplyButton = true;
+
+    this.selectedImage = event.target.files;
   }
 }
