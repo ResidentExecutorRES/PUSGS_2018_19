@@ -109,17 +109,53 @@ namespace WebApp.Controllers
             ticket.AppUserId = appUser.Id;
             ticket.TicketPriceId = ticketPrice.Id;
             ticket.Valid = true;
+            ticket.PurchaseDate = DateTime.Now;
+            ticket.TypeOfTicketId = tt.Id;
+            ticket.Email = pom.Email;
 
             _unitOfWork.Tickets.Add(ticket);
             _unitOfWork.Complete();
 
             return Ok(ticket.Id);
-
-            //db.Tickets.Add(ticket);
-            //db.SaveChanges();
-
-            //return CreatedAtRoute("DefaultApi", new { id = ticket.Id }, ticket);
         }
+
+
+        [Route("SendMail")]
+        public string SendMail(PomModelForBuyTicket ticket)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState).ToString();
+            }
+
+            string subject = "Ticket purchase";
+            string desc =   $"Dear {ticket.Email},\nYour purchase is successfull.\n " +
+                $"Ticket price: {_unitOfWork.TicketPrices.Find(a => a.TypeOfTicketId == a.Id).FirstOrDefault().Price} din\n " +
+                            $"Type of ticket:Time Limited\n" +
+                            $"Time of purchase: {DateTime.Now}\n" +
+                            $"Ticket is valid for the next hour.\n\n" +
+                            $"Thank you.";
+            var email = ticket.Email;
+            TypeOfTicket tt = _unitOfWork.TypeOfTickets.Find(s => s.Name == ticket.TypeOfTicket).FirstOrDefault();
+            TicketPrice ticketPrice = _unitOfWork.TicketPrices.Find(a => a.TypeOfTicketId == tt.Id).FirstOrDefault();
+
+            Ticket storeTicket = new Ticket();
+            storeTicket.Email = email;
+            storeTicket.PriceOfTicket = ticketPrice.Price;
+            storeTicket.PurchaseDate = DateTime.Now;
+            storeTicket.TypeOfTicketId = tt.Id;
+            storeTicket.Valid = true;
+            storeTicket.TicketPriceId = ticketPrice.Id;
+
+            _unitOfWork.Tickets.NotifyViaEmail(email, subject, desc);
+            _unitOfWork.Tickets.Add(storeTicket);
+            _unitOfWork.Complete();
+
+            return "Ok";
+
+        }
+
 
         // DELETE: api/Tickets/5
         [ResponseType(typeof(Ticket))]

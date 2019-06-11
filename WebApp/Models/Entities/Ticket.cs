@@ -10,8 +10,13 @@ namespace WebApp.Models.Entities
     public class Ticket
     {
         public int Id { get; set; }
+        public string Email { get; set; }
+        public int? TypeOfTicketId { get; set; }
         public TypeOfTicket TypeOfTicket { get; set; }
-        //public DateTime? PurchaseDate { get; set; }
+
+        public DateTime? PurchaseDate { get; set; }
+
+
         //public DateTime? ExpirationDate { get; set; }
         public bool Valid { get; set; }
 
@@ -22,6 +27,8 @@ namespace WebApp.Models.Entities
         [ForeignKey("TicketPrice")]
         public int TicketPriceId { get; set; }
         public TicketPrice TicketPrice { get; set; }
+
+
         public double PriceOfTicket { get; set; }
 
     }

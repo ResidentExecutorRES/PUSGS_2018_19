@@ -13,5 +13,6 @@ namespace WebApp.Models.PomModels
 
         public string Email { get; set; }
         public string TypeOfTicket { get; set; }
+        public DateTime PurchaseDate { get; set; }
     }
 }

@@ -20,12 +20,14 @@ export class BuyTicketComponent implements OnInit {
 
   constructor(private authService: AuthenticationService, private usersService: UsersService,
     private buyTicketService: BuyTicketService) { 
-    
+      console.log("cc", localStorage.getItem('name'));
+    if(localStorage.getItem('name') != null){
     this.usersService.getUserData(localStorage.getItem('name')).subscribe(d=>{
       this.loggedUser = d;
       this.emailLoggedUser = this.loggedUser.Email
       console.log("Ulogovani korisnik: ", this.loggedUser)
     })
+  }
   }
 
   ngOnInit() {
@@ -35,16 +37,36 @@ export class BuyTicketComponent implements OnInit {
   onSubmit(buyTicketForm: PomModelForBuyTicket, form: NgForm){
     console.log("Karta: ", buyTicketForm);
     
-    console.log("Email from Local storage: ", this.emailLoggedUser);
-    if(this.loggedUser.UserTypeId == 3){
-      buyTicketForm.Email = this.emailLoggedUser;
-      
-      this.buyTicketService.buyTicket(buyTicketForm).subscribe(d=>{
-        alert("Succesfull buy ticket");
-      });
-    }
 
-   
+    console.log("Email from Local storage: ", this.emailLoggedUser);
+    let rola =  localStorage.getItem('role');
+    let mail = localStorage.getItem('name');
+    if(rola == "AppUser"){
+      buyTicketForm.Email = ""; 
+      buyTicketForm.PurchaseDate = new Date();
+      console.log("Trenutno vreme", buyTicketForm.PurchaseDate)
+      this.buyTicketService.buyTicket(buyTicketForm).subscribe(d=>{
+      alert("Succesfull buy ticket");
+      });     
+    }else if(mail == null){
+      if(buyTicketForm.Email.length != 0){
+        buyTicketForm.PurchaseDate = new Date();
+        buyTicketForm.TypeOfTicket = "TimeLimited";
+        this.buyTicketService.buyTicketViaEmail(buyTicketForm).subscribe();
+      }else{
+        alert("Please enter your email address");
+      }    
   }
+    
+  }
+
+  nonRegister(): boolean{
+    if(localStorage.getItem('name') == null)
+      return true;
+    else 
+      return false;
+  }
+
+
 
 }

@@ -19,4 +19,9 @@ export class BuyTicketService {
     //return this.httpClient.put(this.baseUrl + "/Tickets/Add", {email, typeOfTicket})
     }
 
+    buyTicketViaEmail(ticket): Observable<any>{
+
+      return this.httpClient.post(this.baseUrl + "/api/Tickets/SendMail",ticket);
+   }
+
 }
