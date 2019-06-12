@@ -31,7 +31,10 @@ import { ControlorGuard } from './guard/controllerGuard';
 import { RequestsComponent } from './components/requests/requests.component';
 
 import {ToastrModule,ToastNoAnimation,ToastNoAnimationModule,} from 'ngx-toastr';
+import { ValidateTicketComponent } from './components/validate-ticket/validate-ticket.component';
 
+import { AgmDirectionModule } from 'agm-direction';   // agm-direction
+ 
 const Routes = [
   {
     path: "",
@@ -89,6 +92,11 @@ const Routes = [
   {
     path:"request",
     component: RequestsComponent
+  },
+  {
+    path:"validetTicket",
+    component: ValidateTicketComponent,
+    canActivate: [UserLoggedInGuard]
   }
 
 
@@ -111,7 +119,8 @@ const Routes = [
     VehicleComponent,
     TimeTableComponent,
     BuyTicketComponent,
-    RequestsComponent
+    RequestsComponent,
+    ValidateTicketComponent
   ],
   imports: [
     BrowserModule,
@@ -120,6 +129,7 @@ const Routes = [
     HttpModule,
     HttpClientModule,
     NgxPopper,
+    AgmDirectionModule,
     AgmCoreModule.forRoot({apiKey: 'AIzaSyDnihJyw_34z5S1KZXp90pfTGAqhFszNJk'}),
     ToastNoAnimationModule,
     ToastrModule.forRoot({

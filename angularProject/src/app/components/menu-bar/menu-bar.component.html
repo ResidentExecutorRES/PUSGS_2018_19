@@ -17,26 +17,14 @@
         <li><a class="nav-link" [routerLink]="['/buyTicket']">Buy ticket</a></li>
       </ul>
 
-      <!-- <ng-container >   *ngIf="getRole()" 
-        <div class="container">
-          <ul class="nav nav-pills">
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown"  role="button" aria-haspopup="true" aria-expanded="true">Menu</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#"  >Lines</a>
-                    <a class="dropdown-item" [routerLink]="['/station']">Stations</a>
-                    <a class="dropdown-item" href="#">Timetable</a>
-                    <a class="dropdown-item" href="#">Pricelist</a>
-                </div>
-            </li>
-          </ul>
-        </div>
-      </ng-container> -->   
-      
-     <ul class="navbar-nav" *ngIf="getRoleAdmin() && loggedIn()"> 
+      <ul class="navbar-nav" *ngIf="getRoleAdmin() && loggedIn()"> 
         <li><a class="nav-link" [routerLink]="['/request']" >Requests for authorization</a></li>
-    </ul>
+      </ul>
+
+      <ul class="navbar-nav" *ngIf="getRoleController() && loggedIn()"> 
+        <li><a class="nav-link" [routerLink]="['/validetTicket']" >Validate Ticket</a></li>
+      </ul>
+
 
     <ul class="navbar-nav" *ngIf="!loggedIn()">
         

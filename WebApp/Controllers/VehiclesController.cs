@@ -26,11 +26,29 @@ namespace WebApp.Controllers
         }
 
         // GET: api/Vehicles
+        [Route("GetAll")]
         public IQueryable<Vehicle> GetVehicles()
         {
             return _unitOfWork.Vehicles.GetAll().AsQueryable();
         }
 
+        [Route("GetLinesForVehicle")]
+        public List<Line> GetLinesForVehicle()
+        {
+            var lines = _unitOfWork.Vehicles.GetAll().ToList();
+            List<Line> retVal = new List<Line>();
+
+            foreach (var item in _unitOfWork.Lines.GetAll().ToList())
+            {
+                if (!lines.Any(x => x.LineId == item.Id))
+                    retVal.Add(item);
+            }
+
+            return retVal;
+            
+        }
+
+        [Route("GetVehicle")]
         // GET: api/Vehicles/5
         [ResponseType(typeof(Vehicle))]
         public IHttpActionResult GetVehicle(int id)
@@ -89,12 +107,6 @@ namespace WebApp.Controllers
                 return BadRequest(ModelState);
             }
 
-            IEnumerable<Line> lines = new List<Line>();
-            lines = _unitOfWork.Lines.CompleteLine();
-
-            
-
-
             _unitOfWork.Vehicles.Add(vehicle);
             _unitOfWork.Complete();
 
@@ -102,6 +114,20 @@ namespace WebApp.Controllers
             //return CreatedAtRoute("DefaultApi", new { id = vehicle.Id }, vehicle);
         }
 
+        [Route("TimetablesForVehicle")]
+        public List<Timetable> GetTimbletable()
+        {
+            List<Timetable> retVal = new List<Timetable>();
+            List<Vehicle> vehicles = _unitOfWork.Vehicles.GetAll().ToList();
+            foreach (var item in _unitOfWork.Timetables.GetAll())
+            {
+                if (vehicles.Any(x => x.LineId == item.LineId))
+                    retVal.Add(item);
+            }
+            return retVal;
+        }
+
+        [Route("Delete")]
         // DELETE: api/Vehicles/5
         [ResponseType(typeof(Vehicle))]
         public IHttpActionResult DeleteVehicle(int id)

@@ -15,10 +15,15 @@
 
             <!-- <div *ngFor = "let key of keys"> -->
               <div *ngFor="let ls of listOfCheckedLines, let i = index">
-              <agm-polyline  [strokeColor]="listOfColors[i]">
-                <agm-polyline-point *ngFor="let station of ls.List" [latitude]="station.Latitude" [longitude]="station.Longitude">
-                </agm-polyline-point>
-              </agm-polyline>
+                <div *ngFor="let dir of ls.List, let j= index">
+                <agm-direction  *ngIf = "ls.List[j+1]"
+                  [renderOptions] = "{polylineOptions: {strokeColor: listOfColors[i]}, suppressMarkers: true}"
+                  [origin] = "{lat: ls.List[j].Latitude, lng: ls.List[j].Longitude}"
+                  [destination] = "{lat: ls.List[j+1].Latitude, lng: ls.List[j+1].Longitude}">
+                  <!-- <agm-polyline-point *ngFor="let station of ls.List" [latitude]="station.Latitude" [longitude]="station.Longitude">
+                  </agm-polyline-point> -->
+                </agm-direction>
+              </div>
           </div>
           
       </agm-map>

@@ -58,6 +58,7 @@ namespace WebApp.Controllers
             private set{ _userManager = value; }
         }
 
+        #region UserInfo_ManageInfo
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [Route("UserInfo")]
@@ -111,7 +112,7 @@ namespace WebApp.Controllers
                 ExternalLoginProviders = GetExternalLogins(returnUrl, generateState)
             };
         }
-
+        #endregion
 
         // POST api/Account/Logout
         [Route("Logout")]
@@ -122,7 +123,8 @@ namespace WebApp.Controllers
         }
 
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
-        
+
+        #region EditRegion
         [Route("Edit")]
         public async Task<IHttpActionResult> EditAppUser(PomAppUser model)
         {
@@ -150,7 +152,7 @@ namespace WebApp.Controllers
 
             return Ok();
         }
-
+        #endregion
 
         #region PasswordRegion
         // POST api/Account/ChangePassword
@@ -655,7 +657,7 @@ namespace WebApp.Controllers
             return _unitOfWork.AppUsers.Find(x => (!x.Activated && x.UserTypeId == userTypeId)).ToList();
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Controller")]
         [Route("GetAwaitingAppUsers")]
         public List<AppUser> GetAwaitingAppUsers()
         {
@@ -697,7 +699,7 @@ namespace WebApp.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [Route("AuthorizeControll")]
+        [Route("AuthorizeController")]
         public string AuthorizeControll([FromBody]PomModelForAuthorization pom)
         {
 
@@ -721,11 +723,7 @@ namespace WebApp.Controllers
             return "Ok";
         }
 
-
-
-
-
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Controller")]
         [Route("AuthorizeAppUser")]
         public string AuthorizeAppUser([FromBody]PomModelForAuthorization pom)
         {
@@ -734,10 +732,6 @@ namespace WebApp.Controllers
             {
                 return BadRequest(ModelState).ToString();
             }
-            //Get user data, and update activated to true
-            //ApplicationUser current = UserManager.FindById(pom.Id);
-
-
 
             AppUser current = _unitOfWork.AppUsers.Get(pom.Id);
 
@@ -762,8 +756,11 @@ namespace WebApp.Controllers
 
 
 
+
+
         public bool NotifyViaEmail(string targetEmail, string subject, string body)
         {
+            
             var client = new SmtpClient("smtp.gmail.com", 587)
             {
                 Credentials = new NetworkCredential("pusgs2018.19projekat@gmail.com", "pusgs2019"),

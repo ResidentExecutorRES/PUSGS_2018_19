@@ -17,6 +17,10 @@ namespace WebApp.Hubs
         {
             hubContext.Clients.Group("Admins").sendNotification("New user created.");
         }
+        public void NotifyController()
+        {
+            hubContext.Clients.Group("Controllers").sendNotification("One user uploaded document, waiting for evaluation.");
+        }
 
         public void NotifyAdminService()
         {
@@ -27,12 +31,14 @@ namespace WebApp.Hubs
         {
             var identityName = Context.User.Identity.Name;
             Groups.Add(Context.ConnectionId, "Admins");
+            Groups.Add(Context.ConnectionId, "Controllers");
             return base.OnConnected();
         }
 
         public override Task OnDisconnected(bool stopCalled)
         {
             Groups.Remove(Context.ConnectionId, "Admins");
+            Groups.Remove(Context.ConnectionId, "Controllers");
             return base.OnDisconnected(stopCalled);
         }
     }

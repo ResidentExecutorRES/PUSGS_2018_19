@@ -31,20 +31,28 @@ namespace WebApp.Controllers
         }
 
         // GET: api/Tickets
-        public IQueryable<Ticket> GetTickets()
+        [Route("GetAllTypeOfTicket")]
+        public IQueryable<TypeOfTicket> GetTickets()
         {
-            return db.Tickets;
+            return _unitOfWork.TypeOfTickets.GetAll().AsQueryable();
         }
 
         // GET: api/Tickets/5
+        [Route("GetTicket")]
         [ResponseType(typeof(Ticket))]
         public IHttpActionResult GetTicket(int id)
         {
-            Ticket ticket = db.Tickets.Find(id);
+            Ticket ticket = _unitOfWork.Tickets.GetTicketWithInclude(id);
+
             if (ticket == null)
             {
                 return NotFound();
             }
+            if (ticket.AppUserId != null)
+            {
+                ticket.AppUserId = ticket.AppUser.Email;
+            }
+
 
             return Ok(ticket);
         }

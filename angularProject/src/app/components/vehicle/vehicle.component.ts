@@ -12,19 +12,29 @@ import { NgForm } from '@angular/forms';
 })
 export class VehicleComponent implements OnInit {
 
-  selected: string = ''
-  RegistrationNumber: string =  ''
-  Longitude: number
-  Latitude: number
+  selected: string = ""
+  RegistrationNumber: string =  ""
+  lines: any = [];
+  linesWithoutVehicle: any = [];
+  vehicles: any = [];
+  timetables: any = [];
+  idVehicleForDelete: number;
+  idVehicleForEdit: number
 
-  lines: any = []
+  vehicleForEdit: any;
 
 
-  constructor(private vehicleService: VehicleService, private lineService: LineService) { 
-    lineService.getAllLines().subscribe(data => {
-      this.lines = data;
-      console.log(this.lines);
-      
+  constructor(private vehicleService: VehicleService, private lineService: LineService) {     
+    vehicleService.getLinesForVehicle().subscribe(xx =>{
+      this.linesWithoutVehicle = xx;
+      vehicleService.getTimetablesForVehicle().subscribe(x =>{
+        this.timetables = x;
+        console.log("Timetables:" ,x);
+      })
+    })
+    this.vehicleService.getAllVehicles().subscribe(d=>{
+      this.vehicles = d;
+      console.log("All vehicels: ", this.vehicles);
     })
   }
 
@@ -33,14 +43,34 @@ export class VehicleComponent implements OnInit {
 
   onSubmit(vehicleData: VehicleModel, form:NgForm){
     
-    this.vehicleService.addVehicle(vehicleData).subscribe(data => {
-     
-      console.log(data);
+    this.vehicleService.addVehicle(vehicleData).subscribe(data => {     
+      console.log(data); 
+    });     
+  }
 
- 
-    });
+  getRegistrationNumber(event){
+    this.idVehicleForDelete = event.target.value;
+    
+  }
 
-   
+  deleteVehicle(){
+    console.log("Reg number: ", this.idVehicleForDelete);
+    this.vehicleService.deleteVehicle(this.idVehicleForDelete).subscribe(d=>{
+      alert("Vehicle delete successful! ");
+    })
+  }
+
+
+  getIdVehiclee(event){
+    this.idVehicleForEdit = event.target.value;
+    this.vehicleService.getVehicle(this.idVehicleForEdit).subscribe(c=>{
+      this.vehicleForEdit = c;
+      console.log("Vehicle for edit: ", this.vehicleForEdit);
+    })
+  }
+
+
+  editVehicle(){
     
   }
 

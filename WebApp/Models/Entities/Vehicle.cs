@@ -12,8 +12,9 @@ namespace WebApp.Models.Entities
         public int Id { get; set; }
         [Required]
         public String RegistrationNumber { get; set; }
-        public Double Longitude { get; set; }
-        public Double Latitude { get; set; }
+        public String TypeOfVehicle { get; set; }
+        //public Double Longitude { get; set; }
+        //public Double Latitude { get; set; }
 
         [ForeignKey("Line")]
         public int LineId { get; set; }

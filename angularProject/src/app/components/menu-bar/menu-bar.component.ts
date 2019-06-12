@@ -37,4 +37,13 @@ export class MenuBarComponent implements OnInit {
       return false;
     }
   }
+
+  getRoleController(): boolean{
+    if(localStorage.role == 'Controller'){
+      return true;
+    }
+    else{
+      return false;
+    } 
+  }
 }

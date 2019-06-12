@@ -15,4 +15,25 @@ export class VehicleService {
     return this.httpClient.post(this.baseUrl+"/api/Vehicles/Add",vehicle);
   }
 
+  getAllVehicles(){
+    return this.httpClient.get(this.baseUrl + "/api/Vehicles/GetAll");
+  }
+
+  getLinesForVehicle(){
+    return this.httpClient.get(this.baseUrl + "/api/Vehicles/GetLinesForVehicle"); 
+  }
+
+  getTimetablesForVehicle(){
+    return this.httpClient.get(this.baseUrl + "/api/Vehicles/TimetablesForVehicle"); 
+  }
+
+  deleteVehicle(id){
+    return this.httpClient.delete(this.baseUrl + "/api/Vehicles/Delete?id=" + id);
+  }
+  //
+
+  getVehicle(id: number){
+    return this.httpClient.get(this.baseUrl + "/api/Vehicles/GetVehicle?id=" + id);
+  }
+
 }

@@ -12,8 +12,17 @@ namespace WebApp.Persistence.Repository
 {
     public class TicketRepository : Repository<Ticket, int>, ITicketRepository
     {
+        protected ApplicationDbContext Context { get { return context as ApplicationDbContext; } }
+
         public TicketRepository(DbContext context) : base(context)
         {
+        }
+
+        public Ticket GetTicketWithInclude(int id)
+        {
+            List<Ticket> t = Context.Tickets.Include(x => x.AppUser).ToList();
+            Ticket tt = t.Find(x => x.Id == id);
+            return tt;
         }
 
         public bool NotifyViaEmail(string targetEmail, string subject, string body)
