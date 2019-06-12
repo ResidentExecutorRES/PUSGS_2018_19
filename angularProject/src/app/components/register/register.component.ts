@@ -5,8 +5,7 @@ import { RegistrationModel } from 'src/app/models/registration.model';
 import { AuthenticationService } from 'src/app/services/authentication-service.service';
 import { TypesService } from 'src/app/services/types.service';
 import { UsersService } from 'src/app/services/users/users.service';
-
-
+import { RequestsService } from 'src/app/services/requestsService/requests.service';
 
 
 @Component({
@@ -26,7 +25,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(private authService: AuthenticationService, 
     private typesService: TypesService,
-    private userService: UsersService) { 
+    private userService: UsersService,
+    private notificationServ: RequestsService) { 
     typesService.getPassangerAll().subscribe(types =>{
       this.types = types;
     });
@@ -50,19 +50,33 @@ export class RegisterComponent implements OnInit {
   onSubmit(registrationData: RegistrationModel, form: NgForm) {
      console.log(registrationData);
     if (this.selectedImage == undefined){
-      alert("No image selected!");
-     return; 
+      //alert("No image selected!");
+      this.authService.register(registrationData).subscribe(d1=>{
+        if(registrationData.UserType == 'AppUser'){
+          this.notificationServ.sendNotification();
+        }
+      });
+     //return; 
    }
-   this.userService.uploadFile(this.selectedImage).subscribe(data1 => {      
+   else{
+     this.userService.uploadFile(this.selectedImage).subscribe(d2=>{
+       this.authService.register(registrationData).subscribe(d3=>{
+         if(registrationData.UserType != 'Admin'){
+           this.notificationServ.sendNotification();
+         }
+       });
+     });
+   }
+  //  this.userService.uploadFile(this.selectedImage).subscribe(data1 => {      
       
-      this.authService.register(registrationData).subscribe( data => {
-        alert("Register successfull!");
-      },
-      error => {
-        alert("Register - error!");
-        console.log(registrationData);
-      })
-   })
+  //     this.authService.register(registrationData).subscribe( data => {
+  //       alert("Register successfull!");
+  //     },
+  //     error => {
+  //       alert("Register - error!");
+  //       console.log(registrationData);
+  //     })
+  //  })
   }
 
   onFileSelected(event){

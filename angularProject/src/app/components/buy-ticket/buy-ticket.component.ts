@@ -42,7 +42,7 @@ export class BuyTicketComponent implements OnInit {
     let rola =  localStorage.getItem('role');
     let mail = localStorage.getItem('name');
     if(rola == "AppUser"){
-      buyTicketForm.Email = ""; 
+      buyTicketForm.Email = localStorage.getItem('name')
       buyTicketForm.PurchaseDate = new Date();
       console.log("Trenutno vreme", buyTicketForm.PurchaseDate)
       this.buyTicketService.buyTicket(buyTicketForm).subscribe(d=>{

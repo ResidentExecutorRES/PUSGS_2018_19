@@ -267,6 +267,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\NotificationHub.cs" />
     <Compile Include="Migrations\201905222056072_InitialMigration.cs" />
     <Compile Include="Migrations\201905222056072_InitialMigration.Designer.cs">
       <DependentUpon>201905222056072_InitialMigration.cs</DependentUpon>
@@ -298,7 +299,7 @@
     <Compile Include="Models\Entities\TypeOfTicket.cs" />
     <Compile Include="Models\Entities\UserType.cs" />
     <Compile Include="Models\Entities\Vehicle.cs" />
-    <Compile Include="Models\PomModels\PomAppUser.cs" />
+    <Compile Include="Models\PomModels\PomModelForAuthorization.cs" />
     <Compile Include="Models\PomModels\PomModelForBuyTicket.cs" />
     <Compile Include="Models\PomModels\PomModelForLine.cs" />
     <Compile Include="Models\PomModels\PomModelTicketPrices.cs" />

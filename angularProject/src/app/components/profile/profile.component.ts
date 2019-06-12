@@ -35,40 +35,15 @@ export class ProfileComponent implements OnInit {
       this.user = data;
       //this.modell = data;
       console.log("Korisnik", data);
-   
-      //this.dateForEdit = this.user.Birthaday
-      //this.idAdressFromDb = this.user.AddressId;
 
-      //console.log("Imageeee", this.user.Image);
-
-      if(this.user.Image == null){
+      if(this.user.Image.length == 0){
         this.showImageBool = true;
       }else{
         this.showImageBool = false;
       }
 
     })
-      // this.modell.Name = this.user.Name;
-      // this.modell.LastName = this.user.LastName;
-      // //let newDate = new Date(dateString);
-      // this.modell.Birthaday = this.user.Birthaday.split('T')[0];
-  
-      // //this.userForEdit.Image = this.user.Image;
-      // this.modell.AddressId = this.user.AddressId;
-      // this.modell.Email = this.user.Email;
-      // //password se ne podesava
-  
-      // this.usersService.getAdressInfo(this.user.AddressId).subscribe(s=>{
-      // this.addressFromDb = s;
-      // this.modell.City = this.addressFromDb.City;
-      // this.modell.Number = this.addressFromDb.Number;
-      // this.modell.Street = this.addressFromDb.Street;
 
-      // console.log("Korisnik: ", this.user);
-      // console.log("Dataaaa: ", this.dateForEdit)
-      // console.log("Id adresss: ", this.idAdressFromDb)
-    //})
-  
     this.userForEdit = new PomAppUserModel("", "", "", "", "", "", "", "", -1);
   }
 
@@ -83,9 +58,14 @@ export class ProfileComponent implements OnInit {
   onSubmit(userForEdit: PomAppUserModel, form: NgForm){
     console.log("Korisnik za izmjenu: ", this.userForEdit);
 
+    this.usersService.getAdressInfo(this.user.AddressId).subscribe(s => {
+
+    })
+
     console.log("Atresaaa: ", this.addressFromDb)
-    userForEdit.AddressId = this.idAdressFromDb
+    userForEdit.AddressId = this.user.AddressId
     userForEdit.Id = this.user.Id
+    
     this.usersService.editAppUser(userForEdit).subscribe();
     
   }

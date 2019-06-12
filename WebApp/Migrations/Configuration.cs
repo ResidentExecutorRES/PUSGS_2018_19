@@ -55,18 +55,31 @@ namespace WebApp.Migrations
             var userStore = new UserStore<ApplicationUser>(context);
             var userManager = new UserManager<ApplicationUser>(userStore);
 
-            if (!context.Users.Any(u => u.UserName == "admin@yahoo.com"))
+            if (!context.Users.Any(u => u.UserName == "admin@gmail.com"))
             {
-                var user = new ApplicationUser() { Id = "admin", UserName = "admin@yahoo.com", Email = "admin@yahoo.com", PasswordHash = ApplicationUser.HashPassword("Admin123!") };
+                var user = new ApplicationUser() { Id = "admin", UserName = "admin@gmail.com", Email = "admin@gmail.com", PasswordHash = ApplicationUser.HashPassword("Admin123!")};
+                AppUser appUser = new AppUser();
+                appUser.Activated = true;
+                appUser.Id = user.Id;
+                appUser.UserTypeId = 1;
+                appUser.Email = user.Email;
+
+                //user.AppUserId = appUser.Id;
                 userManager.Create(user);
                 userManager.AddToRole(user.Id, "Admin");
             }
 
-            if (!context.Users.Any(u => u.UserName == "appu@yahoo.com"))
+            if (!context.Users.Any(u => u.UserName == "appu@gmail.com"))
             { 
-                var user = new ApplicationUser() { Id = "appu", UserName = "appu@yahoo.com", Email = "appu@yahoo.com", PasswordHash = ApplicationUser.HashPassword("Appu123!") };
+                var user = new ApplicationUser() { Id = "appu", UserName = "appu@gmail.com", Email = "appu@gmail.com", PasswordHash = ApplicationUser.HashPassword("Appu123!") };
                 userManager.Create(user);
                 userManager.AddToRole(user.Id, "AppUser");
+            }
+            if (!context.Users.Any(u => u.UserName == "controller@gmail.com"))
+            {
+                var user = new ApplicationUser() { Id = "controller", UserName = "controller@gmail.com", Email = "controller@gmail.com", PasswordHash = ApplicationUser.HashPassword("Controller123!") };
+                userManager.Create(user);
+                userManager.AddToRole(user.Id, "Controller");
             }
 
 

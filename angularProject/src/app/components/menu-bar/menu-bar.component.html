@@ -32,12 +32,10 @@
             </li>
           </ul>
         </div>
-      </ng-container> -->
-
-    
+      </ng-container> -->   
       
      <ul class="navbar-nav" *ngIf="getRoleAdmin() && loggedIn()"> 
-        <li><a class="nav-link" [routerLink]="['/request']" >Requests</a></li>
+        <li><a class="nav-link" [routerLink]="['/request']" >Requests for authorization</a></li>
     </ul>
 
     <ul class="navbar-nav" *ngIf="!loggedIn()">

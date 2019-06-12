@@ -25,7 +25,12 @@ import { LinesComponent } from './components/lines/lines.component';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
 import { TimeTableComponent } from './components/time-table/time-table.component';
 import { BuyTicketComponent } from './components/buy-ticket/buy-ticket.component';
+import { CanActivateViaAuthGuard } from './guard/authGuard';
+import { UserLoggedInGuard } from './guard/userLoginGuard';
+import { ControlorGuard } from './guard/controllerGuard';
+import { RequestsComponent } from './components/requests/requests.component';
 
+import {ToastrModule,ToastNoAnimation,ToastNoAnimationModule,} from 'ngx-toastr';
 
 const Routes = [
   {
@@ -62,7 +67,8 @@ const Routes = [
   },
   {
     path: "station",
-    component: StationsComponent
+    component: StationsComponent,
+    canActivate: [UserLoggedInGuard]
   },
   {
     path: "line",
@@ -79,6 +85,10 @@ const Routes = [
   {
     path: "buyTicket",
     component: BuyTicketComponent
+  },
+  {
+    path:"request",
+    component: RequestsComponent
   }
 
 
@@ -100,7 +110,8 @@ const Routes = [
     LinesComponent,
     VehicleComponent,
     TimeTableComponent,
-    BuyTicketComponent
+    BuyTicketComponent,
+    RequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -109,10 +120,18 @@ const Routes = [
     HttpModule,
     HttpClientModule,
     NgxPopper,
-    AgmCoreModule.forRoot({apiKey: 'AIzaSyDnihJyw_34z5S1KZXp90pfTGAqhFszNJk'})
+    AgmCoreModule.forRoot({apiKey: 'AIzaSyDnihJyw_34z5S1KZXp90pfTGAqhFszNJk'}),
+    ToastNoAnimationModule,
+    ToastrModule.forRoot({
+      toastComponent: ToastNoAnimation,
+    }),
     
   ],
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
+  providers: [
+    CanActivateViaAuthGuard,
+    UserLoggedInGuard,
+    ControlorGuard,
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 

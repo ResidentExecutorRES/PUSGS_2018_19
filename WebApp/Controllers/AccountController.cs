@@ -23,6 +23,8 @@ using System.Net;
 using System.IO;
 using System.Drawing;
 using System.Text;
+using WebApp.Models.PomModels;
+using System.Net.Mail;
 
 namespace WebApp.Controllers
 {
@@ -34,37 +36,27 @@ namespace WebApp.Controllers
 
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
-        private readonly IUnitOfWork _unitOfWork; 
+        private readonly IUnitOfWork _unitOfWork;
+        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-        public AccountController()
-        {
-        }
+        #region Constructors
+        public AccountController(){}
 
-        public AccountController(IUnitOfWork unitOfWork )
-        {
-            _unitOfWork = unitOfWork;
-        }
+        public AccountController(IUnitOfWork unitOfWork ){ _unitOfWork = unitOfWork; }
 
-        public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+        public AccountController(ApplicationUserManager userManager, ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
         }
 
+        #endregion 
+
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get{ return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>(); }
+            private set{ _userManager = value; }
         }
-
-        public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -77,19 +69,10 @@ namespace WebApp.Controllers
             {
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+                LoginProvider = externalLogin?.LoginProvider
             };
         }
 
-        // POST api/Account/Logout
-        [Route("Logout")]
-        public IHttpActionResult Logout()
-        {
-            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-            return Ok();
-        }
-
-        // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
         {
@@ -129,6 +112,47 @@ namespace WebApp.Controllers
             };
         }
 
+
+        // POST api/Account/Logout
+        [Route("Logout")]
+        public IHttpActionResult Logout()
+        {
+            Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
+            return Ok();
+        }
+
+        // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
+        
+        [Route("Edit")]
+        public async Task<IHttpActionResult> EditAppUser(PomAppUser model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            AppUser appUser = _unitOfWork.AppUsers.Find(x => x.Id == model.Id).FirstOrDefault();
+            appUser.LastName = model.LastName;
+            appUser.Name = model.Name;
+            appUser.Email = model.Email;
+            appUser.Birthaday = model.Birthaday;
+            appUser.Image = path;
+
+            path = "";
+
+            Address address = _unitOfWork.Addresses.Find(x => x.Id == model.AddressId).FirstOrDefault();
+            address.Number = model.Number;
+            address.City = model.City;
+            address.Street = model.Street;
+
+            _unitOfWork.Addresses.Update(address);
+            _unitOfWork.AppUsers.Update(appUser);
+            _unitOfWork.Complete();
+
+            return Ok();
+        }
+
+
+        #region PasswordRegion
         // POST api/Account/ChangePassword
         [Route("ChangePassword")]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
@@ -149,22 +173,6 @@ namespace WebApp.Controllers
             return Ok();
         }
 
-        //[Route("EditProfile")]
-        //public async Task<IHttpActionResult> EditProfile(PomAppUser station)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    //unitOfWork.Stations.Update(station);
-        //    _unitOfWork.Complete();
-        //    //return Ok(station.Id);
-        //    return Ok();
-
-        //}
-
-
         // POST api/Account/SetPassword
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
@@ -184,6 +192,9 @@ namespace WebApp.Controllers
             return Ok();
         }
 
+        #endregion
+        
+        #region LoginRegion
         // POST api/Account/AddExternalLogin
         [Route("AddExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
@@ -308,50 +319,6 @@ namespace WebApp.Controllers
             return Ok();
         }
 
-        [Route("Edit")]
-        // POST: api/Stations
-        //[ResponseType(typeof(void))]
-        public async Task<IHttpActionResult>  EditAppUser(PomAppUser model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            AppUser appUser = _unitOfWork.AppUsers.Find(x => x.Id == model.Id).FirstOrDefault();
-            appUser.LastName = model.LastName;
-            appUser.Name = model.Name;
-            appUser.Email = model.Email;
-            appUser.Birthaday = model.Birthaday;
-            appUser.Image = path;
-
-            path = "";
-
-            Address address = _unitOfWork.Addresses.Find(x => x.Id == model.AddressId).FirstOrDefault();
-            address.Number = model.Number;
-            address.City = model.City;
-            address.Street = model.Street;
-            
-
-            
-            //var user = new ApplicationUser()
-            //{
-            //    Id = model.Id,
-            //    UserName = model.Email,
-            //    Email = model.Email,
-            //    //PasswordHash = ApplicationUser.HashPassword(model.Password),
-            //    AppUser = appUser
-            //};
-
-            //IdentityResult result = await UserManager.UpdateAsync(user);
-
-
-            _unitOfWork.Addresses.Update(address);
-            _unitOfWork.AppUsers.Update(appUser);
-            _unitOfWork.Complete();
-
-            return Ok();
-        }
-
         // GET api/Account/ExternalLogins?returnUrl=%2F&generateState=true
         [AllowAnonymous]
         [Route("ExternalLogins")]
@@ -393,6 +360,9 @@ namespace WebApp.Controllers
             return logins;
         }
 
+        #endregion
+
+        #region RegisterRegion
         // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
@@ -463,12 +433,46 @@ namespace WebApp.Controllers
                 return GetErrorResult(result);
             }
 
-            UserManager.AddToRole(user.Id, "AppUser");
+            UserManager.AddToRole(user.Id, model.UserType);
 
             return Ok();
         }
 
+        // POST api/Account/RegisterExternal
+        [OverrideAuthentication]
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [Route("RegisterExternal")]
+        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            var info = await Authentication.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return InternalServerError();
+            }
+
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+            IdentityResult result = await UserManager.CreateAsync(user);
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            result = await UserManager.AddLoginAsync(user.Id, info.Login);
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+            return Ok();
+        }
+        #endregion
+
+        #region ImageRegion
         [AllowAnonymous]
         [Route("PostImage")]
         public async Task<HttpResponseMessage> PostImage()
@@ -542,8 +546,6 @@ namespace WebApp.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
-
-
         public byte[] ImageToByteArray(Image imageIn)
         {
             using (var ms = new MemoryStream())
@@ -597,7 +599,6 @@ namespace WebApp.Controllers
             return plainBytes;
         }
 
-
         [AllowAnonymous]
         [Route("GetUserImage")]
         public async Task<byte[]> GetUserImage(string email)
@@ -635,51 +636,93 @@ namespace WebApp.Controllers
             return returnList;
         }
 
+        #endregion
 
-
-        // POST api/Account/RegisterExternal
-        [OverrideAuthentication]
-        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
-        [Route("RegisterExternal")]
-        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
+        #region Authorization
+        [Authorize(Roles = "Admin")]
+        [Route("GetAwaitingAdmins")]
+        public List<AppUser> GetAwaitingAdmins()
         {
+            int userTypeId = _unitOfWork.UserTypes.Find(c => c.Name == "Admin").FirstOrDefault().Id;
+            return _unitOfWork.AppUsers.Find(x => (!x.Activated && x.UserTypeId == userTypeId)).ToList();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [Route("GetAwaitingAControllers")]
+        public List<AppUser> GetAwaitingControllers()
+        {
+            int userTypeId = _unitOfWork.UserTypes.Find(c => c.Name == "Controller").FirstOrDefault().Id;
+            return _unitOfWork.AppUsers.Find(x => (!x.Activated && x.UserTypeId == userTypeId)).ToList();
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [Route("AuthorizeAdmin")]
+        public string AuthorizeAdmin([FromBody]PomModelForAuthorization pomModel)
+        {
+
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest(ModelState).ToString();
             }
+            //Get user data, and update activated to true
+            //ApplicationUser current = UserManager.FindById(Id.Id);
+            AppUser current = _unitOfWork.AppUsers.Get(pomModel.Id);
+            current.Activated = true;
 
-            var info = await Authentication.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return InternalServerError();
-            }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            _unitOfWork.AppUsers.Update(current);
+            _unitOfWork.Complete();
 
-            IdentityResult result = await UserManager.CreateAsync(user);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
 
-            result = await UserManager.AddLoginAsync(user.Id, info.Login);
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result); 
-            }
-            return Ok();
+            string subject = "Admin approved";
+            string desc = $"Dear {current.Name}, You have been approved as admin.";
+            var adminEmail = current.Email;
+            
+            NotifyViaEmail(adminEmail, subject, desc);
+
+            return "Ok";
+
         }
 
-        protected override void Dispose(bool disposing)
+        [Authorize(Roles = "Admin")]
+        [Route("AuthorizeControll")]
+        public string AuthorizeControll([FromBody]PomModelForAuthorization pom)
         {
-            if (disposing && _userManager != null)
-            {
-                _userManager.Dispose();
-                _userManager = null;
-            }
 
-            base.Dispose(disposing);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState).ToString();
+            }
+            //Get user data, and update activated to true
+            //ApplicationUser current = UserManager.FindById(pom.Id);
+
+            AppUser current = _unitOfWork.AppUsers.Get(pom.Id);
+            current.Activated = true;
+            _unitOfWork.AppUsers.Update(current);
+            _unitOfWork.Complete();
+            
+            string subject = "Controller approved";
+            string desc = $"Dear {current.Name}, You have been approved as controller.";
+            var controllerEmail = current.Email;
+            NotifyViaEmail(controllerEmail, subject, desc);
+
+            return "Ok";
         }
+
+        public bool NotifyViaEmail(string targetEmail, string subject, string body)
+        {
+            var client = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential("pusgs2018.19projekat@gmail.com", "pusgs2019"),
+                EnableSsl = true
+            };
+
+            client.Send("pusgs2018.19projekat@gmail.com", targetEmail, subject, body);
+            return true;
+        }
+
+        #endregion
 
         #region Helpers
 
@@ -787,5 +830,17 @@ namespace WebApp.Controllers
         }
 
         #endregion
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && _userManager != null)
+            {
+                _userManager.Dispose();
+                _userManager = null;
+            }
+
+            base.Dispose(disposing);
+        }
+
     }
 }
