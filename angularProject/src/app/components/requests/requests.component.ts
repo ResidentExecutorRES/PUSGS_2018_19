@@ -14,11 +14,13 @@ export class RequestsComponent implements OnInit {
   awaitingAdmins:any = [];
   awaitingControllers:any = [];
   modelHelp: PomModelForAuthorization = new PomModelForAuthorization("");
-  awaitingClients:any = [];
+  awaitingAppUsers:any = [];
 
   userBytesImages:any = [];
   imagesLoaded:boolean = false
   wtfList:any = []
+
+
   constructor(private verifyService: VerificationService,private usersService: UsersService) { 
     this.usersService.getUserData(localStorage.getItem('name')).subscribe(data => {
 
@@ -29,9 +31,15 @@ export class RequestsComponent implements OnInit {
         this.awaitingAdmins = data;
         verifyService.getAwaitingControllers().subscribe(data => {
           this.awaitingControllers = data;
+        verifyService.getAwaitingAppUsers().subscribe(data=>{
+          this.awaitingAppUsers = data;
+        })
         });
-      })
-     });
+        })
+    });
+
+     
+
    }
 
    ngOnInit() {
@@ -54,6 +62,17 @@ export class RequestsComponent implements OnInit {
       if(resp == "Ok")  {
         alert("Controller has been authorized!");
         this.awaitingControllers.splice(i,1);
+      }
+       else alert("Something went wrong");
+    })
+  }
+
+  AuthorizeAppUsers(id, i){
+    this.modelHelp.Id = id;
+    this.verifyService.authorizeAppUser(this.modelHelp).subscribe(resp => {
+      if(resp == "Ok")  {
+        alert("AppUser has been authorized!");
+        this.awaitingAppUsers.splice(i,1);
       }
        else alert("Something went wrong");
     })

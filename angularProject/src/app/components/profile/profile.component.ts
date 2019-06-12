@@ -35,8 +35,9 @@ export class ProfileComponent implements OnInit {
       this.user = data;
       //this.modell = data;
       console.log("Korisnik", data);
+      console.log("User typeeee: ", this.user.UserTypeId);
 
-      if(this.user.Image.length == 0){
+      if(this.user.Image.length == 0 && (this.user.PassangerTypeId == 1 || this.user.PassangerTypeId == 2)){
         this.showImageBool = true;
       }else{
         this.showImageBool = false;

@@ -655,6 +655,17 @@ namespace WebApp.Controllers
             return _unitOfWork.AppUsers.Find(x => (!x.Activated && x.UserTypeId == userTypeId)).ToList();
         }
 
+        [Authorize(Roles ="Admin")]
+        [Route("GetAwaitingAppUsers")]
+        public List<AppUser> GetAwaitingAppUsers()
+        {
+            int passangerIdStudent = _unitOfWork.PassangerTypes.Find(c => c.Name == "Student").FirstOrDefault().Id;
+            int passangerIdPensioner = _unitOfWork.PassangerTypes.Find(c => c.Name == "Pensioner").FirstOrDefault().Id;
+
+            return _unitOfWork.AppUsers.Find(x => (!x.Activated && (x.PassangerTypeId == passangerIdStudent || 
+            x.PassangerTypeId == passangerIdPensioner))).ToList();
+        }
+
 
         [Authorize(Roles = "Admin")]
         [Route("AuthorizeAdmin")]
@@ -709,6 +720,47 @@ namespace WebApp.Controllers
 
             return "Ok";
         }
+
+
+
+
+
+        [Authorize(Roles = "Admin")]
+        [Route("AuthorizeAppUser")]
+        public string AuthorizeAppUser([FromBody]PomModelForAuthorization pom)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState).ToString();
+            }
+            //Get user data, and update activated to true
+            //ApplicationUser current = UserManager.FindById(pom.Id);
+
+
+
+            AppUser current = _unitOfWork.AppUsers.Get(pom.Id);
+
+            if(current.Image == "")
+            {
+                return "NotOk";
+            }
+
+            current.Activated = true;
+            _unitOfWork.AppUsers.Update(current);
+            _unitOfWork.Complete();
+
+            string passTypeName = _unitOfWork.PassangerTypes.Find(x => x.Id == current.PassangerTypeId).FirstOrDefault().Name;
+
+            string subject = "AppUser approved";
+            string desc = $"Dear {current.Name}, You have been approved as {passTypeName}." ;
+            var controllerEmail = current.Email;
+            NotifyViaEmail(controllerEmail, subject, desc);
+
+            return "Ok";
+        }
+
+
 
         public bool NotifyViaEmail(string targetEmail, string subject, string body)
         {

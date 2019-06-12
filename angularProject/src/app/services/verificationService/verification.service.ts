@@ -31,5 +31,18 @@ export class VerificationService {
     return this.httpClient.post(this.baseUrl + "/api/Account/AuthorizeControll", controllerId);
   }
 
+  getAwaitingAppUsers(): Observable<any> {
+    return this.httpClient.get(this.baseUrl + "/api/Account/GetAwaitingAppUsers");
+  }
+
+  authorizeAppUser(appUserId): Observable<any> {
+      let headers = new HttpHeaders();
+      headers = headers.append( "Content-type","application/json");
+      return this.httpClient.post(this.baseUrl + "/api/Account/AuthorizeAppUser", appUserId);
+    }
+  
+
+
+
   
 }

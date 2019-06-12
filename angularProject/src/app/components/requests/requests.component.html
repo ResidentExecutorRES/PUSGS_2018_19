@@ -20,5 +20,15 @@
         </ul>
       </div>
 
+      <div class="col-md-12">
+          <h3>Authorize awaiting appUser </h3>
+          <ul class="list-group" *ngFor="let awaitingAppUser of awaitingAppUsers; let i = index">
+            <li class="list-group-item">{{awaitingAppUser.Name}} <span class="pull-right" style="float:right">
+              <button class="btn btn-success btn-small" (click)="AuthorizeAppUsers(awaitingAppUser.Id,i)">Authorize appUser</button>
+            </span>
+          </li>
+          </ul>
+        </div>
+
    </div>
 </div> 

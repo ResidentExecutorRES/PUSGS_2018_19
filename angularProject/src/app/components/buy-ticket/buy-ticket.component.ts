@@ -12,7 +12,7 @@ import { PomModelForBuyTicket } from 'src/app/models/pomModelForBuyTicket.model'
 })
 export class BuyTicketComponent implements OnInit {
 
-  loggedUser: any = []
+  loggedUser: any;
 
   emailLoggedUser: string = ""
 
@@ -63,8 +63,23 @@ export class BuyTicketComponent implements OnInit {
   nonRegister(): boolean{
     if(localStorage.getItem('name') == null)
       return true;
-    else 
+    else {
       return false;
+    }
+      
+  }
+
+  nonActivated(): boolean{
+    console.log("Logged user in nonActivated: ", this.loggedUser);
+    if(this.loggedUser != undefined){
+      if(this.loggedUser.Activated){
+      
+        return false;
+      }else{
+        return true;
+      }     
+    }
+    
   }
 
 
