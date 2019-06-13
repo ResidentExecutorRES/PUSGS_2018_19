@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/services/authentication-service.service';
 import { RegistrationModel } from 'src/app/models/registration.model';
 import { NgForm } from '@angular/forms';
+import { LogInValidations } from 'src/app/models/modelsForValidation/validForLogin.model';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,7 +14,9 @@ import { NgForm } from '@angular/forms';
 })
 export class LogInComponent implements OnInit {
 
-  constructor(private authService: AuthenticationService) { }
+  validations: LogInValidations = new LogInValidations();
+
+  constructor(private authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -21,8 +25,15 @@ export class LogInComponent implements OnInit {
   onSubmit(loginData: RegistrationModel, form:NgForm){
     console.log(loginData);
 
+    if(this.validations.validate(loginData)) return;
 
-    this.authService.logIn(loginData);    
+
+    let p =  this.authService.logIn(loginData); 
+    if(p == undefined){
+      alert("Invalid username or password! ");
+      //window.location.reload();
+      
+    }  
   }
 
 }

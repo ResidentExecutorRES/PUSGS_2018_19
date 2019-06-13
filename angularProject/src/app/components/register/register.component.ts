@@ -6,6 +6,8 @@ import { AuthenticationService } from 'src/app/services/authentication-service.s
 import { TypesService } from 'src/app/services/types.service';
 import { UsersService } from 'src/app/services/users/users.service';
 import { RequestsService } from 'src/app/services/requestsService/requests.service';
+import { ValidForRegistrationModel } from 'src/app/models/modelsForValidation/validForRegistration.model';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,15 +20,16 @@ import { RequestsService } from 'src/app/services/requestsService/requests.servi
 export class RegisterComponent implements OnInit {
 
   types: any =[];
+  validations: ValidForRegistrationModel = new ValidForRegistrationModel();
 
   selectedImage: any;
-  // selIm: string  = "C:/Users/suzana/Pictures/SavedPictures.png";
   userBytesImage: any;
 
   constructor(private authService: AuthenticationService, 
     private typesService: TypesService,
     private userService: UsersService,
-    private notificationServ: RequestsService) { 
+    private notificationServ: RequestsService, 
+    private router: Router) { 
     typesService.getPassangerAll().subscribe(types =>{
       this.types = types;
     });
@@ -49,12 +52,29 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(registrationData: RegistrationModel, form: NgForm) {
      console.log(registrationData);
+
+     if(this.validations.validate(registrationData)){
+       //alert("Register - ERROR! ");
+      console.log(registrationData);
+      return;
+     } 
+
+     if(this.confirmPassword(registrationData.Password, registrationData.ConfirmPassword) === false) {
+      alert("Passwords do not match!");
+      return;
+    }
+
     if (this.selectedImage == undefined){
       //alert("No image selected!");
       this.authService.register(registrationData).subscribe(d1=>{
         if(registrationData.UserType == 'AppUser'){
           this.notificationServ.sendNotification();
         }
+        alert("Registration succesfull!");
+        this.router.navigate(['/logIn']);
+      },
+      error => {
+        alert("Pasword must have number and special symbol! ")
       });
      //return; 
    }
@@ -64,22 +84,23 @@ export class RegisterComponent implements OnInit {
          if(registrationData.UserType != 'Admin'){
            this.notificationServ.sendNotification();
          }
+         alert("Rregistration successful!");
+         this.router.navigate(['/logIn']);
+       },
+       error => {
+         alert("Pasword must have number and special symbol! ")
        });
      });
    }
-  //  this.userService.uploadFile(this.selectedImage).subscribe(data1 => {      
-      
-  //     this.authService.register(registrationData).subscribe( data => {
-  //       alert("Register successfull!");
-  //     },
-  //     error => {
-  //       alert("Register - error!");
-  //       console.log(registrationData);
-  //     })
-  //  })
+
   }
 
   onFileSelected(event){
     this.selectedImage = event.target.files;
+  }
+
+  confirmPassword(password1: string, password2: string) {
+    if(password1 !== password2) return false;
+    else return true;
   }
 }

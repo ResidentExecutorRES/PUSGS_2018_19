@@ -68,7 +68,7 @@ export class AuthenticationService {
         );
       }
       else{
-
+          //alert("Invalid email or password! ");
         // console.log("Error occured - ELSE");
       }
        

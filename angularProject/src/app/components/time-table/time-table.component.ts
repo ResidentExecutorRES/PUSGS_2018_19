@@ -54,6 +54,9 @@ export class TimeTableComponent implements OnInit {
   hiddenDeleteButton: boolean = false;
   hiddenEditButton: boolean = false;
 
+   selectedDayFromCb: string = "";
+   selectedLineFromCb: string = ""
+
 
   constructor(private lineService: LineService, 
               private timetableService: TimetableService, private daysService: DayService) { 
@@ -224,6 +227,15 @@ export class TimeTableComponent implements OnInit {
     this.hiddenDeleteButton = false;
   }
   
+  getLineForEditUnloggedAdmin(event){
+    this.selectedDayFromCb = event.target.value;
+    console.log("Dayssss: ", this.selectedDayFromCb);
+  }
+
+  getDeparturesForEdittUnloggedAdmin(event){
+    this.selectedLineFromCb = event.target.value;
+    
+  }
 
   showAdd(){
     this.selected = "Add";
@@ -253,6 +265,13 @@ export class TimeTableComponent implements OnInit {
     if(this.selected == 'Delete'){
       return true;
     }
+  }
+
+  LoggedAdmin(): boolean{
+    if(localStorage.getItem('role') == "Admin"){
+      return true;
+    }
+    return false;
   }
 
 }

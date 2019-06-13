@@ -1,4 +1,4 @@
-<div>
+<div *ngIf = "LoggedAdmin()">    
   <div align="center">
     <button type="submit" class="button" class="btn" (click)='showAdd()' >Add timetable</button>  
     <button type="submit" class="button" class="btn" (click)='showEdit()' >Edit timetable</button>  
@@ -102,7 +102,26 @@
       </div>
     </form>
   </div>
+</div>
 
-  
+<div *ngIf="!LoggedAdmin()">
+
+  <label for="DayId">Day type</label>
+  <select name="DayId" class="form-group"  class="form-control" (click)="getLineForEditUnloggedAdmin($event)" ngModel>
+    <option disabled>Please select...</option>
+    <option value="Workday">Workday</option>
+    <option value="Saturday">Saturday</option>
+    <option value="Sunday">Sunday</option>
+  </select>
+
+  <div *ngIf="showLineComboBox">
+    <label for="LineId">Select line: </label>
+    <select name="LineId"  class="form-control" (click)="getDeparturesForEdittUnloggedAdmin($event)" ngModel>
+      <option disabled>Please select...</option>
+      <option *ngFor="let line of allLineForSelDay" value={{line}}>{{line}}</option>
+    </select>
+    </div>
+
+    
 
 </div>
