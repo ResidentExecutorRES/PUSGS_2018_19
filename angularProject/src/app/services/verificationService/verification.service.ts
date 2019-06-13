@@ -40,6 +40,12 @@ export class VerificationService {
       headers = headers.append( "Content-type","application/json");
       return this.httpClient.post(this.baseUrl + "/api/Account/AuthorizeAppUser", appUserId);
     }
+
+    denyAppUser(appUserId): Observable<any> {
+      let headers = new HttpHeaders();
+      headers = headers.append( "Content-type","application/json");
+      return this.httpClient.post(this.baseUrl + "/api/Account/DenyAppUser", appUserId);
+    }
   
 
 

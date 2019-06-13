@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
+// import { HomeComponent } from './components/home/home.component';
 import { MenuBarComponent } from './components/menu-bar/menu-bar.component';
 import { BusLinesComponent } from './components/bus-lines/bus-lines.component';
 import { CvlComponent } from './components/cvl/cvl.component';
@@ -34,15 +34,12 @@ import {ToastrModule,ToastNoAnimation,ToastNoAnimationModule,} from 'ngx-toastr'
 import { ValidateTicketComponent } from './components/validate-ticket/validate-ticket.component';
 
 import { AgmDirectionModule } from 'agm-direction';   // agm-direction
+import { AdminGuard } from './guard/adminGuard';
  
 const Routes = [
   {
     path: "",
-    component: HomeComponent
-  },
-  {
-    path: "home",
-    component: HomeComponent
+    component: BusLinesComponent
   },
   {
     path: "register",
@@ -59,6 +56,7 @@ const Routes = [
   {
     path: "priceList",
     component: PriceListComponent
+    // canActivate: [AdminGuard]
   },
   {
     path: "cvl",
@@ -66,12 +64,13 @@ const Routes = [
   },
   {
     path: "profile",
-    component: ProfileComponent
+    component: ProfileComponent,
+    canActivate: [UserLoggedInGuard]
   },
   {
     path: "station",
     component: StationsComponent,
-    canActivate: [UserLoggedInGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: "line",
@@ -79,7 +78,8 @@ const Routes = [
   },
   {
     path: "vehicle",
-    component: VehicleComponent
+    component: VehicleComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: "Timetable",
@@ -91,12 +91,14 @@ const Routes = [
   },
   {
     path:"request",
-    component: RequestsComponent
+    component: RequestsComponent,
+    canActivate: [AdminGuard]
+    
   },
   {
     path:"validetTicket",
     component: ValidateTicketComponent,
-    canActivate: [UserLoggedInGuard]
+    canActivate: [ControlorGuard]
   }
 
 
@@ -105,7 +107,7 @@ const Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    // HomeComponent,
     MenuBarComponent,
     BusLinesComponent,
     CvlComponent,
@@ -141,6 +143,7 @@ const Routes = [
     CanActivateViaAuthGuard,
     UserLoggedInGuard,
     ControlorGuard,
+    AdminGuard,
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })

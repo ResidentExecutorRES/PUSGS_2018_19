@@ -37,7 +37,15 @@ export class UsersService{
         fd.append(selectedFile.name, selectedFile)
       }    
       return this.httpClient.post(this.baseUrl + "/api/Account/PostImage", fd);
-    }  
+    } 
+    
+    getUserImage(emails:any){
+      return this.httpClient.post('http://localhost:52295/api/Account/GetUserImage',emails)
+    }
+
+    getUserImages(emails:any){
+      return this.httpClient.post('http://localhost:52295/api/Account/GetUserImages',emails)
+    }
 
    
 }

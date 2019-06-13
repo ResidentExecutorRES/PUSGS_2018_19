@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ValidateTicketService } from 'src/app/services/validateTicketService/validate-ticket.service';
+import { VerificationService } from 'src/app/services/verificationService/verification.service';
+import { PomModelForAuthorization } from 'src/app/models/pomModelForAuth.model';
+import { AuthenticationService } from 'src/app/services/authentication-service.service';
+import { UsersService } from 'src/app/services/users/users.service';
 
 @Component({
   selector: 'app-validate-ticket',
@@ -13,10 +17,39 @@ export class ValidateTicketComponent implements OnInit {
   ticketMessage: string = "";
   allTT: any ;
 
-  constructor(private ticketServ: ValidateTicketService) { 
+  awaitingAppUsers:any = [];
+  modelHelp: PomModelForAuthorization = new PomModelForAuthorization("");
+  user: any;
+
+  wtfList:any = []
+  userBytesImages:any = [];
+  imagesLoaded:boolean = false
+  
+
+
+  constructor(private ticketServ: ValidateTicketService, 
+    private verifyService: VerificationService,
+    private userService: UsersService) { 
+      this.userService.getUserData(localStorage.getItem('name')).subscribe(data => {
+        this.user = data;    
+       console.log(this.user);    
+   
     this.ticketServ.getAllTypeOfTicket().subscribe(data => {
       this.allTT = data;
     })
+    verifyService.getAwaitingAppUsers().subscribe(data=>{
+      this.awaitingAppUsers = data;
+      userService.getUserImages(this.awaitingAppUsers).subscribe(imageBytes => {
+        this.userBytesImages = imageBytes
+        this.userBytesImages.forEach(element => {
+          element = "data:image/png;base64," + element
+          this.wtfList.push(element)
+        });
+        this.imagesLoaded = true
+        console.log(this.userBytesImages)
+      })
+    })
+  })
   }
 
   ngOnInit() {
@@ -147,6 +180,28 @@ export class ValidateTicketComponent implements OnInit {
     {
       this.ticketMessage = "User with email: " + n + " did not buy ticket with Id: " + this.ticketForV.Id;
     }
+  }
+
+  AuthorizeAppUsers(id, i){
+    this.modelHelp.Id = id;
+    this.verifyService.authorizeAppUser(this.modelHelp).subscribe(resp => {
+      if(resp == "Ok")  {
+        alert("AppUser has been authorized!");
+        this.awaitingAppUsers.splice(i,1);
+      }
+       else alert("Something went wrong");
+    })
+  }
+
+  DenyAppUsers(id, i){
+    this.modelHelp.Id = id;
+    this.verifyService.denyAppUser(this.modelHelp).subscribe(resp => {
+      if(resp == "Ok")  {
+        alert("AppUser has been denied!");
+        this.awaitingAppUsers.splice(i,1);
+      }
+       else alert("Something went wrong");
+    })
   }
 
 }

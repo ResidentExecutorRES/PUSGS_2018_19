@@ -60,7 +60,7 @@ export class AuthenticationService {
             localStorage.setItem('role', role);
             localStorage.setItem('name',logUser);
 
-            window.location.href="/home";
+            window.location.href="/busLines";
           },
           err => {
             console.log("Error occured");

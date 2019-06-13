@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import decode from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-bar',
@@ -11,7 +12,7 @@ export class MenuBarComponent implements OnInit {
   appName: string;
   loggedUser: string;
 
-  constructor() { 
+  constructor(private router: Router) { 
     this.appName = "Public transport";
   }
 
@@ -27,6 +28,7 @@ export class MenuBarComponent implements OnInit {
 
   logout(){
     localStorage.clear();
+    this.router.navigate(['/busLines'])
   }
 
   getRoleAdmin(): boolean{

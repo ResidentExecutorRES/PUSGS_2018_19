@@ -318,6 +318,7 @@
     <Compile Include="Models\PomModels\PomModelForAuthorization.cs" />
     <Compile Include="Models\PomModels\PomModelForBuyTicket.cs" />
     <Compile Include="Models\PomModels\PomModelForLine.cs" />
+    <Compile Include="Models\PomModels\PomModelForPriceList.cs" />
     <Compile Include="Models\PomModels\PomModelTicketPrices.cs" />
     <Compile Include="Models\PomModels\PomModelTimetableForEdit.cs" />
     <Compile Include="Models\PomModels\TimetablePomModel.cs" />

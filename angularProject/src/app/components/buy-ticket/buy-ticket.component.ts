@@ -4,6 +4,8 @@ import { AuthenticationService } from 'src/app/services/authentication-service.s
 import { UsersService } from 'src/app/services/users/users.service';
 import { BuyTicketService } from 'src/app/services/buyTicketService/buy-ticket.service';
 import { PomModelForBuyTicket } from 'src/app/models/pomModelForBuyTicket.model';
+import { Router } from '@angular/router';
+import { PricelistService } from 'src/app/services/pricelistService/pricelist.service';
 
 @Component({
   selector: 'app-buy-ticket',
@@ -15,11 +17,13 @@ export class BuyTicketComponent implements OnInit {
   loggedUser: any;
 
   emailLoggedUser: string = ""
-
+  price: number = 0;
 
 
   constructor(private authService: AuthenticationService, private usersService: UsersService,
-    private buyTicketService: BuyTicketService) { 
+    private buyTicketService: BuyTicketService,
+    private router: Router,
+    private priceServie: PricelistService) { 
       console.log("cc", localStorage.getItem('name'));
     if(localStorage.getItem('name') != null){
     this.usersService.getUserData(localStorage.getItem('name')).subscribe(d=>{
@@ -53,6 +57,8 @@ export class BuyTicketComponent implements OnInit {
         buyTicketForm.PurchaseDate = new Date();
         buyTicketForm.TypeOfTicket = "TimeLimited";
         this.buyTicketService.buyTicketViaEmail(buyTicketForm).subscribe();
+        alert("Succesfull buy ticket. Expect e-mail notification");
+        this.router.navigate(['/busLines'])
       }else{
         alert("Please enter your email address");
       }    

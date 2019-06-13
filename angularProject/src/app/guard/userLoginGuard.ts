@@ -8,7 +8,7 @@ export class UserLoggedInGuard implements CanActivate {
 
    canActivate() {
     if(!localStorage.jwt) {
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/busLines');
       return false;
     }
     return true;

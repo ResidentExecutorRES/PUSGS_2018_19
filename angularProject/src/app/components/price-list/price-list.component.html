@@ -1,33 +1,59 @@
 
-<div>
-  <h4 *ngIf="priceList" >Od: {{priceList.StartOfValidity}}</h4>  
-  <h4 *ngIf="priceList">Do: {{priceList.EndOfValidity}}</h4><br/> 
-  <label>Trenutno aktuelne cene:</label>
+<div *ngIf="LoggedAdmin()">
+    <h3>currently active pricelist</h3>
 
-  <div *ngIf="validPrices"> 
-    <label>TimeLimited ticket:</label>
-    <label>{{validPrices.TimeLimited}}</label> <br/>
-    <label>Daily ticket:</label>
-    <label>{{validPrices.Daily}}</label> <br/>
-    <label>Monthly ticket:</label>
-    <label>{{validPrices.Monthly}}</label> <br/>
-    <label>Annual ticket:</label>
-    <label>{{validPrices.Annual}}</label> <br/>      
-  </div>
-</div>
+    <h4 *ngIf="priceList" >From: {{priceList.FromTime.split('T')[0]}}</h4>  
+    <h4 *ngIf="priceList">To: {{priceList.ToTime.split('T')[0]}}</h4><br/> 
 
-<div>
+      <div *ngIf="validPrices"> 
+        <h4>TimeLimited ticket: {{validPrices.TimeLimited}} din.</h4>
+        <h4>Daily ticket:{{validPrices.Daily}} din.</h4>
+        <h4>Monthly ticket: {{validPrices.Monthly}} din.</h4>
+        <h4>Annual ticket: {{validPrices.Annual}} din.</h4>
+      </div>
+    </div>  
+
+
+      <div *ngIf = "!LoggedAdmin()">
+        <h2 align="center">Price list</h2>
+          <div class="form-group">
+              <label for="TypeOfTicket">Select type of ticket</label>
+              <select name="TypeOfTicket" (click)="getSelectedTicket($event)"  class="form-group"  class="form-control" >
+                <option disabled>Please select...</option>
+                <option value="TimeLimited">TimeLimited</option>
+                <option value="Daily">Daily</option>
+                <option value="Monthly">Monthly</option>
+                <option value="Annual">Annual</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+                <label for="PassangerType">Select type of Passanger</label>
+                <select name="PassangerType"  class="form-group"  class="form-control" (click)="getSelectedPassanger($event)">
+                  <option disabled>Please select...</option>
+                  <option value="Student">Student</option>
+                  <option value="Pensioner">Pensioner</option>
+                  <option value="Default">None</option>
+                </select>
+            </div>
+
+            <button type="button" class="nav-link" (click)="calculatePrice()" class="btn" align="center">OK</button><br>
+
+            <label *ngIf = "showLabel" align="center">Price for selected ticket: {{retPrice.Id}} din.</label>
+      </div>
+
+<div *ngIf="LoggedAdmin()">
   <form #ticketPricesForm="ngForm" (ngSubmit)="onSubmit1(ticketPricesForm.value,ticketPricesForm)">
     <div *ngIf="validPrices"> 
       <label>TimeLimited ticket:</label>
-      <input type="number" name="TimeLimited"   [(ngModel)] = "validPrices.TimeLimited"> <br/>
+      <input type="number" name="TimeLimited"  class="form-group"  class="form-control"   [(ngModel)] = "validPrices.TimeLimited"> <br/>
       <label>Daily ticket:</label>
-      <input type="number" name="Daily"  [(ngModel)] = "validPrices.Daily"><br/>
+      <input type="number" name="Daily"  class="form-group"  class="form-control"  [(ngModel)] = "validPrices.Daily"><br/>
       <label>Monthly ticket:</label>
-      <input type="number" name="Monthly"  [(ngModel)] = "validPrices.Monthly"><br/>
+      <input type="number" name="Monthly"  class="form-group"  class="form-control"  [(ngModel)] = "validPrices.Monthly"><br/>
       <label>Annual ticket:</label>
-      <input type="number" name="Annual"  [(ngModel)] = "validPrices.Annual"><br/>
-      <button *ngIf="!datumVazenjaBool" type="submit" class="button">Add new prices</button>
+      <input type="number" name="Annual"  class="form-group"  class="form-control" [(ngModel)] = "validPrices.Annual"><br/>
+      <button *ngIf="!datumVazenjaBool"  class="btn" type="submit" class="button">Add new prices</button>
     </div>
   </form>
 
@@ -38,7 +64,7 @@
           <input type="date" name="FromTime" ngModel><br/>
           <label>End of validity:</label>
           <input type="date" name="ToTime" ngModel><br/>
-          <button type="submit" class="button">Add validity of pricelist</button>
+          <button type="submit" class="btn" class="button">Add validity of pricelist</button>
         </div>
       </form>
   </div>

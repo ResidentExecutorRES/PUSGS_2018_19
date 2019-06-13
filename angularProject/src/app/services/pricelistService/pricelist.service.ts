@@ -43,6 +43,8 @@ export class PricelistService {
   //   return this.httpClient.put(this.base_url+"/api/Pricelist/Change?id=" + id,pricelist);
   // }
 
-
+  calculateTicketPrice(pomModel){
+    return this.httpClient.post(this.base_url+"/api/Pricelist/Calculate",pomModel);
+  }
 
 }

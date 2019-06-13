@@ -29,11 +29,11 @@ export class LogInComponent implements OnInit {
 
 
     let p =  this.authService.logIn(loginData); 
-    if(p == undefined){
-      alert("Invalid username or password! ");
-      //window.location.reload();
+    // if(p == undefined){
+    //   alert("Invalid username or password! ");
+    //   window.location.reload();
       
-    }  
+    // }  
   }
 
 }

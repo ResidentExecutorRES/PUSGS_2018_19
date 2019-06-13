@@ -17,3 +17,16 @@
 
 
 <label>{{ticketMessage}}</label>
+
+<div class="col-md-12">
+    <h3>Authorize awaiting appUser </h3>
+    <ul class="list-group" *ngFor="let awaitingAppUser of awaitingAppUsers; let i = index">
+      <li class="list-group-item">{{awaitingAppUser.Name}} <br/>
+        <img *ngIf="imagesLoaded" src="{{wtfList[i]}}" width="200" height="100" alt="">
+        <span class="pull-right" style="float:right">
+        <button class="btn" (click)="AuthorizeAppUsers(awaitingAppUser.Id,i)">Authorize appUser</button>
+        <button class="btn" (click)="DenyAppUsers(awaitingAppUser.Id,i)">Deny appUser</button>
+      </span>
+    </li>
+    </ul>
+  </div>

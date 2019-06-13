@@ -1,5 +1,9 @@
-<div>
-  <label *ngIf="nonActivated()">Activated: FALSE</label>
+<div *ngIf="!nonRegister() && nonActivated()">
+  <label>You are not authorized to purchase tickets</label>
+  <div>
+
+  </div>
+
     <form #buyTicketForm="ngForm" (ngSubmit)="onSubmit(buyTicketForm.value, buyTicketForm)">
         <div *ngIf="nonRegister()" class="form-group">
             <label for="email">Email address</label>

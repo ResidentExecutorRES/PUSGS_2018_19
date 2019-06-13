@@ -4,6 +4,8 @@ import { RegistrationModel } from 'src/app/models/registration.model';
 import { PomAppUserModel } from 'src/app/models/pomAppUser.model';
 import { NgForm } from '@angular/forms';
 import { PomModelForPassword } from 'src/app/models/PomModelForPassword.model';
+import { Router } from '@angular/router';
+import { PomModelForAuthorization } from 'src/app/models/pomModelForAuth.model';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +18,7 @@ export class ProfileComponent implements OnInit {
   selected: string = "";
   user: any;
   userForEdit: PomAppUserModel;
+  pp = new PomModelForAuthorization("");
 
   ClickedButtonEdit: boolean = false;
   addressFromDb: any = []
@@ -30,12 +33,37 @@ export class ProfileComponent implements OnInit {
 
   showApplyButton: boolean = false;
 
-  constructor(private usersService: UsersService) {
+  wtfList: any;
+  imagesLoaded: boolean = false;
+  userBytesImage:any ;
+
+  constructor(private usersService: UsersService, private router:Router) {
     this.usersService.getUserData(localStorage.getItem('name')).subscribe(data=>{
       this.user = data;
       //this.modell = data;
-      console.log("Korisnik", data);
-      console.log("User typeeee: ", this.user.UserTypeId);
+      //console.log("Korisnik", data);
+      //console.log("User typeeee: ", this.user.UserTypeId);
+
+      this.usersService.getAdressInfo(this.user.AddressId).subscribe(d=>{
+        this.addressFromDb = d;
+        this.user.City = this.addressFromDb.City;
+        this.user.Street = this.addressFromDb.Street;
+        this.user.Number = this.addressFromDb.Number;
+
+        this.user.Birthaday = this.user.Birthaday.split('T')[0];
+         this.pp.Id = this.user.Email;
+
+        usersService.getUserImage(this.pp).subscribe(c=>{
+          this.userBytesImage = c;
+          let x = "data:image/jpg;base64," + this.userBytesImage;
+          this.wtfList = x
+
+          console.log("WTF: ", this.wtfList);
+        })
+
+
+      })
+        
 
       if(this.user.Image.length == 0 && (this.user.PassangerTypeId == 1 || this.user.PassangerTypeId == 2)){
         this.showImageBool = true;
@@ -67,8 +95,10 @@ export class ProfileComponent implements OnInit {
     userForEdit.AddressId = this.user.AddressId
     userForEdit.Id = this.user.Id
     
-    this.usersService.editAppUser(userForEdit).subscribe();
-    
+    this.usersService.editAppUser(userForEdit).subscribe(d=>{
+      alert("Successful edit user!");
+      this.router.navigate(['/busLines']);
+    })
   }
 
   onSubmitPassword(pomModelForPassword: PomModelForPassword, form:NgForm){
@@ -149,6 +179,7 @@ export class ProfileComponent implements OnInit {
       this.usersService.uploadFile(this.selectedImage).subscribe(d=>{
         alert("Image upload successful!");
         console.log("d", d)
+        this.router.navigate(['/busLines']);
         this.usersService.editAppUser(this.userForEdit).subscribe(dd=>{
           //alert("Image upload successful! ");        
           // console.log("DDDDDDDDD", d)

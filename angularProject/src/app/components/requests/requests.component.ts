@@ -14,8 +14,7 @@ export class RequestsComponent implements OnInit {
   awaitingAdmins:any = [];
   awaitingControllers:any = [];
   modelHelp: PomModelForAuthorization = new PomModelForAuthorization("");
-  awaitingAppUsers:any = [];
-
+  
   userBytesImages:any = [];
   imagesLoaded:boolean = false
   wtfList:any = []
@@ -31,9 +30,6 @@ export class RequestsComponent implements OnInit {
         this.awaitingAdmins = data;
         verifyService.getAwaitingControllers().subscribe(data => {
           this.awaitingControllers = data;
-        verifyService.getAwaitingAppUsers().subscribe(data=>{
-          this.awaitingAppUsers = data;
-        })
         });
         })
     });
@@ -67,15 +63,24 @@ export class RequestsComponent implements OnInit {
     })
   }
 
-  AuthorizeAppUsers(id, i){
-    this.modelHelp.Id = id;
-    this.verifyService.authorizeAppUser(this.modelHelp).subscribe(resp => {
-      if(resp == "Ok")  {
-        alert("AppUser has been authorized!");
-        this.awaitingAppUsers.splice(i,1);
-      }
-       else alert("Something went wrong");
-    })
+  
+
+  loggedAdmin(): boolean{
+    if(localStorage.getItem('role') == "Admin"){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  loggedController(): boolean{
+    if(localStorage.getItem('role') == "Controller"){
+      return true;
+    }else{
+      return false;
+    }
+
   }
 
 }

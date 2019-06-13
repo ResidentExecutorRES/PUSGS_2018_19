@@ -13,7 +13,7 @@ export class CanActivateViaAuthGuard implements CanActivate {
       return true;
     }
     else {
-      this.router.navigateByUrl('/home');
+      this.router.navigateByUrl('/busLines');
       return false;
     }
   }

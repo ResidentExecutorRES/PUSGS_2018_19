@@ -6,6 +6,7 @@ import { MapsAPILoader, MouseEvent } from '@agm/core';
 import { StationModel } from 'src/app/models/station.model';
 import { NgForm } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stations',
@@ -35,7 +36,7 @@ export class StationsComponent implements OnInit {
 
 
 
-  constructor(private ngZone: NgZone, private mapsApiLoader: MapsAPILoader,private stationService: StationService) {
+  constructor(private ngZone: NgZone, private route: Router, private mapsApiLoader: MapsAPILoader,private stationService: StationService) {
     this.stationService.getAllStations().subscribe(st =>{
       this.stations = st;
     });
@@ -60,7 +61,9 @@ export class StationsComponent implements OnInit {
 
     console.log(stationData);
     this.stationService.addStation(stationData).subscribe(data => {
-      alert("Station successfull!");
+      alert("Add Station successfull!");
+      //this.route.navigate(['/station']);
+      window.location.reload();
     },
     error => {
       alert("Station - error!");
@@ -73,13 +76,15 @@ export class StationsComponent implements OnInit {
     stationData.Latitude = this.coordinates.latitude;
     stationData.Longitude = this.coordinates.longitude;
     stationData.AddressStation = this.address;
-    //stationData.Name = this.nameOfStation;
+    stationData.Name = this.nameOfStation;
     stationData.Id = this.id;
 
     console.log(stationData);
 
     this.stationService.editStation(stationData).subscribe(data => {
-      alert("Station changed successfull!");
+      alert("Edit Station changed successfull!");
+      //this.route.navigate(['/station']);
+      window.location.reload();
     },
     error => {
       alert("Station changed - error!");

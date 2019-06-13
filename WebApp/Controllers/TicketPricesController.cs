@@ -138,7 +138,7 @@ namespace WebApp.Controllers
             _unitOfWork.TicketPrices.Add(ticketPrice);
             ticketPrice = new TicketPrice
             {
-                TypeOfTicketId = _unitOfWork.TypeOfTickets.Find(k => k.Name == "Yearly").FirstOrDefault().Id,
+                TypeOfTicketId = _unitOfWork.TypeOfTickets.Find(k => k.Name == "Annual").FirstOrDefault().Id,
                 PriceListId = _unitOfWork.PriceLists.Get(hm.IdPriceList).Id,
                 Price = hm.Annual
             };

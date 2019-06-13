@@ -140,6 +140,7 @@ namespace WebApp.Controllers
             //return CreatedAtRoute("DefaultApi", new { id = station.Id }, station);
         }
         
+        [HttpPost]
         [Route("Edit")]
         // POST: api/Stations
         [ResponseType(typeof(Station))]

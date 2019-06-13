@@ -135,6 +135,24 @@ namespace WebApp.Controllers
             return true;
         }
 
+        [Route("Calculate")]
+        public PomModelForAuthorization Calculate(PomModelForPriceList pom)
+        {
+            PomModelForAuthorization p = new PomModelForAuthorization();
+
+            PassangerType pass= _unitOfWork.PassangerTypes.Find(x => x.Name == pom.PassangerType).FirstOrDefault();
+
+            int idTicket = _unitOfWork.TypeOfTickets.Find(x => x.Name == pom.TypeOfTicket).FirstOrDefault().Id;
+
+            double regularPriceTicket = _unitOfWork.TicketPrices.Find(x => (x.PriceListId == pom.PriceListId && x.TypeOfTicketId == idTicket)).FirstOrDefault().Price;
+
+            double finallyPrice = regularPriceTicket - (regularPriceTicket * pass.RoleCoefficient);
+
+            p.Id = finallyPrice.ToString();
+
+            return p;
+        }
+
         // DELETE: api/PriceLists/5
         [ResponseType(typeof(PriceList))]
         public IHttpActionResult DeletePriceList(int id)

@@ -1,17 +1,21 @@
 <div class="container">
-    <h1>Profile</h1>
+    <h1>Profile:</h1>
     <h3>Name: {{user?.Name}}</h3>
     <h3>Last Name: {{user?.LastName}}</h3>
     <h3>Email: {{user?.Email}}</h3>
     <h3>Birthaday: {{user?.Birthaday}}</h3>
+    <h3>Address: {{user?.Street}} {{user?.Number}}, {{user?.City}}</h3>
 
-    <!-- < <h3>Address: {{user.Address}}</h3> -->
+    <img  src="{{wtfList}}" width="200" height="100" alt="">
+        
+
+
 </div>
 
 <div align="center">
         <button type="submit" class="button" class="btn" (click)='showPassword()'>Change Password</button>
         <button type="submit" class="button" class="btn" (click)='showEdit()'>Changde Profile</button>
-        <input *ngIf="showImageBool" type="file" class="button" class="btn" (change)="onFileSelected($event)" value="Choose image">
+        <input  type="file" class="button" class="btn" (change)="onFileSelected($event)" value="Choose image">
 
         <button *ngIf="showApplyButton" type="submit" class="button" class="btn" (click)='ApplyImage()'>Apply image</button>
 

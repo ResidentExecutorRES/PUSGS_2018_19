@@ -600,13 +600,15 @@ namespace WebApp.Controllers
 
             return plainBytes;
         }
-
+        [HttpPost]
         [AllowAnonymous]
         [Route("GetUserImage")]
-        public async Task<byte[]> GetUserImage(string email)
+        public async Task<byte[]> GetUserImage(PomModelForAuthorization email)
         {
             //int userId = _unitOfWork.AppUserRepository.Find(u => u.Email == email).FirstOrDefault()
-            var filePath = HttpContext.Current.Server.MapPath("/Content/Images/Users/" + email + "/profilePic.jpg" /*+ postedFile.FileName.Split('.').LastOrDefault()*/);
+            AppUser uid = _unitOfWork.AppUsers.Find(u => u.Email == email.Id).FirstOrDefault();
+
+            var filePath = HttpContext.Current.Server.MapPath(uid.Image);
 
             if (File.Exists(filePath))
             {
@@ -616,6 +618,27 @@ namespace WebApp.Controllers
             }
 
             return null;
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("GetUserImages")]
+        public async Task<List<byte[]>> PostUserImage(List<AppUser> list)
+        {
+            List<byte[]> returnList = new List<byte[]>();
+            foreach (var uid in list)
+            {
+                var filePath = HttpContext.Current.Server.MapPath(uid.Image);
+
+                if (File.Exists(filePath))
+                {
+                    byte[] bytes = File.ReadAllBytes(filePath);
+                    byte[] decryptedBytes = DecryptBytes(bytes, "password", "asdasd");
+                    returnList.Add(decryptedBytes);
+                }
+            }
+
+            return returnList;
         }
 
         [AllowAnonymous]
@@ -665,7 +688,7 @@ namespace WebApp.Controllers
             int passangerIdPensioner = _unitOfWork.PassangerTypes.Find(c => c.Name == "Pensioner").FirstOrDefault().Id;
 
             return _unitOfWork.AppUsers.Find(x => (!x.Activated && (x.PassangerTypeId == passangerIdStudent || 
-            x.PassangerTypeId == passangerIdPensioner))).ToList();
+            x.PassangerTypeId == passangerIdPensioner) && x.Image.Length != 0)).ToList();
         }
 
 
@@ -748,6 +771,37 @@ namespace WebApp.Controllers
 
             string subject = "AppUser approved";
             string desc = $"Dear {current.Name}, You have been approved as {passTypeName}." ;
+            var controllerEmail = current.Email;
+            NotifyViaEmail(controllerEmail, subject, desc);
+
+            return "Ok";
+        }
+
+        [Authorize(Roles = "Controller")]
+        [Route("DenyAppUser")]
+        public string DenyAppUser([FromBody]PomModelForAuthorization pom)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState).ToString();
+            }
+
+            AppUser current = _unitOfWork.AppUsers.Get(pom.Id);
+
+            if (current.Image == "")
+            {
+                return "NotOk";
+            }
+
+            current.Activated = false;
+            _unitOfWork.AppUsers.Update(current);
+            _unitOfWork.Complete();
+
+            string passTypeName = _unitOfWork.PassangerTypes.Find(x => x.Id == current.PassangerTypeId).FirstOrDefault().Name;
+
+            string subject = "AppUser denied";
+            string desc = $"Dear {current.Name}, You have been denied as {passTypeName}.";
             var controllerEmail = current.Email;
             NotifyViaEmail(controllerEmail, subject, desc);
 

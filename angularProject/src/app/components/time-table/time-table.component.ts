@@ -6,6 +6,7 @@ import { TimetableService } from 'src/app/services/timetableService/timetable.se
 import { parse } from 'querystring';
 import { element } from 'protractor';
 import { DayService } from 'src/app/services/dayService/day.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-time-table',
@@ -57,9 +58,15 @@ export class TimeTableComponent implements OnInit {
    selectedDayFromCb: string = "";
    selectedLineFromCb: string = ""
 
+   showLineCbForUnlogedUser: boolean = false;
+   izabranaLinija: string = "";
+
+   pom: string = ""
+   polasci: any = []
+
 
   constructor(private lineService: LineService, 
-              private timetableService: TimetableService, private daysService: DayService) { 
+              private timetableService: TimetableService, private daysService: DayService, private router:Router) { 
     this.lineService.getAllLines().subscribe(d=>{
       this.allLinesFromDb = d;
     });
@@ -72,16 +79,7 @@ export class TimeTableComponent implements OnInit {
     this.daysService.getAll().subscribe(d1=>{
         this.allDaysFromDb = d1
         console.log(d1);
-    })
-
-
-
-    // this.lineService.getLT().subscribe(s=>{
-    //   this.allLT = s;
-    //   console.log("ALL LT LT:", this.allLT)
-    // })
-    
-    
+    }) 
   }
 
   ngOnInit() {
@@ -90,15 +88,12 @@ export class TimeTableComponent implements OnInit {
   onSubmit(timetableData: TimetableModel, form:NgForm){
       console.log("TimeTable:", timetableData);
       
-      // this.tt.DayId = timetableData.DayId;
-      // this.tt.LineId = timetableData.LineId;
-
-      // this.tt.Departures = timetableData.Departures.hours.toString() + ":" + timetableData.Departures.minutes.toString()
       var kk: string = "";
       kk = timetableData.Departures.toString()
       var tt = new TimetableModel2(timetableData.LineId, timetableData.DayId, kk);
       console.log(tt);
       this.timetableService.addTimeTable(tt).subscribe();   
+      
   }
 
   onSubmitDelete(timetableData: TimetableModel3, form:NgForm){
@@ -152,6 +147,8 @@ export class TimeTableComponent implements OnInit {
 
   getLineForEdit(event){
     if(event.target.value != "" || event.target.value != null){
+      this.showLineCbForUnlogedUser = true;
+
       this.showLineComboBox = true;
       this.allLineForSelDay = []
       this.idLinesArray = []
@@ -190,7 +187,7 @@ export class TimeTableComponent implements OnInit {
     console.log("Targetttt", event.target.value);
     if(event.target.value != "" || event.target.value != null){
       this.showDepartureComboBox = true;
-
+      this.pom = event.target.value;
      this.allLinesFromDb.forEach(element => {
        if(element.RegularNumber == event.target.value){
          this.lineId = element.Id;
@@ -203,6 +200,7 @@ export class TimeTableComponent implements OnInit {
          this.timetableIdForSend = e1.Id;
        }
      });
+     this.polasci = this.allDeparturesForSelect;
      this.allDeparturesForSelect.pop();
      console.log("Departures: ", this.allDeparturesForSelect)
     }
@@ -229,13 +227,17 @@ export class TimeTableComponent implements OnInit {
   
   getLineForEditUnloggedAdmin(event){
     this.selectedDayFromCb = event.target.value;
+    if(this.selectedDayFromCb.length != 0){
+      this.showLineCbForUnlogedUser = true;
+    }
     console.log("Dayssss: ", this.selectedDayFromCb);
   }
 
-  getDeparturesForEdittUnloggedAdmin(event){
-    this.selectedLineFromCb = event.target.value;
-    
-  }
+
+//click
+showTimetableForUser(){
+  console.log()
+}
 
   showAdd(){
     this.selected = "Add";
@@ -247,6 +249,10 @@ export class TimeTableComponent implements OnInit {
 
   showDelete(){
     this.selected = "Delete";
+  }
+
+  showTimeT(){
+    this.selected = "Show"
   }
 
   isSelectedAdd(): boolean{
@@ -267,11 +273,17 @@ export class TimeTableComponent implements OnInit {
     }
   }
 
+  isSelectedShow(): boolean{
+    if(this.selected == 'Show'){
+      return true;
+    }
+  }
+
   LoggedAdmin(): boolean{
     if(localStorage.getItem('role') == "Admin"){
       return true;
     }
     return false;
-  }
+  }  
 
 }
