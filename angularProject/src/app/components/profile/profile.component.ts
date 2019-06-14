@@ -20,6 +20,8 @@ export class ProfileComponent implements OnInit {
   userForEdit: PomAppUserModel;
   pp = new PomModelForAuthorization("");
 
+  studentOrPensioner = false;
+
   ClickedButtonEdit: boolean = false;
   addressFromDb: any = []
 
@@ -41,8 +43,8 @@ export class ProfileComponent implements OnInit {
     this.usersService.getUserData(localStorage.getItem('name')).subscribe(data=>{
       this.user = data;
       //this.modell = data;
-      //console.log("Korisnik", data);
-      //console.log("User typeeee: ", this.user.UserTypeId);
+
+      console.log("User: ", this.user);
 
       this.usersService.getAdressInfo(this.user.AddressId).subscribe(d=>{
         this.addressFromDb = d;
@@ -57,7 +59,19 @@ export class ProfileComponent implements OnInit {
           this.userBytesImage = c;
           let x = "data:image/jpg;base64," + this.userBytesImage;
           this.wtfList = x
+          console.log("Korisnik", this.user);
 
+          if(this.user.UserTypeId == 3){
+            if(this.user.PassangerTypeId == 1 || this.user.PassangerTypeId == 2){
+              this.studentOrPensioner = true;
+            }
+          }
+          // if(this.user.PassangerTypeId != null){
+          //   if(this.user.UserTypeId == 1 || this.user.UserTypeId == 2)
+          //   {
+          //     this.studentOrPensioner = true;
+          //   }
+          // }
           console.log("WTF: ", this.wtfList);
         })
 
@@ -96,13 +110,18 @@ export class ProfileComponent implements OnInit {
     userForEdit.Id = this.user.Id
     
     this.usersService.editAppUser(userForEdit).subscribe(d=>{
+    
       alert("Successful edit user!");
-      this.router.navigate(['/busLines']);
+      localStorage.setItem('name', userForEdit.Email);
+      window.location.reload();
     })
   }
 
   onSubmitPassword(pomModelForPassword: PomModelForPassword, form:NgForm){
-      this.usersService.editPassword(pomModelForPassword).subscribe();
+      this.usersService.editPassword(pomModelForPassword).subscribe(x=>{
+        alert("Password seccesfully changed");
+        window.location.reload();
+      });
   }
 
   isSelectedPassword(): boolean{
@@ -179,7 +198,8 @@ export class ProfileComponent implements OnInit {
       this.usersService.uploadFile(this.selectedImage).subscribe(d=>{
         alert("Image upload successful!");
         console.log("d", d)
-        this.router.navigate(['/busLines']);
+        //this.router.navigate(['/busLines']);
+        window.location.reload();
         this.usersService.editAppUser(this.userForEdit).subscribe(dd=>{
           //alert("Image upload successful! ");        
           // console.log("DDDDDDDDD", d)

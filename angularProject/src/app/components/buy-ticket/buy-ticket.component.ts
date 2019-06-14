@@ -18,6 +18,7 @@ export class BuyTicketComponent implements OnInit {
 
   emailLoggedUser: string = ""
   price: number = 0;
+  bool: boolean = false;
 
 
   constructor(private authService: AuthenticationService, private usersService: UsersService,
@@ -30,6 +31,12 @@ export class BuyTicketComponent implements OnInit {
       this.loggedUser = d;
       this.emailLoggedUser = this.loggedUser.Email
       console.log("Ulogovani korisnik: ", this.loggedUser)
+
+      if(localStorage.getItem('role') == "AppUser"){
+        if(this.loggedUser.Activated){      
+          this.bool =  true;
+        } 
+      }
     })
   }
   }
@@ -51,6 +58,7 @@ export class BuyTicketComponent implements OnInit {
       console.log("Trenutno vreme", buyTicketForm.PurchaseDate)
       this.buyTicketService.buyTicket(buyTicketForm).subscribe(d=>{
       alert("Succesfull buy ticket");
+      window.location.reload();
       });     
     }else if(mail == null){
       if(buyTicketForm.Email.length != 0){
@@ -58,7 +66,8 @@ export class BuyTicketComponent implements OnInit {
         buyTicketForm.TypeOfTicket = "TimeLimited";
         this.buyTicketService.buyTicketViaEmail(buyTicketForm).subscribe();
         alert("Succesfull buy ticket. Expect e-mail notification");
-        this.router.navigate(['/busLines'])
+        //this.router.navigate(['/busLines'])
+        window.location.reload()
       }else{
         alert("Please enter your email address");
       }    
@@ -77,14 +86,17 @@ export class BuyTicketComponent implements OnInit {
 
   nonActivated(): boolean{
     console.log("Logged user in nonActivated: ", this.loggedUser);
-    if(this.loggedUser != undefined){
-      if(this.loggedUser.Activated){
-      
-        return false;
-      }else{
-        return true;
-      }     
-    }
+    // if(localStorage.getItem('role') == "AppUser"){
+    //   if(this.loggedUser.Activated){      
+    //     return true;
+    //   }else{
+    //     return false;
+    //   }     
+    // }
+
+    
+      return this.bool;
+
     
   }
 

@@ -82,7 +82,7 @@ export class StationsComponent implements OnInit {
     console.log(stationData);
 
     this.stationService.editStation(stationData).subscribe(data => {
-      alert("Edit Station changed successfull!");
+      alert("Station changed successfully!");
       //this.route.navigate(['/station']);
       window.location.reload();
     },
@@ -94,7 +94,11 @@ export class StationsComponent implements OnInit {
   }
 
   onSubmitDelete(stationData: StationModel, form:NgForm){
-    this.stationService.deleteStation(this.id).subscribe();
+    this.stationService.deleteStation(this.id).subscribe(x => {
+      alert("Station changed successfully")
+      window.location.reload();
+
+    });
   }
 
   markerDragEnd($event: MouseEvent, nameOfStation:string, id: number) {

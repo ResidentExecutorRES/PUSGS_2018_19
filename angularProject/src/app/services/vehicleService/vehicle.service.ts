@@ -36,4 +36,8 @@ export class VehicleService {
     return this.httpClient.get(this.baseUrl + "/api/Vehicles/GetVehicle?id=" + id);
   }
 
+  editVehicle(vehicle):Observable<any>{
+    return this.httpClient.post(this.baseUrl + "/api/Vehicles/Edit", vehicle);
+  }
+
 }

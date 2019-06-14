@@ -4,6 +4,7 @@ import { VerificationService } from 'src/app/services/verificationService/verifi
 import { PomModelForAuthorization } from 'src/app/models/pomModelForAuth.model';
 import { AuthenticationService } from 'src/app/services/authentication-service.service';
 import { UsersService } from 'src/app/services/users/users.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-validate-ticket',
@@ -24,6 +25,8 @@ export class ValidateTicketComponent implements OnInit {
   wtfList:any = []
   userBytesImages:any = [];
   imagesLoaded:boolean = false
+
+  pomBool: boolean = false;
   
 
 
@@ -32,11 +35,14 @@ export class ValidateTicketComponent implements OnInit {
     private userService: UsersService) { 
       this.userService.getUserData(localStorage.getItem('name')).subscribe(data => {
         this.user = data;    
-       console.log(this.user);    
+        this.pomBool = this.user.Activated;
+       console.log("Serrrr:", this.user);    
    
     this.ticketServ.getAllTypeOfTicket().subscribe(data => {
       this.allTT = data;
+      console.log("ALLLL TTTT: ", this.allTT);
     })
+
     verifyService.getAwaitingAppUsers().subscribe(data=>{
       this.awaitingAppUsers = data;
       userService.getUserImages(this.awaitingAppUsers).subscribe(imageBytes => {
@@ -60,6 +66,10 @@ export class ValidateTicketComponent implements OnInit {
  
     console.log(n);
     this.ticketServ.getTicket(n).subscribe(data => {
+      if(data == null){
+        alert("Ticket not exists! ");
+        return;
+      }
       this.ticketForV = data;
       
       if(this.ticketForV)
@@ -73,7 +83,10 @@ export class ValidateTicketComponent implements OnInit {
       else{
         this.ticketExists = "Ticket doesn't exist in database!"
       }
-    });
+    }
+
+    
+    );
     
   }
 
@@ -101,13 +114,13 @@ export class ValidateTicketComponent implements OnInit {
     this.allTT.forEach(element => {
       if(this.ticketForV.TypeOfTicketId == element.Id)
       {
-          TT = element.Name;
+          TT = element.Name;  //zapamti ime karte
       }      
     });
   
-    let d : Date = new Date(this.ticketForV.PurchaseTime);
+    let d : Date = new Date(this.ticketForV.PurchaseDate);
 
-    if(n == this.ticketForV.ApplicationUserId)
+    if(n == this.ticketForV.AppUserId)
     {
 
       if(TT == "TimeLimited")

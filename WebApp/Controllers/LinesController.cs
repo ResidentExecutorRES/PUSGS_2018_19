@@ -217,6 +217,10 @@ namespace WebApp.Controllers
             // = db.Lines.Find(id);
 
             Line line = _unitOfWork.Lines.Get(id);
+            Vehicle v = _unitOfWork.Vehicles.Find(x => x.LineId == line.Id).FirstOrDefault();
+            v.LineId = null;
+            _unitOfWork.Vehicles.Update(v);
+            _unitOfWork.Complete();
 
             if (line == null)
             {

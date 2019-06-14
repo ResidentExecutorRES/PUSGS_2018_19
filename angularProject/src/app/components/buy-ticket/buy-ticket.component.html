@@ -1,5 +1,6 @@
-<div *ngIf="!nonRegister() && nonActivated()">
+<div *ngIf="!nonRegister() && !nonActivated()">
   <label>You are not authorized to purchase tickets</label>
+</div>
   <div>
 
   </div>
@@ -11,7 +12,8 @@
         </div>
 
       <div *ngIf="!nonRegister()" class="form-group">
-        <div *ngIf="!nonActivated()">
+        
+        <div *ngIf="nonActivated()">
           <label for="TypeOfTicket">Select type of ticket</label>
           <select name="TypeOfTicket"  class="form-group"  class="form-control" ngModel>
             <option disabled>Please select...</option>
@@ -23,6 +25,5 @@
         </div>
       </div>
 
-      <button *ngIf="!nonActivated() || nonRegister()" type="submit" class="nav-link" class="btn">Buy ticket</button>
+      <button *ngIf="nonActivated() || nonRegister()" type="submit" class="nav-link" class="btn">Buy ticket</button>
   </form>
-</div>

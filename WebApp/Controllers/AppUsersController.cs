@@ -30,7 +30,6 @@ namespace WebApp.Controllers
         private ApplicationUserManager _userManager;
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
 
-
         public AppUsersController()
         {
         }
@@ -73,7 +72,8 @@ namespace WebApp.Controllers
         [Route("GetUser")]
         public AppUser GetUser(string email)
         {
-            return unitOfWork.AppUsers.Find(user => user.Email == email).FirstOrDefault();
+            AppUser a =  unitOfWork.AppUsers.Find(user => user.Email == email).FirstOrDefault();
+            return a;
         }
 
 
@@ -178,34 +178,45 @@ namespace WebApp.Controllers
         //}
 
           
-        [Route("Edit")]        
-        // POST: api/Stations
-        //[ResponseType(typeof(void))]
-        public IHttpActionResult EditAppUser(PomAppUser model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            AppUser appUser = unitOfWork.AppUsers.Find(x => x.Id == model.Id).FirstOrDefault();
-            appUser.LastName = model.LastName;
-            appUser.Name = model.Name;
-            appUser.Email = model.Email;
-            appUser.Birthaday = model.Birthaday;
-            appUser.Image = AccountController.path ;
-
-            Address address = unitOfWork.Addresses.Find(x => x.Id == model.AddressId).FirstOrDefault();
-            address.Number = model.Number;
-            address.City = model.City;
-            address.Street = model.Street;
+        //[Route("Edit")]        
+        //// POST: api/Stations
+        ////[ResponseType(typeof(void))]
+        //public async Task<IHttpActionResult> EditAppUser(PomAppUser model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
 
-            unitOfWork.Addresses.Update(address);
-            unitOfWork.AppUsers.Update(appUser);
-            unitOfWork.Complete();
+        //    AppUser appUser = unitOfWork.AppUsers.Find(x => x.Id == model.Id).FirstOrDefault();
+        //    string oldEmail = appUser.Email;            
+        //    appUser.LastName = model.LastName;
+        //    appUser.Name = model.Name;
+        //    appUser.Email = model.Email;
+        //    appUser.Birthaday = model.Birthaday;
+        //    appUser.Image = AccountController.path ;
 
-            return Ok();
-        }
+        //    Address address = unitOfWork.Addresses.Find(x => x.Id == model.AddressId).FirstOrDefault();
+        //    address.Number = model.Number;
+        //    address.City = model.City;
+        //    address.Street = model.Street;
+
+        //    ApplicationUser applicationUser = _userManager.FindByEmail(oldEmail);
+        //    applicationUser.Email = appUser.Email;
+
+
+
+        //    unitOfWork.Addresses.Update(address);
+        //    unitOfWork.AppUsers.Update(appUser);
+        //    //_userManager.Update(applicationUser);
+
+        //    IdentityResult result = await UserManager.Update(applicationUser);
+
+        //    unitOfWork.Complete();
+
+        //    return Ok();
+        //}
 
         [Route("EditPassword")]
         // POST: api/Stations

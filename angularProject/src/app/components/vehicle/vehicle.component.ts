@@ -19,7 +19,7 @@ export class VehicleComponent implements OnInit {
   vehicles: any = [];
   timetables: any = [];
   idVehicleForDelete: number;
-  idVehicleForEdit: number
+  idVehicleForEdit: number;
 
   vehicleForEdit: any;
 
@@ -45,8 +45,25 @@ export class VehicleComponent implements OnInit {
     
     this.vehicleService.addVehicle(vehicleData).subscribe(data => {     
       console.log(data); 
+      alert("Successfully added vehicle")
+      window.location.reload();
     });     
   }
+
+
+  
+  onSubmitEdit(vehicleData: VehicleModel, form:NgForm){
+    this.vehicles.forEach(element => {
+
+      if(element.Id == vehicleData.RegistrationNumber){
+        vehicleData.TypeOfVehicle = element.TypeOfVehicle;
+        vehicleData.Id = element.Id
+      }
+    });
+    this.vehicleService.editVehicle(vehicleData).subscribe();
+
+  }
+
 
   getRegistrationNumber(event){
     this.idVehicleForDelete = event.target.value;
@@ -57,22 +74,22 @@ export class VehicleComponent implements OnInit {
     console.log("Reg number: ", this.idVehicleForDelete);
     this.vehicleService.deleteVehicle(this.idVehicleForDelete).subscribe(d=>{
       alert("Vehicle delete successful! ");
+      window.location.reload();
     })
   }
 
 
   getIdVehiclee(event){
     this.idVehicleForEdit = event.target.value;
+    if(this.idVehicleForEdit != null && event.target.value != ""){
     this.vehicleService.getVehicle(this.idVehicleForEdit).subscribe(c=>{
       this.vehicleForEdit = c;
       console.log("Vehicle for edit: ", this.vehicleForEdit);
     })
   }
-
-
-  editVehicle(){
-    
   }
+
+
 
 
   showAdd(){

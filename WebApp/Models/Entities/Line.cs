@@ -13,7 +13,7 @@ namespace WebApp.Models.Entities
         {
             //ListOfDepartures = new List<Departure>();
             ListOfStations = new List<Station>();
-            ListOfVehicles = new List<Vehicle>();
+            //ListOfVehicles = new List<Vehicle>();
             ListOfTimetables = new List<Timetable>();
         }
 
@@ -22,7 +22,7 @@ namespace WebApp.Models.Entities
         public int RegularNumber { get; set; }
 
         public List<Station> ListOfStations { get; set; }
-        public List<Vehicle> ListOfVehicles { get; set; }
+        //public List<Vehicle> ListOfVehicles { get; set; }
 
         //public List<Departure> ListOfDepartures { get; set; }
         public List<LineStation> LineStations { get; set; }

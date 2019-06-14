@@ -36,10 +36,22 @@ namespace WebApp.Controllers
         public List<Line> GetLinesForVehicle()
         {
             var lines = _unitOfWork.Vehicles.GetAll().ToList();
+
             List<Line> retVal = new List<Line>();
+            List<int> niz = new List<int>();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].LineId == null)
+                    niz.Add(i);
+            }
+            foreach (var item in niz)
+            {
+                lines.RemoveAt(item);
+            }
 
             foreach (var item in _unitOfWork.Lines.GetAll().ToList())
             {
+                
                 if (!lines.Any(x => x.LineId == item.Id))
                     retVal.Add(item);
             }
@@ -151,6 +163,23 @@ namespace WebApp.Controllers
                 _unitOfWork.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        [Route("Edit")]
+        public IHttpActionResult Edit(Vehicle v)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Vehicle vv = _unitOfWork.Vehicles.Find(x => x.Id == v.Id).FirstOrDefault();
+            vv.LineId = v.LineId;
+
+            _unitOfWork.Vehicles.Update(vv);
+            _unitOfWork.Complete();
+            return Ok();
+
         }
 
         //private bool VehicleExists(int id)

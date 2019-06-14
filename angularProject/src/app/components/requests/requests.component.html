@@ -1,18 +1,20 @@
+<br><br>
 <div *ngIf="user" class="container">
   <div *ngIf="user.Activated">
     <div *ngIf="loggedAdmin()">
     <div class="col-md-12">
-      <h3>Authorize awaiting controllers </h3>
+      <h5>Authorize awaiting controllers </h5> <br>
       <ul class="list-group" *ngFor="let awaitingController of awaitingControllers; let i = index">
         <li class="list-group-item">{{awaitingController.Name}} <span class="pull-right" style="float:right">
           <button class="btn" (click)="AuthorizeControllers(awaitingController.Id,i)">Authorize Controller</button>
         </span>
       </li>
       </ul>
-
      </div>
+     
+     <br><br>
     <div class="col-md-12">
-        <h3>Authorize awaiting admins </h3>
+        <h5>Authorize awaiting admins </h5>
         <ul class="list-group" *ngFor="let awaitingAdmin of awaitingAdmins; let i = index">
           <li class="list-group-item">{{awaitingAdmin.Name}} <span class="pull-right" style="float:right">
             <button class="btn" (click)="AuthorizeAdmins(awaitingAdmin.Id,i)">Authorize Admin</button>

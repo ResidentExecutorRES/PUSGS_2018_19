@@ -28,29 +28,70 @@
       <!-- crta sve stanice i linije -->
       <div *ngIf="!isSelectedDelete() && !isSelectedEdit()">
         <!-- <div *ngFor = "let key of keys"> -->
-          <div *ngFor="let ls of pomModelList">
+          <!-- <div *ngFor="let ls of pomModelList, let i = index">
 
           <agm-polyline  [strokeColor]="'red'">
             <agm-polyline-point *ngFor="let station of ls.List" [latitude]="station.Latitude" [longitude]="station.Longitude">
             </agm-polyline-point>
           </agm-polyline>
 
-      </div>
+          
+
+      </div> -->
+
+
+      <div *ngFor="let ls of pomModelList, let i = index">
+          <div *ngFor="let dir of ls.List, let j= index">
+          <agm-direction  *ngIf = "ls.List[j+1]"
+            [renderOptions] = "{polylineOptions: {strokeColor: listOfColors[i]}, suppressMarkers: true}"
+            [origin] = "{lat: ls.List[j].Latitude, lng: ls.List[j].Longitude}"
+            [destination] = "{lat: ls.List[j+1].Latitude, lng: ls.List[j+1].Longitude}">
+            <!-- <agm-polyline-point *ngFor="let station of ls.List" [latitude]="station.Latitude" [longitude]="station.Longitude">
+            </agm-polyline-point> -->
+          </agm-direction>
+        </div>
+    </div>
+
+
+
       </div>
 
       <div *ngIf="isSelectedDelete()">  <!--ovdje iscrtati  selektovanu liniji -->
-        <agm-polyline  [strokeColor]="'red'">
+        <!-- <agm-polyline  [strokeColor]="'red'">
           <agm-polyline-point *ngFor="let station of orderedStation" [latitude]="station.Latitude" [longitude]="station.Longitude">
           </agm-polyline-point>
-        </agm-polyline>
+        </agm-polyline> -->
+
+        <div > 
+            <div *ngFor="let ls of orderedStation, let j= index">
+            <agm-direction *ngIf="orderedStation[j+1]" 
+              [renderOptions] = "{polylineOptions: {strokeColor: listOfColors[j]}, suppressMarkers: true}"
+              [origin] = "{lat: ls.Latitude, lng: ls.Longitude}"
+              [destination] = "{lat: orderedStation[j + 1].Latitude, lng: orderedStation[ j + 1].Longitude}">
+
+            </agm-direction>
+          </div>
+      </div>  
+
+
       </div>
 
       <!-- zaEditovvanje -->
       <div *ngIf = "isSelectedEdit()">  <!--ovdje iscrtati  selektovanu liniji -->
-        <agm-polyline  [strokeColor]="'red'">
+        <!-- <agm-polyline  [strokeColor]="'red'">
           <agm-polyline-point *ngFor="let station of orderedStationEdit" [latitude]="station.Latitude" [longitude]="station.Longitude">
           </agm-polyline-point>
-        </agm-polyline>
+        </agm-polyline> -->
+        <div *ngFor="let ls of orderedStationEdit, let j= index">
+            <agm-direction *ngIf="orderedStationEdit[j+1]" 
+              [renderOptions] = "{polylineOptions: {strokeColor: listOfColors[j]}, suppressMarkers: true}"
+              [origin] = "{lat: ls.Latitude, lng: ls.Longitude}"
+              [destination] = "{lat: orderedStationEdit[j + 1].Latitude, lng: orderedStationEdit[ j + 1].Longitude}">
+
+            </agm-direction>
+          </div>
+
+
       </div>
 
       </agm-map>
@@ -69,13 +110,13 @@
         </div>
       </form>
 
-      <div>
+      <!-- <div>
           <label for="Stations">Selected stations:</label>
           <div *ngFor="let station of selectedStations">
               <label><b>{{station.Name}}</b></label><br/>
               <label>{{station.AddressStation}}</label><br/><br/>
           </div>
-      </div>
+      </div> -->
   </div>
 
   <div *ngIf="isSelectedEdit()">
@@ -87,28 +128,27 @@
                 <option disabled>Please select...</option>
                 <option *ngFor="let line of allLinesForEditFromDb" value={{line.RegularNumber}}>{{line.RegularNumber}}</option>
               </select>
-
+              <br/><br/>
               <label>ListOfStations</label>
               <table border="1">
               <div *ngFor="let station of sLineForEdit?.ListOfStations">
                 <tr>
                   <td>
-                <label>Id: {{station.Id}}</label><br/>
-                <label>Name: {{station.Name}}</label>
-                <label>Longitude: {{station.Longitude}}</label>
-                <label>Latitude: {{station.Latitude}}</label>
+                <label>Name: {{station.Name}}</label><br/>
+                <label>Longitude: {{station.Longitude}}</label><br/>
+                <label>Latitude: {{station.Latitude}}</label><br/>
                 <label>Address: {{station.AddressStation}}</label>
               </td>
             </tr>
             </div>
             </table>
 
-            <div *ngFor="let station of sLineForEdit?.ListOfStations">
-                <button type="submit" class="button" class="btn" (click)='removeStationFromLine(station.Id)'>{{station.Name}}</button>
+            <div *ngFor="let station of sLineForEdit?.ListOfStations" class="class-form">
+                <button type="submit" class="button" class="btn" clas="form-group" (click)='removeStationFromLine(station.Id)'>Remove station: {{station.Name}}</button>
             </div>
 
             <div align="center">
-              <button type="submit" class="button" class="btn" (click)="showComboBox()">Show comboBox for adding stations</button>
+              <button type="submit" class="button" class="btn"  (click)="showComboBox()">Add new station in Line</button> <br/>
             </div>
 
             <div *ngIf = "showComboBoxForAddSt">

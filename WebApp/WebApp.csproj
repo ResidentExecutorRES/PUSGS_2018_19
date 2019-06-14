@@ -296,6 +296,10 @@
     <Compile Include="Migrations\201906121907367_vozila4.Designer.cs">
       <DependentUpon>201906121907367_vozila4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906140244424_migracijaVozila.cs" />
+    <Compile Include="Migrations\201906140244424_migracijaVozila.Designer.cs">
+      <DependentUpon>201906140244424_migracijaVozila.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -473,6 +477,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906121907367_vozila4.resx">
       <DependentUpon>201906121907367_vozila4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906140244424_migracijaVozila.resx">
+      <DependentUpon>201906140244424_migracijaVozila.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

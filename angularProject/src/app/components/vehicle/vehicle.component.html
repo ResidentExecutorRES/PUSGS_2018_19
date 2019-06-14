@@ -49,17 +49,33 @@
             <button type="button" class="button" class="btn" (click)="deleteVehicle()">Delete vehicle</button>  
         </div>
     </div>
+
     <div *ngIf="isSelectedEdit()">
-        <select name="RegistrationNumber"  class="form-group" (click)="getIdVehiclee($event)">
+        <form #vehicleForm="ngForm" (ngSubmit)="onSubmitEdit(vehicleForm.value, vehicleForm)">
+
+        <select name="RegistrationNumber"  class="form-group" (click)="getIdVehiclee($event)" ngModel>
             <option disabled>Please select...</option>
             <option *ngFor="let vehicle of vehicles" value={{vehicle.Id}}>{{vehicle.RegistrationNumber}}</option>            
           </select>
           
-          <input type="text" value="{{idVehicleForDelete}}">
+          <div  class="form-group">
+              <label for="LineId">Select Line</label>
+              <select *ngFor="let line of linesWithoutVehicle" name="LineId" class="form-group"  class="form-control" ngModel>
+                <option disabled>Please select...</option>
+                <option value="{{line.Id}}">{{line.RegularNumber}}</option>
+              </select>
+            </div>
 
           <div align="center">
-            <button type="button" class="button" class="btn" (click)="editVehicle()">Edit vehicle</button>  
+            <button type="submit" class="button" class="btn">Edit vehicle</button>  
         </div>
+        </form>
+
     </div>
+
+
+
+   
+
 </div>
 

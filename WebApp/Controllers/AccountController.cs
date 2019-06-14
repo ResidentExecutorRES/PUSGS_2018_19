@@ -58,6 +58,7 @@ namespace WebApp.Controllers
             private set{ _userManager = value; }
         }
 
+
         #region UserInfo_ManageInfo
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -133,6 +134,8 @@ namespace WebApp.Controllers
                 return BadRequest(ModelState);
             }
             AppUser appUser = _unitOfWork.AppUsers.Find(x => x.Id == model.Id).FirstOrDefault();
+            string oldEmail = appUser.Email;
+
             appUser.LastName = model.LastName;
             appUser.Name = model.Name;
             appUser.Email = model.Email;
@@ -146,9 +149,26 @@ namespace WebApp.Controllers
             address.City = model.City;
             address.Street = model.Street;
 
+
             _unitOfWork.Addresses.Update(address);
             _unitOfWork.AppUsers.Update(appUser);
             _unitOfWork.Complete();
+
+
+            //ApplicationUser applicationUser = _userManager.FindById(appUser.Id);
+            //applicationUser.Email = appUser.Email;
+
+            IdentityResult result = await UserManager.SetEmailAsync(appUser.Id, appUser.Email);
+            ApplicationUser result1 =  UserManager.FindById(appUser.Id);
+            result1.UserName = result1.Email;
+
+
+            // IdentityResult result = await UserManager.UpdateAsync(applicationUser);
+            //IdentityResult result2 = await _userManager.UpdateAsync(result1);
+
+            UserManager.Update(result1);
+
+
 
             return Ok();
         }

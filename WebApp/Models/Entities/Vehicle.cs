@@ -17,7 +17,7 @@ namespace WebApp.Models.Entities
         //public Double Latitude { get; set; }
 
         [ForeignKey("Line")]
-        public int LineId { get; set; }
+        public int? LineId { get; set; }
         public Line Line { get; set; }
     }
 }
